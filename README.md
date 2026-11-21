@@ -111,16 +111,6 @@ chmod +x ./scripts/install-global.sh && ./scripts/install-global.sh   # Optional
 
 ---
 
-## Enable GitHub Pages Live Demo in 30 Seconds
-
-1. Push to `https://github.com/yousefmasterhr-lab/zerodrift.git` (`main` branch).
-2. Open **Settings -> Pages -> Source: Deploy from a branch -> Branch `main` / Folder `/docs` -> Save**.
-3. Your live interactive ZeroDrift v4.0 Studio demo goes online at **[`https://yousefmasterhr-lab.github.io/zerodrift/demo/`](https://yousefmasterhr-lab.github.io/zerodrift/demo/)**.
-
-### Recommended GitHub Repository Topics
-`ai-engineering` · `agent-skills` · `antigravity` · `claude-code` · `openai-codex` · `cursor-rules` · `codemap` · `zero-hallucination` · `anti-regression` · `software-architecture` · `owasp-security` · `mission-control`
-
----
 
 ## License
 
