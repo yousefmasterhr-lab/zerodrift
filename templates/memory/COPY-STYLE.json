@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectName": "{{PROJECT_NAME}}",
+  "updatedAt": "{{DATE}}",
+  "tone": {
+    "voice": "Concise, direct, natural operator-grade copy",
+    "bannedStyles": [
+      "Robotic filler phrases",
+      "Bloated multi-sentence button labels",
+      "Mixed half-translated strings in a single label",
+      "Heavy archaic or literal AI-translated Arabic"
+    ]
+  },
+  "locales": {
+    "primary": "en",
+    "supported": ["en", "ar"],
+    "internalArtifactsLanguage": "en",
+    "numeralStyle": "western-0-9",
+    "currencyFormat": "ISO code + tabular numerals (e.g., EGP 1,250.00)",
+    "dateFormat": "YYYY-MM-DD (ISO-8601 UTC storage; localized display)"
+  },
+  "bannedArabicPhrases": {
+    "سجل التدقيق غير القابل للتعديل": "سجل الحركات",
+    "حوكمة مسار الاعتماد التشغيلي": "خطوات الموافقة",
+    "صندوق القرارات التفاعلي": "الأسئلة والموافقات",
+    "تمكين التحول السلس": "نقل سلس",
+    "تأكيد إتمام عملية الحفظ بنجاح": "تم الحفظ"
+  },
+  "glossary": {
+    "Save": { "en": "Save", "ar": "حفظ" },
+    "Cancel": { "en": "Cancel", "ar": "إلغاء" },
+    "Delete": { "en": "Delete", "ar": "حذف" },
+    "Retry": { "en": "Retry", "ar": "إعادة المحاولة" },
+    "Details": { "en": "Details", "ar": "التفاصيل" },
+    "Audit Log": { "en": "Activity Log", "ar": "سجل الحركات" },
+    "Approval Flow": { "en": "Approval Steps", "ar": "خطوات الموافقة" },
+    "Decisions": { "en": "Questions & Approvals", "ar": "الأسئلة والموافقات" }
+  }
+}

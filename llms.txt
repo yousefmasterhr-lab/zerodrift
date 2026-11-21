@@ -1,0 +1,48 @@
+# ZeroDrift v4.0 — AI Agent Auto-Bootstrap Specification (`llms.txt`)
+
+> Sovereign AI Engineering Operating System — Native Interactive CodeMap & Wiring Engine, Multi-Layout UI/UX & Typography Showcase, Living Memory, Time Machine Checkpoints, 12-Skill Fleet, 10 Core Laws & Concise Chat Discipline.
+> Zero external runtime dependencies (Node.js 18+ ESM + pure Markdown + offline vanilla HTML/CSS/JS).
+> Live Interactive Demo: https://yousefmasterhr-lab.github.io/zerodrift/demo/
+
+## Automated Agent Bootstrap Protocol
+
+When a user pastes `https://github.com/yousefmasterhr-lab/zerodrift` and says "Install ZeroDrift and build X" or "Use ZeroDrift on this project":
+
+1. **Locate or Clone ZeroDrift:**
+   - Check `~/.gemini/config/skills/zerodrift/SKILL.md` (or `~/.claude/skills/`, `~/.codex/skills/`).
+   - If missing, clone `https://github.com/yousefmasterhr-lab/zerodrift.git` to `~/.zerodrift-os` and install all 12 one-level skills:
+     - Windows PowerShell: `powershell -NoProfile -ExecutionPolicy Bypass -File ~/.zerodrift-os/scripts/install-global.ps1` (optional: `-AllAgents`, `-WithCompanions`)
+     - macOS / Linux: `chmod +x ~/.zerodrift-os/scripts/install-global.sh && ~/.zerodrift-os/scripts/install-global.sh` (optional: `--all-agents`, `--with-companions`)
+2. **Initialize Target Project Workspace:**
+   - Run: `node scripts/init-project.mjs --target <project-dir> --adapter antigravity --lang <en|ar>` (auto-pass `--lang ar` if the user speaks Arabic!).
+3. **Launch ZeroDrift Studio (Interactive Mission Control Web App):**
+   - Run: `node scripts/studio-server.mjs --project <project-dir>` (`http://127.0.0.1:4310`, live SSE).
+   - Refresh Studio after every stage/slice: `node scripts/build-studio.mjs --project <project-dir>`.
+4. **Enforce Core v4.0 Laws:**
+   - **Concise Chat (`core/concise-chat.md`):** Keep normal chat turns to **5–8 lines max**; write rich details to `.zerodrift/` and point the user to ZeroDrift Studio.
+   - **English Internal / Natural Bilingual UI:** All `.zerodrift/*.md`, memory files, contracts, and code in crisp English; bilingual `{ en, ar }` natural business copy in Studio Inbox/Showcase (zero robotic AI Arabic).
+   - **Native CodeMap (`scripts/code-map.mjs`):** Run `--project .` for architecture wiring & `--impact <file>` before sensitive edits.
+
+## 12-Skill Routing Matrix
+
+| Scenario / User Intent | Invoke Skill | Primary Outputs |
+| :--- | :--- | :--- |
+| Empty folder + idea, full lifecycle, or resume `STATE.md` | `skills/zerodrift/SKILL.md` | Stages 0–7 + Studio live sync |
+| Vague idea, bilingual brain-dump, or unclear scope | `skills/zerodrift-intake/SKILL.md` | `00-BRIEF.md`, `01-PRD.md`, bilingual `studio-inbox.json` |
+| Verify industry compliance & live stack versions | `skills/zerodrift-research/SKILL.md` | `02-RESEARCH-SOURCES.md` |
+| Legacy repo X-Ray, live URL (`Safe Read-Only Mode`), screenshots | `skills/zerodrift-reverse/SKILL.md` | `02B-REVERSE-ANALYSIS.md` |
+| Topology, ERD, ADRs, `CONTRACTS.md`, Red-Team, Change Control | `skills/zerodrift-architect/SKILL.md` | `03-ARCHITECTURE.md`, `CONTRACTS.md`, `05-TASKS.md`, `CHANGE-REQUEST.md` |
+| Interactive 3-Layout UI/UX & 5-Font Showcase + Token Lock | `skills/zerodrift-design/SKILL.md` | `DESIGN-SHOWCASE.json`, `04-DESIGN-SYSTEM.md`, `DESIGN-TOKENS.json`, `COPY-STYLE.json` |
+| Build vertical slices with checkpoints, ripple checks & handoffs | `skills/zerodrift-build/SKILL.md` | Source code + tests + `CHECKPOINTS.json` + `HANDOFF.md` |
+| Zero-error verification (tsc, build, CodeMap, Token/Mojibake/.env/Secret scans) | `skills/zerodrift-verify/SKILL.md` | Verified zero-error codebase |
+| OWASP Top 10 & ZeroDrift Security Baseline audit (0 P0/P1) | `skills/zerodrift-security/SKILL.md` | `05-SECURITY-AUDIT.md` |
+| Provenance ledger, module user/dev guide & portable HTML | `skills/zerodrift-handover/SKILL.md` | `06-HANDOVER-REPORT.md`, `zerodrift-report.html` |
+| Lock permanent rules, bug immunity ledger & learned skills | `skills/zerodrift-memory/SKILL.md` | `LOCKED-RULES.md`, `REGRESSION-LEDGER.json`, `learned-skills/*.md` |
+| Native interactive CodeMap, wiring parity, cycles & Blast Radius | `skills/zerodrift-codemap/SKILL.md` | `.zerodrift/codemap.json` + Studio SVG Canvas |
+
+## Companion Ecosystem (Optional — ZeroDrift Is 100% Self-Sufficient Without Them)
+
+- `floorplan`: Auto-linked in Studio when `floorplan/index.html` exists; native fallback is `zerodrift-codemap`.
+- `archify`: Auto-linked in Studio when `.zerodrift/archify/*.html` exists; on Windows always use `validate → deliver → check` (never `finalize` to avoid hardlink `nlink` errors).
+- `understand-anything`: On-demand only for brownfield files > 1,000 lines.
+- `knip` & `dependency-cruiser`: Optional external analyzers alongside native `scripts/code-map.mjs`.

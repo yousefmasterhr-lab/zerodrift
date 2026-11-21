@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectName": "{{PROJECT_NAME}}",
+  "updatedAt": "{{DATE}}",
+  "selectedLayout": "editorial-calm",
+  "selectedFontPairing": "ibm-plex-jakarta",
+  "selectedPalette": "warm-ivory-olive",
+  "layouts": [
+    {
+      "id": "editorial-calm",
+      "name": { "en": "Warm Editorial Calm", "ar": "الهدوء التحريري الدافئ" },
+      "tagline": {
+        "en": "Spacious layered warm cards, soft hairline borders, editorial hierarchy & zero eye strain.",
+        "ar": "بطاقات دافئة بمساحات مريحة وحدود ناعمة وترتيب بصري هادئ للاستخدام اليومي."
+      },
+      "recommended": true,
+      "density": "balanced",
+      "navigationStyle": "top-clean"
+    },
+    {
+      "id": "modern-glass",
+      "name": { "en": "Modern Glass & Floating Nav", "ar": "الزجاج العصري والتنقل العائم" },
+      "tagline": {
+        "en": "Frosted glass floating dock, crisp depth shadows & subtle mint-emerald active accents.",
+        "ar": "شريط علوي زجاجي عائم وظلال ناعمة مع لمسات زمردية واضحة للحالة النشطة."
+      },
+      "recommended": false,
+      "density": "comfortable",
+      "navigationStyle": "floating-glass"
+    },
+    {
+      "id": "executive-dense",
+      "name": { "en": "Executive High-Density Workspace", "ar": "مساحة العمل التنفيذية الكثيفة" },
+      "tagline": {
+        "en": "Compact sidebar rail, dense ERP KPI strip & scannable data tables with pinned sticky actions.",
+        "ar": "قائمة جانبية مدمجة ومؤشرات أداء سريعة وجداول بيانات واضحة بعمود إجراءات مثبت."
+      },
+      "recommended": false,
+      "density": "compact",
+      "navigationStyle": "compact-sidebar"
+    }
+  ],
+  "fontPairings": [
+    {
+      "id": "ibm-plex-jakarta",
+      "label": "IBM Plex Sans Arabic + Plus Jakarta Sans",
+      "vibe": { "en": "Clean Enterprise SaaS", "ar": "أنظمة شركات احترافية" },
+      "arabicFont": "IBM Plex Sans Arabic",
+      "latinFont": "Plus Jakarta Sans",
+      "cssStack": "\"Plus Jakarta Sans\", \"IBM Plex Sans Arabic\", system-ui, sans-serif",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"
+    },
+    {
+      "id": "cairo-inter",
+      "label": "Cairo + Inter",
+      "vibe": { "en": "Modern Geometric Dashboard", "ar": "لوحات تحكم هندسية حديثة" },
+      "arabicFont": "Cairo",
+      "latinFont": "Inter",
+      "cssStack": "\"Inter\", \"Cairo\", system-ui, sans-serif",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap"
+    },
+    {
+      "id": "alexandria-manrope",
+      "label": "Alexandria + Manrope",
+      "vibe": { "en": "Refined Warm Editorial", "ar": "تصميم تحريري دافئ وراقي" },
+      "arabicFont": "Alexandria",
+      "latinFont": "Manrope",
+      "cssStack": "\"Manrope\", \"Alexandria\", system-ui, sans-serif",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&family=Manrope:wght@400;600;700;800&display=swap"
+    },
+    {
+      "id": "readex-dmsans",
+      "label": "Readex Pro + DM Sans",
+      "vibe": { "en": "Precision Tables & Financials", "ar": "دقة الجداول والأرقام المالية" },
+      "arabicFont": "Readex Pro",
+      "latinFont": "DM Sans",
+      "cssStack": "\"DM Sans\", \"Readex Pro\", system-ui, sans-serif",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Readex+Pro:wght@400;600;700&display=swap"
+    },
+    {
+      "id": "tajawal-outfit",
+      "label": "Tajawal + Outfit",
+      "vibe": { "en": "Friendly Modern Commerce", "ar": "تجارة وخدمات سلسة وعصرية" },
+      "arabicFont": "Tajawal",
+      "latinFont": "Outfit",
+      "cssStack": "\"Outfit\", \"Tajawal\", system-ui, sans-serif",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"
+    }
+  ],
+  "palettes": [
+    {
+      "id": "warm-ivory-olive",
+      "name": { "en": "Warm Ivory & Royal Olive", "ar": "العاجي الدافئ والزيتوني الملكي" },
+      "canvas": "#FBF9F5",
+      "surface": "#F3EFE6",
+      "primary": "#243324",
+      "accent": "#10B981",
+      "ink": "#1C241E"
+    },
+    {
+      "id": "clinical-teal",
+      "name": { "en": "Soft Alabaster & Deep Teal", "ar": "المرمر الهادي والفيروزي العميق" },
+      "canvas": "#F7FAF9",
+      "surface": "#EBF3F1",
+      "primary": "#0F4C5C",
+      "accent": "#14B8A6",
+      "ink": "#162A30"
+    },
+    {
+      "id": "obsidian-emerald",
+      "name": { "en": "Midnight Obsidian & Mint", "ar": "الليلي الداكن والنعناعي" },
+      "canvas": "#0F1412",
+      "surface": "#1B2521",
+      "primary": "#34D399",
+      "accent": "#10B981",
+      "ink": "#EEF3F0"
+    }
+  ]
+}
+

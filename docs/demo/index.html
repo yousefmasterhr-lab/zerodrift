@@ -1,0 +1,4440 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="warm-ivory">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZeroDrift Studio — Interactive local mission control dashboard for deterministic AI software engineering, Living Memory, Time Machine checkpoints, and two-way human-agent decisions." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='10' fill='%23243324'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='%23FBF9F5' font-family='system-ui,sans-serif' font-weight='800' font-size='15'%3EZD%3C/text%3E%3C/svg%3E" />
+  <title>ZeroDrift Studio — Interactive Mission Control</title>
+  <style>
+/* ZeroDrift Studio v4.0 — Warm Ivory & Royal Olive UI (Offline, WCAG AA, Logical CSS RTL/LTR) */
+
+:root {
+  /* Warm Ivory & Royal Olive Signature Palette (Zero Stark #FFFFFF) */
+  --zd-canvas: #FBF9F5;
+  --zd-surface: #F3EFE6;
+  --zd-elevated: #FAF7F0;
+  --zd-glass: rgba(251, 249, 245, 0.84);
+  --zd-border: #E5DFD3;
+  --zd-border-strong: #CFC5B3;
+  --zd-ink: #1C241E;
+  --zd-ink-muted: #556058;
+
+  --zd-olive: #243324;
+  --zd-olive-hover: #182418;
+  --zd-on-olive: #FBF9F5;
+  --zd-olive-soft: rgba(36, 51, 36, 0.08);
+
+  --zd-accent: #10B981;
+  --zd-accent-btn: #1B6B4D;
+  --zd-accent-btn-hover: #14533B;
+  --zd-on-accent: #FBF9F5;
+  --zd-accent-soft: #DCF2E7;
+
+  /* WCAG AA Verified Semantic Ink & Soft Tints (>= 4.5:1) */
+  --zd-ok-ink: #115E3B;
+  --zd-ok-bg: #DCF2E7;
+  --zd-ok-border: #A7DFC3;
+
+  --zd-warn-ink: #8C410A;
+  --zd-warn-bg: #FBF0DC;
+  --zd-warn-border: #E9CCA0;
+
+  --zd-err-ink: #991B1B;
+  --zd-err-bg: #FCE6E6;
+  --zd-err-border: #F1B9B9;
+
+  --zd-info-ink: #1E4E79;
+  --zd-info-bg: #E2EFF9;
+  --zd-info-border: #B9D6EC;
+
+  --zd-purple-ink: #5B2C82;
+  --zd-purple-bg: #EFE7F7;
+  --zd-purple-border: #D3BFE8;
+
+  --zd-shadow-xs: 0 1px 2px rgba(28, 36, 30, 0.04);
+  --zd-shadow-sm: 0 2px 10px rgba(28, 36, 30, 0.05);
+  --zd-shadow-md: 0 10px 30px rgba(28, 36, 30, 0.08);
+  --zd-shadow-pop: 0 18px 44px rgba(28, 36, 30, 0.14);
+
+  --zd-radius-sm: 8px;
+  --zd-radius-md: 14px;
+  --zd-radius-lg: 18px;
+
+  --zd-font-sans: "Inter", "Segoe UI", "IBM Plex Sans Arabic", "Cairo", system-ui, -apple-system, sans-serif;
+  --zd-font-mono: "JetBrains Mono", "Cascadia Code", ui-monospace, SFMono-Regular, Consolas, monospace;
+
+  /* Ambiance overlay controls (never uses filter on body!) */
+  --zd-dim-opacity: 0;
+  --zd-warm-opacity: 0;
+}
+
+[data-theme="soft-sand"] {
+  --zd-canvas: #F6F0E4;
+  --zd-surface: #EBE2CF;
+  --zd-elevated: #FAF5EA;
+  --zd-glass: rgba(246, 240, 228, 0.86);
+  --zd-border: #DDD1B8;
+  --zd-border-strong: #C5B391;
+  --zd-ink: #272019;
+  --zd-ink-muted: #5F5347;
+
+  --zd-olive: #382E22;
+  --zd-olive-hover: #261E16;
+  --zd-on-olive: #FAF5EA;
+  --zd-olive-soft: rgba(56, 46, 34, 0.09);
+
+  --zd-accent: #0F766E;
+  --zd-accent-btn: #0F6E65;
+  --zd-accent-btn-hover: #0B564F;
+  --zd-on-accent: #FAF5EA;
+  --zd-accent-soft: #DCEEEB;
+
+  --zd-ok-ink: #0F5C52;
+  --zd-ok-bg: #DCEEEB;
+  --zd-ok-border: #A8D7D0;
+}
+
+[data-theme="midnight-slate"] {
+  --zd-canvas: #0F1412;
+  --zd-surface: #151D1A;
+  --zd-elevated: #1B2521;
+  --zd-glass: rgba(15, 20, 18, 0.86);
+  --zd-border: #283630;
+  --zd-border-strong: #394D44;
+  --zd-ink: #EEF3F0;
+  --zd-ink-muted: #9AA9A1;
+
+  --zd-olive: #34D399;
+  --zd-olive-hover: #10B981;
+  --zd-on-olive: #08150F;
+  --zd-olive-soft: rgba(52, 211, 153, 0.14);
+
+  --zd-accent: #34D399;
+  --zd-accent-btn: #204A3A;
+  --zd-accent-btn-hover: #295E4A;
+  --zd-on-accent: #D9F9EC;
+  --zd-accent-soft: rgba(52, 211, 153, 0.14);
+
+  --zd-ok-ink: #6EE7B7;
+  --zd-ok-bg: rgba(16, 185, 129, 0.15);
+  --zd-ok-border: rgba(52, 211, 153, 0.35);
+
+  --zd-warn-ink: #FCD34D;
+  --zd-warn-bg: rgba(245, 158, 11, 0.16);
+  --zd-warn-border: rgba(251, 191, 36, 0.34);
+
+  --zd-err-ink: #FCA5A5;
+  --zd-err-bg: rgba(239, 68, 68, 0.18);
+  --zd-err-border: rgba(248, 113, 113, 0.36);
+
+  --zd-info-ink: #93C5FD;
+  --zd-info-bg: rgba(59, 130, 246, 0.16);
+  --zd-info-border: rgba(96, 165, 250, 0.34);
+
+  --zd-purple-ink: #D8B4FE;
+  --zd-purple-bg: rgba(168, 85, 247, 0.16);
+  --zd-purple-border: rgba(192, 132, 252, 0.34);
+
+  --zd-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --zd-shadow-sm: 0 3px 12px rgba(0, 0, 0, 0.3);
+  --zd-shadow-md: 0 12px 34px rgba(0, 0, 0, 0.44);
+  --zd-shadow-pop: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: var(--zd-canvas);
+  color: var(--zd-ink);
+  font-family: var(--zd-font-sans);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Safe Ambiance Overlay (adjusts display tone cleanly without breaking position: fixed or sticky!) */
+.ambiance-veil {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 244, 214, var(--zd-warm-opacity)), rgba(15, 20, 18, var(--zd-dim-opacity)));
+  transition: opacity 0.2s ease;
+}
+
+.studio-shell {
+  max-width: 1420px;
+  margin-inline: auto;
+  padding: 16px 24px 64px;
+}
+
+/* Inline SVG Icon Utilities */
+.ico {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: -0.15em;
+}
+
+.ico-sm {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* BiDi / LTR Technical Isolation */
+.mono,
+.ltr-inline {
+  font-family: var(--zd-font-mono);
+  font-variant-ligatures: none;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.ltr-block {
+  direction: ltr;
+  unicode-bidi: isolate;
+  text-align: start;
+}
+
+/* Single-Row Floating Glassmorphic Header */
+.floating-header {
+  position: sticky;
+  top: 12px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 16px;
+  border-radius: var(--zd-radius-lg);
+  background: var(--zd-glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--zd-border);
+  box-shadow: var(--zd-shadow-md);
+  margin-bottom: 14px;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+  box-shadow: var(--zd-shadow-xs);
+}
+
+.brand-title {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.brand-title h1 {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brand-sub {
+  font-size: 12px;
+  color: var(--zd-ink-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: var(--zd-ok-bg);
+  color: var(--zd-ok-ink);
+  border: 1px solid var(--zd-ok-border);
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--zd-ok-ink);
+  animation: pulse 2.2s infinite;
+}
+
+.live-pill.offline {
+  background: var(--zd-surface);
+  color: var(--zd-ink-muted);
+  border-color: var(--zd-border);
+}
+
+.live-pill.offline .live-dot {
+  background: var(--zd-ink-muted);
+  animation: none;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.84); }
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 10px;
+  border: 1px solid var(--zd-border);
+  background: var(--zd-elevated);
+  color: var(--zd-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.14s ease, background-color 0.16s ease, border-color 0.16s ease;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--zd-border-strong);
+  background: var(--zd-surface);
+  transform: translateY(-1px);
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--zd-olive);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+  border-color: transparent;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--zd-olive-hover);
+}
+
+.btn-accent {
+  background: var(--zd-accent-btn);
+  color: var(--zd-on-accent);
+  border-color: transparent;
+}
+
+.btn-accent:hover:not(:disabled) {
+  background: var(--zd-accent-btn-hover);
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--zd-ink-muted);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--zd-surface);
+  color: var(--zd-ink);
+  border-color: var(--zd-border);
+}
+
+.btn-danger {
+  background: var(--zd-err-bg);
+  color: var(--zd-err-ink);
+  border-color: var(--zd-err-border);
+}
+
+.btn-sm {
+  padding: 6px 10px;
+  font-size: 12px;
+  border-radius: 9px;
+}
+
+.btn-icon {
+  padding: 7px;
+  width: 34px;
+  height: 34px;
+}
+
+/* Appearance Popover */
+.popover-anchor {
+  position: relative;
+}
+
+.appearance-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  inset-inline-end: 0;
+  width: 280px;
+  padding: 16px;
+  border-radius: var(--zd-radius-md);
+  background: var(--zd-elevated);
+  border: 1px solid var(--zd-border-strong);
+  box-shadow: var(--zd-shadow-pop);
+  z-index: 80;
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.appearance-popover.open {
+  display: flex;
+  animation: popIn 0.16s ease;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.pop-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--zd-ink-muted);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.theme-pill-btn {
+  padding: 7px 6px;
+  border-radius: 9px;
+  border: 1.5px solid var(--zd-border);
+  background: var(--zd-surface);
+  color: var(--zd-ink);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+
+.theme-pill-btn.active {
+  border-color: var(--zd-olive);
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+}
+
+.range-slider {
+  width: 100%;
+  accent-color: var(--zd-olive);
+  cursor: pointer;
+}
+
+/* Floating Glassmorphic Navigation Tab Dock */
+.nav-rail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  margin-bottom: 20px;
+  border-radius: var(--zd-radius-md);
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+}
+
+.nav-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--zd-ink-muted);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.nav-tab:hover {
+  color: var(--zd-ink);
+  background: var(--zd-elevated);
+}
+
+.nav-tab.active {
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+  box-shadow: var(--zd-shadow-xs);
+}
+
+.badge-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 19px;
+  height: 19px;
+  padding-inline: 5px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 750;
+  background: var(--zd-accent-btn);
+  color: var(--zd-on-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-tab.active .badge-count {
+  background: var(--zd-on-olive);
+  color: var(--zd-olive);
+}
+
+/* Panels & Bento Grids */
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.split-ide {
+  display: grid;
+  grid-template-columns: minmax(290px, 0.92fr) minmax(0, 1.48fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.hub-guide-grid {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.card {
+  background: var(--zd-elevated);
+  border: 1px solid var(--zd-border);
+  border-radius: var(--zd-radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--zd-shadow-sm);
+  margin-bottom: 18px;
+  min-width: 0;
+}
+
+.kpi-card {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.card-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.015em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-subtitle {
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  color: var(--zd-ink-muted);
+}
+
+.metric-value {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+}
+
+.metric-stage-val {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.metric-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--zd-ink-muted);
+}
+
+.clarity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ring-gauge {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  transform: rotate(-90deg);
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--zd-border);
+  stroke-width: 4.5;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: var(--zd-accent-btn);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.45s ease;
+}
+
+.progress-track {
+  height: 7px;
+  width: 100%;
+  border-radius: 999px;
+  background: var(--zd-surface);
+  overflow: hidden;
+  border: 1px solid var(--zd-border);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--zd-olive), var(--zd-accent));
+  border-radius: 999px;
+  transition: width 0.35s ease;
+}
+
+/* Balanced 5x2 Pipeline Grid */
+.pipeline-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.stage-node {
+  padding: 12px 13px;
+  border-radius: 12px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  transition: border-color 0.18s ease, transform 0.14s ease;
+}
+
+.stage-node:hover {
+  transform: translateY(-1px);
+  border-color: var(--zd-border-strong);
+}
+
+.stage-node.status-COMPLETED,
+.stage-node.status-APPROVED {
+  border-color: var(--zd-ok-border);
+  background: var(--zd-ok-bg);
+}
+
+.stage-node.status-IN_PROGRESS {
+  border-color: var(--zd-olive);
+  box-shadow: 0 0 0 2px var(--zd-olive-soft);
+}
+
+.stage-node.status-BLOCKED {
+  border-color: var(--zd-err-border);
+  background: var(--zd-err-bg);
+}
+
+.stage-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.stage-code {
+  font-family: var(--zd-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--zd-ink-muted);
+}
+
+.stage-name {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* Status & Category Pills (never wrap into distorted ovals!) */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2.5px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--zd-font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.35;
+  border: 1px solid var(--zd-border);
+  background: var(--zd-surface);
+  color: var(--zd-ink-muted);
+}
+
+[dir="rtl"] .pill {
+  font-family: var(--zd-font-sans);
+  font-size: 11.5px;
+}
+
+.pill.ok, .pill.COMPLETED, .pill.APPROVED, .pill.PASS, .pill.VERIFIED, .pill.ACTIVE {
+  background: var(--zd-ok-bg);
+  color: var(--zd-ok-ink);
+  border-color: var(--zd-ok-border);
+}
+
+.pill.warn, .pill.IN_PROGRESS, .pill.P2 {
+  background: var(--zd-warn-bg);
+  color: var(--zd-warn-ink);
+  border-color: var(--zd-warn-border);
+}
+
+.pill.err, .pill.FAIL, .pill.BLOCKED, .pill.P0, .pill.P1 {
+  background: var(--zd-err-bg);
+  color: var(--zd-err-ink);
+  border-color: var(--zd-err-border);
+}
+
+.pill.info {
+  background: var(--zd-info-bg);
+  color: var(--zd-info-ink);
+  border-color: var(--zd-info-border);
+}
+
+.pill.purple {
+  background: var(--zd-purple-bg);
+  color: var(--zd-purple-ink);
+  border-color: var(--zd-purple-border);
+}
+
+/* Expandable Scorecard Tile */
+.score-tile {
+  padding: 11px 12px;
+  border-radius: 11px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.score-tile-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.score-tile-label {
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--zd-ink);
+}
+
+.score-tile-detail {
+  font-size: 11.5px;
+  color: var(--zd-ink-muted);
+}
+
+/* Inputs & Search */
+.input, .textarea, .select-field {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--zd-border);
+  background: var(--zd-canvas);
+  color: var(--zd-ink);
+  font-family: inherit;
+  font-size: 13px;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.input:focus, .textarea:focus, .select-field:focus {
+  outline: none;
+  border-color: var(--zd-olive);
+  box-shadow: 0 0 0 3px var(--zd-olive-soft);
+}
+
+.textarea {
+  min-height: 76px;
+  resize: vertical;
+}
+
+/* Responsive Add-Rule Form (Zero Overflow at 390px!) */
+.add-rule-form {
+  display: grid;
+  grid-template-columns: 145px minmax(0, 1fr) auto;
+  gap: 8px;
+  margin-bottom: 14px;
+  align-items: stretch;
+}
+
+/* Tables */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--zd-border);
+  background: var(--zd-canvas);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+th, td {
+  padding: 10px 12px;
+  text-align: start;
+  border-bottom: 1px solid var(--zd-border);
+  vertical-align: middle;
+}
+
+th {
+  background: var(--zd-surface);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+  color: var(--zd-ink-muted);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.col-nowrap {
+  white-space: nowrap;
+}
+
+.col-slice-name {
+  min-width: 220px;
+}
+
+/* v4.0 Honest Post-Submit Callout Banner */
+.handoff-callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: var(--zd-ok-bg);
+  border: 1.5px solid var(--zd-ok-border);
+  color: var(--zd-ok-ink);
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+/* v4.0 Interactive SVG CodeMap Canvas */
+.codemap-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.codemap-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.codemap-viewport {
+  position: relative;
+  width: 100%;
+  height: 410px;
+  border-radius: 14px;
+  border: 1px solid var(--zd-border-strong);
+  background:
+    radial-gradient(circle, var(--zd-border) 1px, transparent 1px),
+    var(--zd-canvas);
+  background-size: 22px 22px;
+  overflow: hidden;
+  cursor: grab;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.codemap-viewport:active {
+  cursor: grabbing;
+}
+
+.codemap-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  direction: ltr;
+}
+
+.cm-node {
+  cursor: pointer;
+  transition: opacity 0.16s ease;
+}
+
+.cm-node.dimmed {
+  opacity: 0.24;
+}
+
+.cm-edge {
+  fill: none;
+  stroke-width: 1.7;
+  transition: opacity 0.16s ease, stroke-width 0.16s ease;
+}
+
+.cm-edge.dimmed {
+  opacity: 0.12;
+}
+
+.cm-edge.highlighted {
+  stroke-width: 2.8;
+  opacity: 1;
+}
+
+.codemap-inspector {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12.5px;
+}
+
+/* v4.0 Interactive Multi-Layout UI/UX & Typography Showcase */
+.showcase-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.showcase-choice {
+  width: 100%;
+  text-align: start;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1.5px solid var(--zd-border);
+  background: var(--zd-surface);
+  color: var(--zd-ink);
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.showcase-choice:hover {
+  border-color: var(--zd-olive);
+}
+
+.showcase-choice.active {
+  border-color: var(--zd-olive);
+  background: var(--zd-olive-soft);
+  box-shadow: var(--zd-shadow-xs);
+}
+
+.font-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.font-pill-btn {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--zd-border);
+  background: var(--zd-surface);
+  color: var(--zd-ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.font-pill-btn.active {
+  border-color: var(--zd-olive);
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+}
+
+.font-pill-btn.active .font-vibe {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.font-vibe {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--zd-ink-muted);
+}
+
+.preview-stage-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 12px 12px 0 0;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border-strong);
+  border-bottom: none;
+}
+
+.mini-app-frame {
+  border-radius: 0 0 14px 14px;
+  border: 1px solid var(--zd-border-strong);
+  overflow: hidden;
+  max-width: 100%;
+  transition: all 0.2s ease;
+}
+
+.mini-app-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: 360px;
+  max-width: 100%;
+}
+
+.mini-app-shell.layout-executive-dense {
+  grid-template-columns: 185px minmax(0, 1fr);
+}
+
+.mini-app-sidebar {
+  padding: 14px 12px;
+  border-inline-end: 1px solid rgba(128, 128, 128, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mini-app-topnav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.mini-app-topnav.glass-nav {
+  margin: 12px 14px 0;
+  border-radius: 14px;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.mini-app-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.mini-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.mini-kpi-box {
+  padding: 11px 13px;
+  border-radius: 11px;
+  border: 1px solid rgba(128, 128, 128, 0.22);
+}
+
+.mini-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 11px;
+  border: 1px solid rgba(128, 128, 128, 0.22);
+}
+
+.mini-table-wrap th.sticky-action,
+.mini-table-wrap td.sticky-action {
+  position: sticky;
+  inset-inline-end: 0;
+  white-space: nowrap;
+  box-shadow: -6px 0 10px -6px rgba(0, 0, 0, 0.12);
+}
+
+[dir="rtl"] .mini-table-wrap th.sticky-action,
+[dir="rtl"] .mini-table-wrap td.sticky-action {
+  box-shadow: 6px 0 10px -6px rgba(0, 0, 0, 0.12);
+}
+
+.decision-qa-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.decision-qa-item {
+  padding: 9px 11px;
+  border-radius: 10px;
+  background: var(--zd-canvas);
+  border: 1px solid var(--zd-border);
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .showcase-picker-grid,
+  .mini-kpi-row {
+    grid-template-columns: 1fr;
+  }
+  .mini-app-shell.layout-executive-dense {
+    grid-template-columns: 1fr;
+  }
+  .mini-app-sidebar {
+    border-inline-end: none;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.22);
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
+
+/* Decision Inbox (Typeform / Linear Grade) */
+.inbox-progress-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  margin-bottom: 16px;
+}
+
+.question-card {
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  margin-bottom: 14px;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.choice-option {
+  width: 100%;
+  text-align: start;
+  font-family: inherit;
+  color: var(--zd-ink);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 13px 14px;
+  border-radius: 12px;
+  background: var(--zd-elevated);
+  border: 1.5px solid var(--zd-border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.choice-option:hover {
+  border-color: var(--zd-olive);
+  transform: translateY(-1px);
+}
+
+.choice-option.selected {
+  border-color: var(--zd-olive);
+  background: var(--zd-olive-soft);
+  box-shadow: var(--zd-shadow-xs);
+}
+
+.radio-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--zd-border-strong);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+}
+
+.choice-option.selected .radio-dot {
+  border-color: var(--zd-olive);
+}
+
+.choice-option.selected .radio-dot::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--zd-olive);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.chip-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--zd-elevated);
+  border: 1.5px solid var(--zd-border);
+  color: var(--zd-ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.14s ease;
+}
+
+.chip-toggle:hover {
+  border-color: var(--zd-olive);
+}
+
+.chip-toggle.selected {
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+  border-color: transparent;
+}
+
+.sticky-submit-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border-strong);
+  box-shadow: var(--zd-shadow-sm);
+  margin-top: 16px;
+}
+
+/* File Tree (IDE Grade) */
+.tree-list {
+  list-style: none;
+  margin: 0;
+  padding-inline-start: 16px;
+  font-family: var(--zd-font-mono);
+  font-size: 12.5px;
+}
+
+.tree-root {
+  padding-inline-start: 0;
+}
+
+.tree-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--zd-ink);
+}
+
+.tree-summary::-webkit-details-marker {
+  display: none;
+}
+
+.tree-summary:hover {
+  background: var(--zd-surface);
+}
+
+.tree-chevron {
+  transition: transform 0.16s ease;
+}
+
+details[open] > .tree-summary .tree-chevron {
+  transform: rotate(90deg);
+}
+
+[dir="rtl"] .tree-chevron {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] details[open] > .tree-summary .tree-chevron {
+  transform: rotate(90deg);
+}
+
+.tree-file-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 5px 8px;
+  color: var(--zd-ink);
+  font-family: var(--zd-font-mono);
+  font-size: 12.5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  text-align: start;
+}
+
+.tree-file-btn:hover {
+  background: var(--zd-surface);
+}
+
+.tree-file-btn.selected {
+  background: var(--zd-olive-soft);
+  border-color: var(--zd-border-strong);
+}
+
+.file-inspector-bar {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  margin-bottom: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Swatches (Accessible Buttons) */
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 12px;
+}
+
+.swatch-card {
+  width: 100%;
+  padding: 0;
+  text-align: start;
+  font-family: inherit;
+  color: var(--zd-ink);
+  border-radius: 12px;
+  border: 1px solid var(--zd-border-strong);
+  overflow: hidden;
+  background: var(--zd-elevated);
+  cursor: pointer;
+  transition: transform 0.14s ease, box-shadow 0.16s ease;
+}
+
+.swatch-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--zd-shadow-sm);
+}
+
+.swatch-color {
+  height: 70px;
+  border-bottom: 1px solid var(--zd-border);
+  box-shadow: inset 0 0 0 1px rgba(28, 36, 30, 0.08);
+}
+
+.swatch-meta {
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.swatch-hex {
+  font-family: var(--zd-font-mono);
+  font-weight: 700;
+  color: var(--zd-ink-muted);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.banned-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-family: var(--zd-font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  background: var(--zd-err-bg);
+  color: var(--zd-err-ink);
+  border: 1px solid var(--zd-err-border);
+  text-decoration: line-through;
+}
+
+/* Memory Sub-Tabs */
+.sub-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.sub-tab-btn {
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--zd-border);
+  background: var(--zd-surface);
+  color: var(--zd-ink-muted);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sub-tab-btn.active {
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+  border-color: transparent;
+}
+
+/* Regression Cards & Time Machine Vertical Timeline */
+.regression-card {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  margin-bottom: 10px;
+}
+
+.regression-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.regression-badges {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.timeline-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-inline-start: 22px;
+}
+
+.timeline-list::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  inset-inline-start: 7px;
+  width: 2px;
+  background: var(--zd-border-strong);
+}
+
+.timeline-item {
+  position: relative;
+  padding: 13px 15px;
+  border-radius: 12px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  top: 20px;
+  inset-inline-start: -20px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--zd-accent-btn);
+  border: 2px solid var(--zd-elevated);
+}
+
+/* Markdown Viewer & Guide Sidebar */
+.guide-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--zd-surface);
+  border: 1px solid var(--zd-border);
+}
+
+.guide-toc a {
+  padding: 6px 9px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--zd-ink-muted);
+  text-decoration: none;
+}
+
+.guide-toc a:hover {
+  background: var(--zd-elevated);
+  color: var(--zd-ink);
+}
+
+.md-body {
+  font-size: 13.5px;
+  line-height: 1.68;
+}
+
+.md-body h3 {
+  margin: 18px 0 8px;
+  font-size: 15px;
+  font-weight: 750;
+  border-bottom: 1px solid var(--zd-border);
+  padding-bottom: 5px;
+}
+
+.md-body h4 {
+  margin: 14px 0 6px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.md-body pre {
+  background: var(--zd-canvas);
+  border: 1px solid var(--zd-border);
+  border-radius: 10px;
+  padding: 12px;
+  overflow-x: auto;
+  font-family: var(--zd-font-mono);
+  font-variant-ligatures: none;
+  font-size: 12px;
+  direction: ltr;
+}
+
+.md-body code {
+  font-family: var(--zd-font-mono);
+  font-variant-ligatures: none;
+  background: var(--zd-canvas);
+  border: 1px solid var(--zd-border);
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 12px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.link-ext {
+  color: var(--zd-info-ink);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-all;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 20px;
+  border-radius: 14px;
+  border: 1px dashed var(--zd-border-strong);
+  background: var(--zd-surface);
+  color: var(--zd-ink-muted);
+  font-size: 13px;
+}
+
+/* Fixed Viewport Toast (100% immune to brightness/ambiance because body has ZERO filter!) */
+.toast {
+  position: fixed;
+  bottom: 22px;
+  inset-inline-end: 22px;
+  z-index: 120;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: var(--zd-olive);
+  color: var(--zd-on-olive);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 13px;
+  font-weight: 650;
+  box-shadow: var(--zd-shadow-pop);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1120px) {
+  .pipeline-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .split-ide, .hub-guide-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  .studio-shell {
+    padding: 12px 14px 56px;
+  }
+  .floating-header {
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .header-actions {
+    justify-content: space-between;
+  }
+  .grid-4, .grid-3, .grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .add-rule-form {
+    grid-template-columns: 1fr;
+  }
+  .appearance-popover {
+    inset-inline-end: 0;
+    width: min(290px, calc(100vw - 28px));
+  }
+  .sticky-submit-bar {
+    position: static;
+  }
+}
+
+</style>
+</head>
+<body>
+  <div class="ambiance-veil" aria-hidden="true"></div>
+
+  <div class="studio-shell">
+    <!-- Single-Row Floating Glassmorphic Header -->
+    <header class="floating-header">
+      <div class="brand-group">
+        <div class="brand-mark" aria-hidden="true">ZD</div>
+        <div class="brand-title">
+          <div class="brand-row">
+            <h1 id="project-title">ZeroDrift Studio</h1>
+            <span id="live-indicator" class="live-pill">
+              <span class="live-dot"></span>
+              <span id="live-indicator-text">Connecting SSE</span>
+            </span>
+          </div>
+          <div class="brand-sub" id="project-meta">Loading project state...</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="copy-handoff-btn" class="btn btn-sm btn-accent" type="button" title="Copy 1-Line Fresh Session Resume Prompt">
+          <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span data-i18n="copyHandoffBtn">Fresh Handoff</span>
+        </button>
+
+        <button id="refresh-btn" class="btn btn-sm btn-ghost btn-icon" type="button" aria-label="Refresh Studio" title="Refresh Studio">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        </button>
+
+        <div class="popover-anchor">
+          <button id="appearance-btn" class="btn btn-sm" type="button" aria-expanded="false" aria-controls="appearance-popover">
+            <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <span data-i18n="appearanceBtn">Appearance</span>
+          </button>
+
+          <div id="appearance-popover" class="appearance-popover" role="dialog" aria-label="Studio Appearance">
+            <div>
+              <div class="pop-section-label">
+                <span data-i18n="themeLabel">Theme</span>
+              </div>
+              <div class="theme-pills" id="theme-pills">
+                <button type="button" class="theme-pill-btn active" data-theme-opt="warm-ivory" data-i18n="themeIvory">Warm Ivory</button>
+                <button type="button" class="theme-pill-btn" data-theme-opt="soft-sand" data-i18n="themeSand">Soft Sand</button>
+                <button type="button" class="theme-pill-btn" data-theme-opt="midnight-slate" data-i18n="themeMidnight">Midnight</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="pop-section-label">
+                <label for="brightness-slider" data-i18n="brightnessLabel">Ambiance Tone</label>
+                <span id="brightness-readout" class="mono">0%</span>
+              </div>
+              <input id="brightness-slider" name="brightness" class="range-slider" type="range" min="-20" max="20" step="2" value="0" />
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:8px;border-top:1px solid var(--zd-border);">
+              <span style="font-size:12.5px;font-weight:650;" data-i18n="languageLabel">Interface Language</span>
+              <button id="lang-toggle" class="btn btn-sm btn-primary" type="button">EN / عربي</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Floating Glassmorphic 6-Module Tab Dock -->
+    <nav class="nav-rail" role="tablist" aria-label="ZeroDrift Studio Modules">
+      <button class="nav-tab active" role="tab" data-tab="command" aria-selected="true">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span data-i18n="tabCommand">Command Center</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="inbox" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <span data-i18n="tabInbox">Decision Inbox</span>
+        <span id="inbox-badge" class="badge-count" style="display:none;">0</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="wiring" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+        <span data-i18n="tabWiring">Map, Tree &amp; Contracts</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="design" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+        <span data-i18n="tabDesign">Design &amp; Tokens</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="memory" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="tabMemory">Memory &amp; Immunity</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="hub" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+        <span data-i18n="tabHub">Sources, Security &amp; Guides</span>
+      </button>
+    </nav>
+
+    <main>
+      <!-- TAB 1: Command Center -->
+      <section id="panel-command" class="tab-panel active" role="tabpanel">
+        <div class="grid-4">
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricProgress">Pipeline Completion</div>
+            <div id="metric-progress" class="metric-value">0%</div>
+            <div class="progress-track">
+              <div id="metric-progress-bar" class="progress-fill" style="width:0%;"></div>
+            </div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricClarity">Intake Clarity Score</div>
+            <div class="clarity-row">
+              <div>
+                <div id="metric-clarity" class="metric-value">—</div>
+                <div class="card-subtitle" data-i18n="clarityTarget">Target ≥ 90%</div>
+              </div>
+              <svg class="ring-gauge" viewBox="0 0 48 48" aria-hidden="true">
+                <circle class="ring-track" cx="24" cy="24" r="19" />
+                <circle id="clarity-ring" class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.38" stroke-dashoffset="119.38" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricActiveSlice">Active Stage &amp; Slice</div>
+            <div id="metric-stage" class="metric-stage-val">Stage 0</div>
+            <div id="metric-slice" class="card-subtitle">Slice: NONE</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricShield">Memory &amp; Drift Shield</div>
+            <div id="metric-shield" class="metric-value">0</div>
+            <div id="metric-shield-sub" class="card-subtitle">0 Regressions · Clean</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="pipelineTitle">Deterministic Lifecycle Pipeline (10 Checkpoints)</h2>
+              <p class="card-subtitle" id="next-action-text">Waiting for state snapshot...</p>
+            </div>
+            <div id="export-mode-banner"></div>
+          </div>
+          <div id="pipeline-grid" class="pipeline-grid"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="scorecardTitle">Verification &amp; Scanner Scorecard</h2>
+                <p class="card-subtitle" data-i18n="scorecardSub">Compiler, dead-code, security &amp; deterministic code scanners</p>
+              </div>
+              <span class="pill ok" id="scorecard-summary">Live</span>
+            </div>
+            <div id="scorecard-grid" class="grid-3"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="slicesTitle">Vertical Slice Ledger</h2>
+                <p class="card-subtitle" data-i18n="slicesSub">Independently verified end-to-end capabilities</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="thId">ID</th>
+                    <th data-i18n="thSlice">Slice</th>
+                    <th data-i18n="thStatus">Status</th>
+                    <th data-i18n="thCheck">Verification</th>
+                  </tr>
+                </thead>
+                <tbody id="slices-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: Interactive Q&A & Decision Inbox -->
+      <section id="panel-inbox" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="inboxTitle">Interactive Q&amp;A &amp; Gate Decision Inbox</h2>
+              <p class="card-subtitle" data-i18n="inboxSub">Answer agent questions or approve gates cleanly in-browser. Saved directly to .zerodrift/studio-outbox.json.</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span id="inbox-delivery-status" class="pill">Idle</span>
+              <button id="copy-resume-btn" class="btn btn-sm" type="button" data-i18n="copyResumeBtn">Copy Resume Signal</button>
+            </div>
+          </div>
+          <div id="inbox-container"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="outboxHistoryTitle">Submitted Decisions History</h2>
+          </div>
+          <div id="outbox-container"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: Interactive Native CodeMap, Project Tree & Contracts -->
+      <section id="panel-wiring" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="codemapTitle">Interactive Architecture CodeMap &amp; Wiring Canvas</h2>
+              <p class="card-subtitle" id="codemap-stats">Click any module node to trace incoming/outgoing wires &amp; blast radius</p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <div id="archify-links-slot" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+              <div id="floorplan-link-slot"></div>
+            </div>
+          </div>
+
+          <div class="codemap-toolbar">
+            <div class="codemap-filters" id="codemap-layer-filters"></div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input id="codemap-search" name="codemapSearch" class="input" type="search" data-i18n-placeholder="codemapSearchPh" placeholder="Highlight node..." style="width:180px;padding:6px 10px;" />
+              <button type="button" id="cm-zoom-out" class="btn btn-sm" aria-label="Zoom out">-</button>
+              <button type="button" id="cm-zoom-reset" class="btn btn-sm mono">100%</button>
+              <button type="button" id="cm-zoom-in" class="btn btn-sm" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+
+          <div id="codemap-viewport" class="codemap-viewport">
+            <svg id="codemap-svg" class="codemap-svg" role="img" aria-label="Interactive Architecture CodeMap"></svg>
+          </div>
+          <div id="codemap-inspector" class="codemap-inspector"></div>
+        </div>
+
+        <div class="split-ide">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="treeTitle">Workspace File &amp; Module Tree</h2>
+                <p class="card-subtitle" id="tree-stats">Scanning workspace...</p>
+              </div>
+            </div>
+            <input id="tree-search" name="treeSearch" class="input" type="search" data-i18n-placeholder="treeSearchPh" placeholder="Filter files by name or badge..." style="margin-bottom:12px;" />
+            <div id="file-inspector-slot"></div>
+            <div id="tree-container"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="contractsTitle">Contracts Explorer (CONTRACTS.md)</h2>
+                <p class="card-subtitle" id="contracts-stats">Single source of truth for routes &amp; schema</p>
+              </div>
+            </div>
+            <input id="contracts-search" name="contractsSearch" class="input" type="search" data-i18n-placeholder="contractsSearchPh" placeholder="Search routes, methods, RBAC roles, or tables..." style="margin-bottom:14px;" />
+            <div id="contracts-routes-container"></div>
+            <h3 class="card-title" style="margin:20px 0 10px;" data-i18n="dbTablesTitle">Database Schema Tables</h3>
+            <div id="contracts-tables-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: Interactive UI/UX Showcase, Typography & Design Token Lock -->
+      <section id="panel-design" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="showcaseTitle">Interactive UI/UX Layout &amp; Typography Showcase (Gate 4)</h2>
+              <p class="card-subtitle" data-i18n="showcaseSub">Explore 3 full-page layout concepts &amp; 5 curated Arabic/English font pairings live before locking Stage 5 UI code</p>
+            </div>
+            <button type="button" id="lock-design-btn" class="btn btn-sm btn-primary" data-i18n="lockDesignBtn">Lock Chosen Design (Gate 4)</button>
+          </div>
+
+          <div id="showcase-layouts-grid" class="showcase-picker-grid"></div>
+          <div id="showcase-fonts-row" class="font-pills-row"></div>
+
+          <div class="preview-stage-bar">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;" id="showcase-palette-pills"></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+              <button type="button" id="showcase-mode-toggle" class="btn btn-sm" data-i18n="showcaseLightDark">Light / Dark</button>
+              <button type="button" id="showcase-dir-toggle" class="btn btn-sm" data-i18n="showcaseRtlLtr">RTL / LTR</button>
+            </div>
+          </div>
+          <div id="showcase-preview-frame" class="mini-app-frame"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="tokensTitle">Locked Design Palette &amp; Token Guard</h2>
+              <p class="card-subtitle" id="tokens-meta">Click any swatch to copy its hex value</p>
+            </div>
+            <span id="token-drift-badge" class="pill ok">Token Drift: Checking...</span>
+          </div>
+          <div id="token-drift-violations" style="margin-bottom:14px;"></div>
+          <div id="swatch-grid" class="swatch-grid"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="forbiddenTitle">Forbidden Colors, Copy Style &amp; RTL Lock</h2>
+            </div>
+            <div id="forbidden-colors-container"></div>
+            <div id="typography-preview" style="margin-top:16px;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="componentsTitle">Live Typography Specimen</h2>
+            </div>
+            <div id="component-preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: Memory, Bug Immunity & Time Machine -->
+      <section id="panel-memory" class="tab-panel" role="tabpanel">
+        <div class="sub-tabs" role="tablist" aria-label="Memory Vault Sections">
+          <button type="button" role="tab" aria-selected="true" class="sub-tab-btn active" data-mem-view="all" data-i18n="memAll">All Vault Views</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="rules" data-i18n="memRules">Locked Rules</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="regressions" data-i18n="memRegressions">Regression Shield</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="checkpoints" data-i18n="memCheckpoints">Time Machine</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="skills" data-i18n="memSkills">Learned Skills</button>
+        </div>
+
+        <div class="grid-2" id="mem-top-grid">
+          <div class="card" data-mem-section="rules">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="rulesTitle">Locked Rules (Anti-Forgetting Guard)</h2>
+                <p class="card-subtitle" data-i18n="rulesSub">Permanent rules appended directly to LOCKED-RULES.md</p>
+              </div>
+            </div>
+
+            <form id="add-rule-form" class="add-rule-form">
+              <select id="rule-category" name="ruleCategory" class="select-field" aria-label="Rule Category">
+                <option value="Architecture" data-i18n="catArch">Architecture</option>
+                <option value="Design Lock" data-i18n="catDesign">Design Lock</option>
+                <option value="Security" data-i18n="catSec">Security</option>
+                <option value="Domain" data-i18n="catDomain">Domain</option>
+                <option value="Workflow" data-i18n="catWorkflow">Workflow</option>
+              </select>
+              <input id="rule-text" name="ruleText" class="input" type="text" required data-i18n-placeholder="ruleInputPh" placeholder="Add permanent English rule..." />
+              <button class="btn btn-primary" type="submit" data-i18n="addRuleBtn">+ Add Rule</button>
+            </form>
+
+            <input id="rules-search" name="rulesSearch" class="input" type="search" data-i18n-placeholder="rulesSearchPh" placeholder="Search locked rules..." style="margin-bottom:10px;" />
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="thId">ID</th>
+                    <th data-i18n="thCategory">Category</th>
+                    <th data-i18n="thRule">Imperative Rule</th>
+                    <th data-i18n="thStatus">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="rules-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" data-mem-section="regressions">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="regressionTitle">Regression Immunity Ledger</h2>
+                <p class="card-subtitle" data-i18n="regressionSub">Protected invariants preventing "fix A breaks B"</p>
+              </div>
+              <select id="regression-severity-filter" name="regressionSeverity" class="select-field" style="width:auto;" aria-label="Filter Severity">
+                <option value="ALL" data-i18n="sevAll">All Severities</option>
+                <option value="P0" data-i18n="sevP0">P0 Critical</option>
+                <option value="P1" data-i18n="sevP1">P1 High</option>
+                <option value="P2" data-i18n="sevP2">P2 Medium</option>
+                <option value="P3" data-i18n="sevP3">P3 Low</option>
+              </select>
+            </div>
+            <input id="regression-search" name="regressionSearch" class="input" type="search" data-i18n-placeholder="regressionSearchPh" placeholder="Filter by file path, symptom, or invariant..." style="margin-bottom:12px;" />
+            <div id="regression-list"></div>
+          </div>
+        </div>
+
+        <div class="card" data-mem-section="checkpoints">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="checkpointsTitle">Time Machine Checkpoints Timeline</h2>
+              <p class="card-subtitle" data-i18n="checkpointsSub">Non-destructive Git checkpoints with safe 1-click rollback command copy</p>
+            </div>
+            <span id="checkpoints-count-pill" class="pill ok">0 Checkpoints</span>
+          </div>
+          <div id="checkpoints-container"></div>
+        </div>
+
+        <div class="card" data-mem-section="skills">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="learnedSkillsTitle">Auto-Evolving Learned Project Skills</h2>
+              <p class="card-subtitle" data-i18n="learnedSkillsSub">Verified English playbooks distilled during development</p>
+            </div>
+          </div>
+          <div id="learned-skills-container"></div>
+        </div>
+      </section>
+
+      <!-- TAB 6: Research Sources, Security & Module User Guides Hub -->
+      <section id="panel-hub" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="sourcesTitle">Standards, Compliance &amp; Sources Provenance</h2>
+              <p class="card-subtitle" data-i18n="sourcesSub">Authoritative rules verified live and mapped to modules</p>
+            </div>
+            <input id="sources-search" name="sourcesSearch" class="input" type="search" data-i18n-placeholder="sourcesSearchPh" placeholder="Search standards, rules, modules..." style="max-width:280px;" />
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="thRef">Ref</th>
+                  <th data-i18n="thStandard">Standard / Doc</th>
+                  <th data-i18n="thSource">Official Source</th>
+                  <th data-i18n="thRuleExtracted">Rule Extracted</th>
+                  <th data-i18n="thModules">Modules</th>
+                  <th data-i18n="thStatus">Status</th>
+                </tr>
+              </thead>
+              <tbody id="sources-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="securityTitle">Red-Team Security Audit Dashboard</h2>
+              <p class="card-subtitle" data-i18n="securitySub">OWASP Top 10 &amp; ZeroDrift Security Baseline evidence</p>
+            </div>
+            <div id="security-pills" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+          </div>
+          <div id="security-controls-container"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="guidesTitle">Module User &amp; Developer Guide</h2>
+              <p class="card-subtitle" data-i18n="guidesSub">Rendered cleanly from 06-HANDOVER-REPORT.md</p>
+            </div>
+          </div>
+          <div class="hub-guide-grid">
+            <aside id="handover-toc" class="guide-toc" aria-label="Guide Sections"></aside>
+            <div id="handover-container" class="md-body"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>window.__ZERODRIFT_DATA__ = {"schemaVersion":"4.0.0","demoMode":true,"defaultLocale":"en","generatedAt":"2026-11-21T10:30:00.000Z","project":{"name":{"en":"NexusCare ERP & Clinic Operations","ar":"نظام NexusCare لإدارة العيادات والمالية"},"mode":"greenfield","stack":"TypeScript 5.8 · Node 22 · PostgreSQL 17 · React 19 · Zod","path":"/workspaces/nexuscare-erp"},"pipeline":{"currentStage":{"en":"STAGE 5 — Vertical Slice Build (78%)","ar":"المرحلة 5 — بناء الشرائح (78%)"},"activeSlice":"S-06","nextAction":{"en":"Complete Slice S-06 (Insurance Claims Reconciliation + Unit Tests) then run Stage 6A Verification.","ar":"إكمال الشريحة S-06 (تسوية مطالبات التأمين + اختبارات الوحدة) ثم تشغيل التحقق الشامل."},"clarityScore":"96%","stages":[{"code":"Stage 0","label":{"en":"Bootstrap & Memory","ar":"التهيئة والذاكرة"},"status":"COMPLETED","date":"2026-11-15"},{"code":"Stage 1","label":{"en":"Intake & PRD","ar":"جمع المتطلبات"},"status":"APPROVED","date":"2026-11-15"},{"code":"Stage 2A","label":{"en":"Domain Research","ar":"بحث المعايير"},"status":"COMPLETED","date":"2026-11-16"},{"code":"Stage 2B","label":{"en":"Reverse Analysis","ar":"تحليل النظام القديم"},"status":"COMPLETED","date":"2026-11-16"},{"code":"Stage 3","label":{"en":"Architecture & Contracts","ar":"المعمارية والعقود"},"status":"APPROVED","date":"2026-11-17"},{"code":"Stage 4","label":{"en":"UI Showcase & Tokens","ar":"معرض التصميم والألوان"},"status":"APPROVED","date":"2026-11-17"},{"code":"Stage 5","label":{"en":"Vertical Slice Build","ar":"بناء الشرائح الرأسية"},"status":"IN_PROGRESS","date":"2026-11-21"},{"code":"Stage 6A","label":{"en":"Zero-Error Verify","ar":"التحقق والربط"},"status":"PENDING","date":"-"},{"code":"Stage 6B","label":{"en":"Security Audit","ar":"التدقيق الأمني"},"status":"PENDING","date":"-"},{"code":"Stage 7","label":{"en":"Handover Pack","ar":"تقرير التسليم"},"status":"PENDING","date":"-"}],"slices":[{"id":"S-01","name":{"en":"Foundation, PostgreSQL Schema, Argon2id Auth & RBAC","ar":"البنية الأساسية، قاعدة البيانات، المصادقة والصلاحيات"},"status":"VERIFIED","verification":"tsc + 18 auth tests (exit 0)","updated":"2026-11-17"},{"id":"S-02","name":{"en":"Patient Registry, Medical Profiles & Tenant Scoping","ar":"سجل المرضى والملفات الطبية وعزل الفروع"},"status":"VERIFIED","verification":"tsc + 14 IDOR tests (exit 0)","updated":"2026-11-18"},{"id":"S-03","name":{"en":"Doctor Scheduling & Conflict-Free Slot Locking","ar":"جدول الأطباء وحجز المواعيد بدون تضارب"},"status":"VERIFIED","verification":"tsc + concurrency tests (exit 0)","updated":"2026-11-18"},{"id":"S-04","name":{"en":"Double-Entry Clinic Billing, Invoices & Minor-Unit Ledger","ar":"فواتير العيادات والقيد المزدوج بدون كسور عشرية"},"status":"VERIFIED","verification":"tsc + 22 ledger tests (exit 0)","updated":"2026-11-19"},{"id":"S-05","name":{"en":"Pharmacy Inventory & Atomic Stock Movements","ar":"مخزون الصيدلية وحركات الصرف الذرية"},"status":"VERIFIED","verification":"tsc + stock lock tests (exit 0)","updated":"2026-11-20"},{"id":"S-06","name":{"en":"Insurance Claims Reconciliation & Bilingual PDF Receipts","ar":"تسوية مطالبات التأمين وإيصالات PDF ثنائية اللغة"},"status":"IN_PROGRESS","verification":"In progress (CR-002 synced)","updated":"2026-11-21"}]},"verification":{"scorecard":[{"label":{"en":"Typecheck (tsc)","ar":"فحص الأنواع (tsc)"},"status":"PASS","detail":"0 errors · strict mode"},{"label":{"en":"Production Build","ar":"بناء الإنتاج"},"status":"PASS","detail":"Vite + ESM bundle clean"},{"label":{"en":"CodeMap Wiring","ar":"خريطة الربط CodeMap"},"status":"PASS","detail":"11 nodes · 0 broken · 0 cycles"},{"label":{"en":"Security Audit","ar":"التدقيق الأمني"},"status":"PASS","detail":"P0: 0 | P1: 0"},{"label":{"en":"Token Drift Guard","ar":"فحص انحراف الألوان"},"status":"PASS","detail":"48 UI files clean"},{"label":{"en":"UTF-8 Mojibake","ar":"سلامة الترميز العربي"},"status":"PASS","detail":"64 files clean"},{"label":{"en":".env Parity","ar":"تطابق متغيرات البيئة"},"status":"PASS","detail":"9/9 vars documented"},{"label":{"en":"Secret Scanner","ar":"كشف الأسرار"},"status":"PASS","detail":"0 hardcoded secrets"}]},"inbox":{"schemaVersion":"4.0.0","batches":[{"batchId":"BATCH-CR-002","title":{"en":"Change Request (CR-002): Insurance Co-Pay & Export Preferences","ar":"طلب تعديل (CR-002): نسبة تحمل التأمين وصيغ التصدير"},"summary":{"en":"Pick your preferred options below and click Submit to see how ZeroDrift records clean human-readable answers for your AI agent.","ar":"اختر التفضيلات المناسبة واضغط حفظ لمعاينة ملخص الإجابات الجاهز للوكيل."},"gate":{"en":"CR-002 Change Impact Approval","ar":"الموافقة على التعديل CR-002"},"status":"PENDING","questions":[{"id":"copayRoundingPolicy","type":"single-choice","prompt":{"en":"How should patient vs. insurer co-pay splits round odd minor units?","ar":"كيف يتم تقريب الكسور الفردية بين حصة المريض وشركة التأمين؟"},"context":{"en":"Applies to src/modules/billing/ledger.service.ts and API-014.","ar":"يؤثر على حساب الفواتير في وحدة المالية (API-014)."},"default":"bankers-half-even","options":[{"value":"bankers-half-even","label":{"en":"Half-Even Rounding (IFRS Standard)","ar":"التقريب المصرفي المتوازن (IFRS)"},"description":{"en":"Zero cumulative rounding bias across high-volume monthly claims.","ar":"يمنع تراكم فروق القروش في التسويات الشهرية الكبيرة."},"recommended":true},{"value":"patient-favor","label":{"en":"Round Down Patient Share","ar":"التقريب لصالح المريض"},"description":{"en":"Insurer absorbs any 0.01 remainder automatically.","ar":"تتحمل شركة التأمين أي فرق قرش تلقائياً."}}]},{"id":"exportFormats","type":"multi-select","prompt":{"en":"Select authorized statement export formats for S-06:","ar":"اختر صيغ تصدير كشوفات الحساب المطلوبة في الشريحة S-06:"},"default":["pdf-bilingual","csv-utf8-bom"],"options":[{"value":"pdf-bilingual","label":{"en":"Bilingual PDF (AR/EN)","ar":"ملف PDF عربي/إنجليزي"}},{"value":"csv-utf8-bom","label":{"en":"UTF-8 BOM CSV (Excel Safe)","ar":"ملف CSV متوافق مع إكسل العربي"}},{"value":"json-audit","label":{"en":"Signed JSON Audit Pack","ar":"ملف JSON موثّق للمراجعة"}}]},{"id":"operatorNote","type":"text","prompt":{"en":"Optional note for the AI engineer:","ar":"ملاحظة إضافية للوكيل (اختياري):"},"placeholder":{"en":"e.g., Ensure receptionists cannot view insurer payout margins...","ar":"مثال: إخفاء هامش شركة التأمين عن موظف الاستقبال..."}}]}]},"outbox":{"schemaVersion":"4.0.0","submissions":[{"batchId":"BATCH-GATE-3","gateDecision":"APPROVE","answers":{"architectureTopology":"Modular Monolith + PostgreSQL 17","moneyStorage":"BIGINT Minor Units (Zero Float)","rtlSupport":"Full Arabic RTL + Logical CSS"},"lockAsRules":true,"submittedAt":"2026-11-17T11:20:00.000Z"}]},"wiring":{"hasFloorplan":false,"archifyPlates":[],"codemap":{"schemaVersion":"4.0.0","generatedAt":"2026-11-21T10:30:00.000Z","summary":{"totalNodes":11,"totalEdges":12,"circularCount":0,"orphanFileCount":0,"layerViolationCount":0,"matchedWireCount":3,"brokenWireCount":0,"orphanRouteCount":0,"unauthenticatedRouteCount":0},"nodes":[{"id":"src/client/pages/ScheduleBoard.tsx","label":"ScheduleBoard.tsx","layer":"ui","inboundCount":0,"outboundCount":1},{"id":"src/client/pages/InvoiceDesk.tsx","label":"InvoiceDesk.tsx","layer":"ui","inboundCount":0,"outboundCount":1},{"id":"src/client/pages/PharmacyQueue.tsx","label":"PharmacyQueue.tsx","layer":"ui","inboundCount":0,"outboundCount":1},{"id":"src/client/api/apiClient.ts","label":"apiClient.ts","layer":"api-client","inboundCount":3,"outboundCount":3},{"id":"src/routes/appointments.routes.ts","label":"appointments.routes.ts","layer":"routes","inboundCount":1,"outboundCount":1},{"id":"src/routes/invoices.routes.ts","label":"invoices.routes.ts","layer":"routes","inboundCount":1,"outboundCount":1},{"id":"src/routes/pharmacy.routes.ts","label":"pharmacy.routes.ts","layer":"routes","inboundCount":1,"outboundCount":1},{"id":"src/services/booking.service.ts","label":"booking.service.ts","layer":"services","inboundCount":1,"outboundCount":1},{"id":"src/services/ledger.service.ts","label":"ledger.service.ts","layer":"services","inboundCount":1,"outboundCount":1},{"id":"src/db/appointments.repository.ts","label":"appointments.repo.ts","layer":"database","inboundCount":1,"outboundCount":0},{"id":"src/db/ledger.repository.ts","label":"ledger.repo.ts","layer":"database","inboundCount":2,"outboundCount":0}],"edges":[{"from":"src/client/pages/ScheduleBoard.tsx","to":"src/client/api/apiClient.ts","kind":"import"},{"from":"src/client/pages/InvoiceDesk.tsx","to":"src/client/api/apiClient.ts","kind":"import"},{"from":"src/client/pages/PharmacyQueue.tsx","to":"src/client/api/apiClient.ts","kind":"import"},{"from":"src/client/api/apiClient.ts","to":"src/routes/appointments.routes.ts","kind":"http","label":"POST /api/v1/appointments","status":"ok"},{"from":"src/client/api/apiClient.ts","to":"src/routes/invoices.routes.ts","kind":"http","label":"POST /api/v1/invoices","status":"ok"},{"from":"src/client/api/apiClient.ts","to":"src/routes/pharmacy.routes.ts","kind":"http","label":"POST /api/v1/pharmacy/dispense","status":"ok"},{"from":"src/routes/appointments.routes.ts","to":"src/services/booking.service.ts","kind":"import"},{"from":"src/routes/invoices.routes.ts","to":"src/services/ledger.service.ts","kind":"import"},{"from":"src/routes/pharmacy.routes.ts","to":"src/db/ledger.repository.ts","kind":"import"},{"from":"src/services/booking.service.ts","to":"src/db/appointments.repository.ts","kind":"import"},{"from":"src/services/ledger.service.ts","to":"src/db/ledger.repository.ts","kind":"import"}],"diagnostics":{"circularDependencies":[],"orphanFiles":[],"layerViolations":[],"brokenWires":[],"orphanRoutes":[],"unauthenticatedRoutes":[]}},"routes":[{"id":"API-001","method":"GET","path":"/api/health","auth":"PUBLIC","request":"None","response":"200 { status: \"ok\", db: \"up\" }","errors":"503"},{"id":"API-002","method":"POST","path":"/api/auth/login","auth":"PUBLIC (rate-limited)","request":"LoginSchema { email, password }","response":"200 { user: UserPublicDTO } + HttpOnly cookie","errors":"400, 401, 429"},{"id":"API-005","method":"POST","path":"/api/v1/appointments","auth":"ADMIN, RECEPTION, DOCTOR","request":"CreateAppointmentSchema","response":"201 { appointment: AppointmentDTO }","errors":"400, 401, 403, 409"},{"id":"API-011","method":"POST","path":"/api/v1/invoices","auth":"ADMIN, CASHIER","request":"CreateInvoiceSchema { idempotencyKey, lines[] }","response":"201 { invoice, journalEntryId }","errors":"400, 401, 403, 409"},{"id":"API-014","method":"POST","path":"/api/v1/invoices/:id/reverse","auth":"ADMIN, ACCOUNTANT","request":"ReverseInvoiceSchema { reason }","response":"201 { reversalVoucherId }","errors":"400, 401, 403, 404"},{"id":"API-018","method":"POST","path":"/api/v1/pharmacy/dispense","auth":"ADMIN, PHARMACIST","request":"DispenseSchema { prescriptionId, items[] }","response":"201 { movementIds[] }","errors":"400, 401, 403, 409"}],"tables":[{"table":"users","pk":"id (UUID)","columns":"tenant_id, email, password_hash, role, active","constraints":"UNIQUE(tenant_id, email)","indexes":"idx_users_tenant_email"},{"table":"appointments","pk":"id (UUID)","columns":"tenant_id, doctor_id, patient_id, slot_start_utc, status","constraints":"UNIQUE(doctor_id, slot_start_utc) WHERE status != CANCELLED","indexes":"idx_appt_doctor_slot"},{"table":"journal_entries","pk":"id (UUID)","columns":"tenant_id, ref_type, ref_id, posted_at, reversed_by_id","constraints":"CHECK(balanced_debits_credits)","indexes":"idx_journal_tenant_posted"},{"table":"stock_movements","pk":"id (UUID)","columns":"tenant_id, sku_id, delta_qty, unit_cost_minor, created_at","constraints":"CHECK(delta_qty != 0)","indexes":"idx_stock_sku_created"}],"tree":{"root":"nexuscare-erp","fileCount":18,"children":[{"name":".zerodrift","path":".zerodrift","type":"dir","children":[{"name":"STATE.md","path":".zerodrift/STATE.md","type":"file","badge":"Contract"},{"name":"CONTRACTS.md","path":".zerodrift/CONTRACTS.md","type":"file","badge":"Contract"},{"name":"codemap.json","path":".zerodrift/codemap.json","type":"file","badge":"Contract"},{"name":"DESIGN-SHOWCASE.json","path":".zerodrift/DESIGN-SHOWCASE.json","type":"file","badge":"Contract"}]},{"name":"src","path":"src","type":"dir","children":[{"name":"client","path":"src/client","type":"dir","children":[{"name":"pages/ScheduleBoard.tsx","path":"src/client/pages/ScheduleBoard.tsx","type":"file","badge":"Frontend"},{"name":"pages/InvoiceDesk.tsx","path":"src/client/pages/InvoiceDesk.tsx","type":"file","badge":"Frontend"},{"name":"pages/PharmacyQueue.tsx","path":"src/client/pages/PharmacyQueue.tsx","type":"file","badge":"Frontend"},{"name":"api/apiClient.ts","path":"src/client/api/apiClient.ts","type":"file","badge":"Frontend"}]},{"name":"routes","path":"src/routes","type":"dir","children":[{"name":"appointments.routes.ts","path":"src/routes/appointments.routes.ts","type":"file","badge":"Backend"},{"name":"invoices.routes.ts","path":"src/routes/invoices.routes.ts","type":"file","badge":"Backend"},{"name":"pharmacy.routes.ts","path":"src/routes/pharmacy.routes.ts","type":"file","badge":"Backend"}]},{"name":"services","path":"src/services","type":"dir","children":[{"name":"booking.service.ts","path":"src/services/booking.service.ts","type":"file","badge":"Backend"},{"name":"ledger.service.ts","path":"src/services/ledger.service.ts","type":"file","badge":"Backend"}]},{"name":"db","path":"src/db","type":"dir","children":[{"name":"appointments.repository.ts","path":"src/db/appointments.repository.ts","type":"file","badge":"DB"},{"name":"ledger.repository.ts","path":"src/db/ledger.repository.ts","type":"file","badge":"DB"}]}]},{"name":"tests","path":"tests","type":"dir","children":[{"name":"auth-rbac.test.ts","path":"tests/auth-rbac.test.ts","type":"file","badge":"Test"},{"name":"ledger-invariants.test.ts","path":"tests/ledger-invariants.test.ts","type":"file","badge":"Test"}]},{"name":".env.example","path":".env.example","type":"file","badge":"Config"}]}},"design":{"showcase":{"schemaVersion":"4.0.0","projectName":"NexusCare ERP & Clinic Operations","updatedAt":"2026-11-21","selectedLayout":"editorial-calm","selectedFontPairing":"ibm-plex-jakarta","selectedPalette":"warm-ivory-olive","layouts":[{"id":"editorial-calm","name":{"en":"Warm Editorial Calm","ar":"الهدوء التحريري الدافئ"},"tagline":{"en":"Spacious layered warm cards, soft hairline borders, editorial hierarchy & zero eye strain.","ar":"بطاقات دافئة بمساحات مريحة وحدود ناعمة وترتيب بصري هادئ للاستخدام اليومي."},"recommended":true,"density":"balanced","navigationStyle":"top-clean"},{"id":"modern-glass","name":{"en":"Modern Glass & Floating Nav","ar":"الزجاج العصري والتنقل العائم"},"tagline":{"en":"Frosted glass floating dock, crisp depth shadows & subtle mint-emerald active accents.","ar":"شريط علوي زجاجي عائم وظلال ناعمة مع لمسات زمردية واضحة للحالة النشطة."},"recommended":false,"density":"comfortable","navigationStyle":"floating-glass"},{"id":"executive-dense","name":{"en":"Executive High-Density Workspace","ar":"مساحة العمل التنفيذية الكثيفة"},"tagline":{"en":"Compact sidebar rail, dense ERP KPI strip & scannable data tables with pinned sticky actions.","ar":"قائمة جانبية مدمجة ومؤشرات أداء سريعة وجداول بيانات واضحة بعمود إجراءات مثبت."},"recommended":false,"density":"compact","navigationStyle":"compact-sidebar"}],"fontPairings":[{"id":"ibm-plex-jakarta","label":"IBM Plex Sans Arabic + Plus Jakarta Sans","vibe":{"en":"Clean Enterprise SaaS","ar":"أنظمة شركات احترافية"},"arabicFont":"IBM Plex Sans Arabic","latinFont":"Plus Jakarta Sans","cssStack":"\"Plus Jakarta Sans\", \"IBM Plex Sans Arabic\", system-ui, sans-serif","googleFontsUrl":"https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap"},{"id":"cairo-inter","label":"Cairo + Inter","vibe":{"en":"Modern Geometric Dashboard","ar":"لوحات تحكم هندسية حديثة"},"arabicFont":"Cairo","latinFont":"Inter","cssStack":"\"Inter\", \"Cairo\", system-ui, sans-serif","googleFontsUrl":"https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;600;700;800&display=swap"},{"id":"alexandria-manrope","label":"Alexandria + Manrope","vibe":{"en":"Refined Warm Editorial","ar":"تصميم تحريري دافئ وراقي"},"arabicFont":"Alexandria","latinFont":"Manrope","cssStack":"\"Manrope\", \"Alexandria\", system-ui, sans-serif","googleFontsUrl":"https://fonts.googleapis.com/css2?family=Alexandria:wght@400;600;700&family=Manrope:wght@400;600;700;800&display=swap"},{"id":"readex-dmsans","label":"Readex Pro + DM Sans","vibe":{"en":"Precision Tables & Financials","ar":"دقة الجداول والأرقام المالية"},"arabicFont":"Readex Pro","latinFont":"DM Sans","cssStack":"\"DM Sans\", \"Readex Pro\", system-ui, sans-serif","googleFontsUrl":"https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Readex+Pro:wght@400;600;700&display=swap"},{"id":"tajawal-outfit","label":"Tajawal + Outfit","vibe":{"en":"Friendly Modern Commerce","ar":"تجارة وخدمات سلسة وعصرية"},"arabicFont":"Tajawal","latinFont":"Outfit","cssStack":"\"Outfit\", \"Tajawal\", system-ui, sans-serif","googleFontsUrl":"https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap"}],"palettes":[{"id":"warm-ivory-olive","name":{"en":"Warm Ivory & Royal Olive","ar":"العاجي الدافئ والزيتوني الملكي"},"canvas":"#FBF9F5","surface":"#F3EFE6","primary":"#243324","accent":"#10B981","ink":"#1C241E"},{"id":"clinical-teal","name":{"en":"Soft Alabaster & Deep Teal","ar":"المرمر الهادي والفيروزي العميق"},"canvas":"#F7FAF9","surface":"#EBF3F1","primary":"#0F4C5C","accent":"#14B8A6","ink":"#162A30"},{"id":"obsidian-emerald","name":{"en":"Midnight Obsidian & Mint","ar":"الليلي الداكن والنعناعي"},"canvas":"#0F1412","surface":"#1B2521","primary":"#34D399","accent":"#10B981","ink":"#EEF3F0"}]},"tokens":{"themeName":"Warm Ivory & Royal Olive (Locked)","strictPaletteOnly":true,"palette":{"canvas":"#FBF9F5","surface":"#F3EFE6","surfaceElevated":"#FAF7F0","borderSubtle":"#E5DFD3","inkPrimary":"#1C241E","inkMuted":"#556058","brandPrimary":"#243324","brandAccent":"#10B981","statusSuccess":"#115E3B","statusWarning":"#8C410A","statusDanger":"#991B1B"},"forbiddenColors":["#FFFFFF","#000000"],"typography":{"latinFont":"Plus Jakarta Sans, system-ui, sans-serif","arabicFont":"IBM Plex Sans Arabic, Cairo, sans-serif","monoFont":"JetBrains Mono, ui-monospace, monospace","tabularNumerals":true},"directionality":{"supportsRtl":true,"logicalCssOnly":true}},"copyStyle":{"tone":{"voice":"Concise, direct, natural business copy (zero robotic AI Arabic)"},"locales":{"primary":"en","supported":["en","ar"],"numeralStyle":"western-0-9"}},"driftViolations":[]},"memory":{"lockedRules":[{"id":"RULE-001","category":"Language","rule":"Author all internal .zerodrift/ files, memory ledgers, contracts, and code strictly in English; translate in user-facing UI/chat only.","status":"ACTIVE"},{"id":"RULE-002","category":"Data Safety","rule":"Store all invoice, co-pay, and journal monetary figures in BIGINT minor units; never use floating-point math.","status":"ACTIVE"},{"id":"RULE-003","category":"Security","rule":"Scope every single-record patient and invoice query by authenticated tenant_id to prevent cross-clinic IDOR.","status":"ACTIVE"},{"id":"RULE-004","category":"Design Lock","rule":"Never use stark #FFFFFF or #000000; pin trailing table Action columns sticky so actions never clip.","status":"ACTIVE"},{"id":"RULE-005","category":"Change Control","rule":"Log every mid-build scope change in CHANGE-REQUEST.md and update CONTRACTS.md BEFORE touching source code.","status":"ACTIVE"}],"regressions":[{"id":"BUG-001","date":"2026-11-18","severity":"P1","symptom":"Two receptionists could book the exact same 10:30 AM doctor slot simultaneously","rootCause":"Application-level SELECT check before INSERT allowed a 12ms race window","filesTouched":["src/services/booking.service.ts","migrations/003_appointments.sql"],"fixSummary":"Added partial UNIQUE(doctor_id, slot_start_utc) WHERE status != CANCELLED + 409 Conflict mapping","invariantToProtect":"At most one non-cancelled appointment can exist per (doctor_id, slot_start_utc)","regressionTestRef":"tests/slot-concurrency.test.ts#L28","recurrenceCount":0},{"id":"BUG-002","date":"2026-11-19","severity":"P1","symptom":"Partial stock dispense succeeded even when 1 of 3 prescribed items lacked stock","rootCause":"Repository looped over line items outside a single DB transaction","filesTouched":["src/db/ledger.repository.ts"],"fixSummary":"Wrapped entire prescription dispense in SERIALIZABLE transaction with SELECT FOR UPDATE row locks","invariantToProtect":"Multi-item prescription dispense MUST commit atomically or roll back completely on shortage","regressionTestRef":"tests/stock-atomicity.test.ts#L51","recurrenceCount":0}],"checkpoints":[{"id":"CP-001","timestamp":"2026-11-17T09:15:00.000Z","label":"pre-S-01-foundation-auth","gitTag":"zd-cp-20261117091500-pre-s-01","dirtyFilesCount":0,"rollbackCommand":"git stash push -u -m \"pre-rollback-CP-001\" && git checkout -b restore-cp-001 zd-cp-20261117091500-pre-s-01"},{"id":"CP-002","timestamp":"2026-11-18T14:40:00.000Z","label":"pre-S-04-double-entry-billing","gitTag":"zd-cp-20261118144000-pre-s-04","dirtyFilesCount":0,"rollbackCommand":"git stash push -u -m \"pre-rollback-CP-002\" && git checkout -b restore-cp-002 zd-cp-20261118144000-pre-s-04"},{"id":"CP-003","timestamp":"2026-11-21T09:10:00.000Z","label":"pre-CR-002-insurance-copay","gitTag":"zd-cp-20261121091000-pre-cr-002","dirtyFilesCount":1,"rollbackCommand":"git stash push -u -m \"pre-rollback-CP-003\" && git checkout -b restore-cp-003 zd-cp-20261121091000-pre-cr-002"}],"learnedSkills":[{"fileName":"postgres-advisory-slot-locking.md","domain":"scheduling","content":"### Verified Pattern\nAlways enforce scheduling exclusivity with a PostgreSQL partial unique index (`WHERE status != 'CANCELLED'`) and map error code `23505` directly to HTTP `409 Conflict`.\n\n### Pitfall Avoided\nNever rely on application-side `SELECT COUNT(*)` checks before `INSERT` under concurrent receptionists."},{"fileName":"immutable-reversal-ledger.md","domain":"accounting","content":"### Verified Pattern\nPosted invoices and journal entries are immutable. Corrections create a linked counter-entry (`reversed_by_id`) inside one atomic transaction verifying `SUM(debit_minor) === SUM(credit_minor)`.\n\n### Pitfall Avoided\nNever execute `DELETE` on posted accounting rows."}]},"handoff":{"lineCount":44,"resumePrompt":"Resume ZeroDrift project \"NexusCare ERP & Clinic Operations\" cleanly: read .zerodrift/HANDOFF.md, .zerodrift/STATE.md, .zerodrift/CONTRACTS.md, and .zerodrift/memory/LOCKED-RULES.md, then execute Slice S-06 (Insurance Claims Reconciliation + Unit Tests) with full Pre-Edit Ripple Checks and zero regressions."},"hub":{"sources":[{"ref":"STD-01","standard":"IFRS Double-Entry Accounting Invariants","source":"https://www.ifrs.org/issued-standards/","version":"2026","rule":"Posted journals MUST balance (debits == credits) and remain immutable; corrections use reversal vouchers.","modules":"billing","status":"VERIFIED"},{"ref":"STD-02","standard":"OWASP ASVS v4.0.3 (Access Control & Crypto)","source":"https://owasp.org/www-project-application-security-verification-standard/","version":"4.0.3","rule":"Deny-by-default server-side RBAC, Argon2id password hashing, HttpOnly SameSite cookies, strict CORS allowlist.","modules":"auth, all","status":"VERIFIED"},{"ref":"STD-03","standard":"PostgreSQL 17 Partial Unique Indexes & Transactions","source":"https://www.postgresql.org/docs/17/indexes-partial.html","version":"17.x","rule":"Enforce concurrent slot exclusivity and atomic multi-table inventory commits at the DB engine boundary.","modules":"appointments, pharmacy","status":"VERIFIED"}],"security":{"p0":0,"p1":0,"verdict":"PASS","controls":[{"num":"1","control":"Deny-by-default authentication on all non-public routes","status":"PASS","evidence":"src/routes/appointments.routes.ts:14"},{"num":"2","control":"Server-side RBAC & tenant/ownership IDOR protection","status":"PASS","evidence":"src/services/ledger.service.ts:48"},{"num":"3","control":"Argon2id password hashing & zero hash/secret leaks","status":"PASS","evidence":"src/services/auth.password.ts:9"},{"num":"4","control":"Zero hardcoded secrets, backdoors, or dev bypasses","status":"PASS","evidence":"validate-project.mjs scanner/hardcoded-secrets (0 hits)"},{"num":"5","control":"Parameterized SQL & zero auto-destructive boot hooks","status":"PASS","evidence":"core/data-safety.md verified across repositories"}]},"handoverMarkdown":"# NexusCare ERP — Module User & Developer Guide\n\n## 1. Clinic Scheduling Module (`S-03`)\n- **Authorized Roles:** `ADMIN`, `RECEPTION`, `DOCTOR`\n- **Operator Workflow:** Select clinic branch -> choose doctor -> pick available 15-min slot -> confirm booking (real-time conflict protection returns `409` if another desk books simultaneously).\n- **Protected Invariant:** Enforced via PostgreSQL partial unique index `idx_appt_doctor_slot`.\n\n## 2. Double-Entry Billing & Reversals (`S-04`)\n- **Authorized Roles:** `ADMIN`, `CASHIER` (create), `ACCOUNTANT` (reversal vouchers)\n- **Business Rule:** All amounts stored in integer minor units; posted invoices cannot be deleted—use `POST /api/v1/invoices/:id/reverse` with an audit reason.\n\n## 3. Pharmacy Dispensing (`S-05`)\n- **Authorized Roles:** `ADMIN`, `PHARMACIST`\n- **Business Rule:** Multi-item prescriptions execute inside an atomic DB transaction with row locks so partial stock shortages never leave corrupted inventory."}};</script>
+<script>
+/* ZeroDrift Studio v4.0 — Sovereign Client Engine (Zero Deps, Interactive CodeMap, UI/UX Showcase, Natural Bilingual AR/EN, Live SSE) */
+(() => {
+  const I18N = {
+    en: {
+      appearanceBtn: 'Appearance',
+      themeLabel: 'Theme',
+      themeIvory: 'Warm Ivory',
+      themeSand: 'Soft Sand',
+      themeMidnight: 'Midnight',
+      brightnessLabel: 'Ambiance Tone',
+      languageLabel: 'Interface Language',
+      copyHandoffBtn: 'Fresh Handoff',
+      tabCommand: 'Command Center',
+      tabInbox: 'Questions & Approvals',
+      tabWiring: 'Map, Tree & Contracts',
+      tabDesign: 'Design & Tokens',
+      tabMemory: 'Memory & Immunity',
+      tabHub: 'Sources, Security & Guides',
+      metricProgress: 'Pipeline Completion',
+      metricClarity: 'Intake Clarity Score',
+      clarityTarget: 'Target ≥ 90%',
+      metricActiveSlice: 'Active Stage & Slice',
+      metricShield: 'Memory & Drift Shield',
+      pipelineTitle: 'Deterministic Lifecycle Pipeline (10 Checkpoints)',
+      scorecardTitle: 'Verification & Scanner Scorecard',
+      scorecardSub: 'Compiler, CodeMap wiring, security & deterministic scanners',
+      slicesTitle: 'Vertical Slice Ledger',
+      slicesSub: 'Independently verified end-to-end capabilities',
+      inboxTitle: 'Questions & Gate Approvals',
+      inboxSub: 'Answer agent questions or approve gates cleanly in-browser. Saved directly to .zerodrift/studio-outbox.json.',
+      copyResumeBtn: 'Copy Resume Signal',
+      outboxHistoryTitle: 'Submitted Decisions History',
+      postSubmitBanner: 'Saved locally — go back to your AI agent chat and type "continue" (or click Copy Resume Signal) to proceed.',
+      codemapTitle: 'Interactive Architecture CodeMap & Wiring Canvas',
+      codemapSearchPh: 'Highlight module...',
+      treeTitle: 'Workspace File & Module Tree',
+      contractsTitle: 'Contracts Explorer (CONTRACTS.md)',
+      dbTablesTitle: 'Database Schema Tables',
+      contractsEmptyStage3: 'API & DB contracts will populate in Stage 3 (zerodrift-architect).',
+      showcaseTitle: 'Interactive UI/UX Layout & Typography Showcase (Gate 4)',
+      showcaseSub: 'Explore 3 full-page layout concepts & 5 curated Arabic/English font pairings live before locking Stage 5 UI code',
+      lockDesignBtn: 'Lock Chosen Design (Gate 4)',
+      showcaseLightDark: 'Light / Dark',
+      showcaseRtlLtr: 'RTL / LTR',
+      tokensTitle: 'Locked Design Palette & Token Guard',
+      forbiddenTitle: 'Forbidden Colors, Copy Style & RTL Lock',
+      componentsTitle: 'Live Typography Specimen',
+      memAll: 'All Vault Views',
+      memRules: 'Locked Rules',
+      memRegressions: 'Regression Shield',
+      memCheckpoints: 'Time Machine',
+      memSkills: 'Learned Skills',
+      rulesTitle: 'Locked Rules (Anti-Forgetting Guard)',
+      rulesSub: 'Permanent rules appended directly to LOCKED-RULES.md',
+      addRuleBtn: '+ Add Rule',
+      regressionTitle: 'Regression Immunity Ledger',
+      regressionSub: 'Protected invariants preventing "fix A breaks B"',
+      checkpointsTitle: 'Time Machine Checkpoints Timeline',
+      checkpointsSub: 'Non-destructive Git checkpoints with safe 1-click rollback command copy',
+      learnedSkillsTitle: 'Auto-Evolving Learned Project Skills',
+      learnedSkillsSub: 'Verified English playbooks distilled during development',
+      sourcesTitle: 'Standards, Compliance & Sources Provenance',
+      sourcesSub: 'Authoritative rules verified live and mapped to modules',
+      securityTitle: 'Red-Team Security Audit Dashboard',
+      securitySub: 'OWASP Top 10 & ZeroDrift Security Baseline evidence',
+      guidesTitle: 'Module User & Developer Guide',
+      guidesSub: 'Rendered cleanly from 06-HANDOVER-REPORT.md',
+      thId: 'ID',
+      thSlice: 'Slice',
+      thStatus: 'Status',
+      thCheck: 'Verification',
+      thCategory: 'Category',
+      thRule: 'Imperative Rule',
+      thRef: 'Ref',
+      thStandard: 'Standard / Doc',
+      thSource: 'Official Source',
+      thRuleExtracted: 'Rule Extracted',
+      thModules: 'Modules',
+      thTable: 'Table',
+      thPk: 'PK',
+      thColumns: 'Columns',
+      thConstraints: 'Constraints',
+      thControl: 'Control Area',
+      thEvidence: 'Evidence',
+      catArch: 'Architecture',
+      catDesign: 'Design Lock',
+      catSec: 'Security',
+      catDomain: 'Domain',
+      catWorkflow: 'Workflow',
+      sevAll: 'All Severities',
+      sevP0: 'P0 Critical',
+      sevP1: 'P1 High',
+      sevP2: 'P2 Medium',
+      sevP3: 'P3 Low',
+      treeSearchPh: 'Filter files by name or badge...',
+      contractsSearchPh: 'Search routes, methods, RBAC roles, or tables...',
+      ruleInputPh: 'Add permanent English rule...',
+      rulesSearchPh: 'Search locked rules...',
+      regressionSearchPh: 'Filter by file path, symptom, or invariant...',
+      sourcesSearchPh: 'Search standards, rules, modules...',
+      liveSse: 'Live SSE',
+      interactiveDemo: 'Interactive Demo',
+      portableHtml: 'Portable Snapshot',
+      reconnecting: 'Reconnecting...',
+      demoBanner: 'Interactive Demo Mode — Try CodeMap, UI Showcase, Q&A & Rules',
+      exportBanner: 'Portable Snapshot (Read-Only)',
+      allClear: 'All Clear',
+      savedLocally: 'Saved Locally',
+      pendingPrefix: 'Pending',
+      recommended: 'Recommended',
+      approveGate: 'Approve Gate',
+      requestChanges: 'Request Changes',
+      lockRuleLabel: 'Also save selected preferences into LOCKED-RULES.md',
+      submitDemoBtn: 'Preview Payload & Submit (Demo)',
+      submitLiveBtn: 'Save Answers for Agent',
+      answeredOf: 'answered',
+      noPendingTitle: 'No pending questions or gate approvals.',
+      noPendingSub: 'When your agent needs intake answers, design choices, or a Gate sign-off, interactive cards will appear here live via SSE.',
+      noOutbox: 'No submitted decisions recorded yet.',
+      rawJsonLabel: 'View raw JSON payload',
+      floorplanReady: 'Open Floorplan Map ↗',
+      floorplanNone: 'Floorplan: Optional',
+      openArchify: 'Open Archify Plate ↗',
+      noMatchingRoutes: 'No matching API routes in CONTRACTS.md.',
+      noMatchingTables: 'No matching database tables.',
+      tokenClean: 'Token Drift: Clean',
+      tokenViolations: 'Token Drift Violation(s)',
+      noForbidden: 'No forbidden colors configured yet in DESIGN-TOKENS.json.',
+      copyRollback: 'Copy Rollback Command',
+      noCheckpoints: 'No Time Machine checkpoints recorded yet.',
+      noRegressions: 'Zero regressions logged yet. Every solved bug strengthens this shield.',
+      noSkills: 'No project-specific learned skills distilled yet.',
+      noSources: 'No verified research sources populated yet.',
+      noSecControls: 'Security audit checklist will populate during Stage 6B.',
+      rootCause: 'Root Cause',
+      protectedInvariant: 'Protected Invariant',
+      recurrence: 'Recurrence',
+      verdictLabel: 'Verdict',
+      activeRulesWord: 'Active Rules',
+      regressionsWord: 'Regressions',
+      checkpointsWord: 'Checkpoints',
+      filesScannedWord: 'files scanned',
+      apiRoutesWord: 'API routes',
+      dbTablesWord: 'DB tables',
+      dirtyWord: 'dirty',
+      slicePrefix: 'Slice',
+      nextPrefix: 'Next',
+      updatedPrefix: 'Updated',
+      selectedFile: 'Selected File',
+      layerAll: 'All Layers',
+      brokenWiresWord: 'Broken Wire(s)',
+      cyclesWord: 'Cycles',
+      layerViolationsWord: 'Layer Violations',
+      codemapHint: 'Drag canvas to pan · Click any node to trace incoming/outgoing wires',
+      clearFocusBtn: 'Clear Focus',
+      cmNodesWord: 'nodes',
+      cmEdgesWord: 'edges',
+      cmHttpWiresWord: 'HTTP wires',
+      cmBrokenWord: 'broken',
+      cmCyclesShortWord: 'cycles',
+      cmInPrefix: 'in:',
+      cmOutPrefix: 'out:',
+      cmBlastRadius: 'Blast Radius',
+      cmIncomingWord: 'incoming',
+      cmOutgoingWord: 'outgoing',
+      cmEmpty: 'CodeMap populates automatically once source modules exist in Stage 5.',
+      cmEmptyHint: 'Run node scripts/code-map.mjs --project . to scan codebase wiring.',
+      stackPending: 'Stack pending',
+      defaultStage: 'Stage 0',
+      defaultNextAction: 'Run zerodrift-intake',
+      noSlices: 'No vertical slices planned yet.',
+      noContent: 'No content authored yet.',
+      pendingDecisions: 'Pending Decisions',
+      noMatchingFiles: 'No matching files.',
+      noWorkspaceFiles: 'No workspace files detected yet.',
+      reqLabel: 'Req',
+      resLabel: 'Res',
+      strictLabel: 'Strict',
+      strictOn: 'ON',
+      strictForbiddenOnly: 'Forbidden-Only',
+      copyPrefix: 'Copy',
+      noTokens: 'No palette tokens found in DESIGN-TOKENS.json.',
+      copyStyleLockTitle: 'Copy Style & Directionality Lock',
+      voiceLabel: 'Voice',
+      numeralsLabel: 'Numerals',
+      tabularLabel: 'Tabular 0-9',
+      rtlParityLabel: 'RTL Parity',
+      logicalCssLabel: 'Logical CSS',
+      onWord: 'ON',
+      offWord: 'OFF',
+      enabledWord: 'ENABLED',
+      enforcedWord: 'ENFORCED',
+      standardWord: 'Standard',
+      noMatchingRules: 'No matching locked rules.',
+      guideSections: 'Guide sections',
+      thFile: 'File',
+      thLine: 'Line',
+      thColor: 'Color',
+      thReason: 'Reason',
+      toastRefreshed: 'Studio refreshed',
+      toastResumeCopied: 'Resume signal copied — paste in your AI agent chat',
+      toastHandoffCopied: 'Fresh Session Resume Prompt copied',
+      toastRollbackCopied: 'Safe rollback command copied (never auto-executes)',
+      toastCopiedHex: 'Copied',
+      toastDemoSubmitted: 'Saved in Demo Mode — check the summary card below',
+      toastLiveSubmitted: 'Saved locally — go back to your AI agent chat and type "continue"',
+      toastRuleLocked: 'Locked into LOCKED-RULES.md',
+      toastDesignLocked: 'Design System locked (Layout + Font + Palette)',
+      toastReadOnly: 'Portable snapshot is read-only.',
+      toastErrorPrefix: 'Error',
+      toastRefreshError: 'Refresh error',
+      modeMap: {
+        greenfield: 'Greenfield',
+        brownfield: 'Brownfield',
+      },
+      fileBadgeMap: {
+        contract: 'Contract',
+        frontend: 'Frontend',
+        backend: 'Backend',
+        db: 'DB',
+        test: 'Test',
+        config: 'Config',
+        docs: 'Docs',
+      },
+      questionTypeMap: {
+        'single-choice': 'single-choice',
+        'multi-select': 'multi-select',
+        text: 'text',
+        palette: 'palette',
+      },
+      categoryMap: {
+        Language: 'Language',
+        'Data Safety': 'Data Safety',
+        Security: 'Security',
+        'Design Lock': 'Design Lock',
+        'Change Control': 'Change Control',
+        Architecture: 'Architecture',
+        Domain: 'Domain',
+        Workflow: 'Workflow',
+        'Demo Decision': 'Demo Decision',
+      },
+      statusMap: {
+        COMPLETED: 'Completed',
+        APPROVED: 'Approved',
+        APPROVE: 'Approved',
+        REQUEST_CHANGES: 'Changes Requested',
+        IN_PROGRESS: 'In Progress',
+        PENDING: 'Pending',
+        SKIPPED: 'Skipped',
+        BLOCKED: 'Blocked',
+        VERIFIED: 'Verified',
+        QUEUED: 'Queued',
+        ACTIVE: 'Active',
+        PASS: 'Pass',
+        FAIL: 'Fail',
+      },
+    },
+    ar: {
+      appearanceBtn: 'المظهر',
+      themeLabel: 'الألوان',
+      themeIvory: 'عاجي دافئ',
+      themeSand: 'رملي هادئ',
+      themeMidnight: 'ليلي داكن',
+      brightnessLabel: 'الإضاءة',
+      languageLabel: 'لغة الواجهة',
+      copyHandoffBtn: 'جلسة جديدة',
+      tabCommand: 'ملخص الأداء',
+      tabInbox: 'الأسئلة والموافقات',
+      tabWiring: 'الخريطة والعقود',
+      tabDesign: 'التصميم والخطوط',
+      tabMemory: 'القواعد والحماية',
+      tabHub: 'المصادر والأمان والأدلة',
+      metricProgress: 'نسبة الإنجاز',
+      metricClarity: 'وضوح المتطلبات',
+      clarityTarget: 'الهدف ≥ 90%',
+      metricActiveSlice: 'المرحلة والشريحة الحالية',
+      metricShield: 'القواعد وفحص الألوان',
+      pipelineTitle: 'مراحل بناء المشروع (10 محطات)',
+      scorecardTitle: 'فحوصات الجودة والأمان',
+      scorecardSub: 'المترجم، خريطة الربط، الأمان، وفحص الألوان والأسرار',
+      slicesTitle: 'سجل الشرائح الرأسية',
+      slicesSub: 'وحدات كاملة تم بناؤها واختبارها',
+      inboxTitle: 'الأسئلة والموافقات',
+      inboxSub: 'أجب على أسئلة الوكيل أو اعتمد المراحل من هنا ليتم حفظها فوراً للوكيل.',
+      copyResumeBtn: 'نسخ رسالة المتابعة',
+      outboxHistoryTitle: 'سجل الإجابات المحفوظة',
+      postSubmitBanner: 'تم حفظ إجابتك — ارجع لشات الوكيل واكتب «تم» (أو انسخ رسالة المتابعة) عشان يكمل.',
+      codemapTitle: 'خريطة الربط والمعمارية التفاعلية (CodeMap)',
+      codemapSearchPh: 'ابحث عن ملف في الخريطة...',
+      treeTitle: 'ملفات ومجلدات المشروع',
+      contractsTitle: 'عقود المسارات والجداول (CONTRACTS.md)',
+      dbTablesTitle: 'جداول قاعدة البيانات',
+      contractsEmptyStage3: 'هتظهر العقود والجداول تلقائياً في المرحلة 3 (المعمارية).',
+      showcaseTitle: 'معرض التصميم والخطوط التفاعلي (البوابة 4)',
+      showcaseSub: 'جرّب 3 تصاميم كاملة و5 أزواج خطوط عربية وإنجليزية قبل تثبيت كود الواجهات',
+      lockDesignBtn: 'تثبيت التصميم المختار',
+      showcaseLightDark: 'فاتح / داكن',
+      showcaseRtlLtr: 'عربي / إنجليزي',
+      tokensTitle: 'لوحة الألوان المقفلة وحارس الانحراف',
+      forbiddenTitle: 'الألوان المحظورة وأسلوب النصوص',
+      componentsTitle: 'معاينة الخطوط والأرقام',
+      memAll: 'الكل',
+      memRules: 'القواعد المقفلة',
+      memRegressions: 'درع الأخطاء',
+      memCheckpoints: 'نقاط الاستعادة',
+      memSkills: 'مهارات المشروع',
+      rulesTitle: 'القواعد الدائمة (منع النسيان)',
+      rulesSub: 'أي قاعدة تضيفها هنا تُحفظ فوراً ويلتزم بها الوكيل دائماً',
+      addRuleBtn: '+ إضافة قاعدة',
+      regressionTitle: 'سجل الأخطاء المحمية',
+      regressionSub: 'ثوابت تمنع عودة أي خطأ قديم عند تعديل الكود',
+      checkpointsTitle: 'نقاط الاستعادة (Time Machine)',
+      checkpointsSub: 'لقطات Git آمنة مع نسخ أمر الاستعادة بدون مسح أي شغل',
+      learnedSkillsTitle: 'مهارات المشروع المتعلمة',
+      learnedSkillsSub: 'حلول وأنماط مجرّبة حفظها الوكيل لهذا المشروع',
+      sourcesTitle: 'المعايير والمصادر الموثّقة',
+      sourcesSub: 'القواعد الرسمية والمكتبات المعتمدة في النظام',
+      securityTitle: 'تقرير الأمان (OWASP)',
+      securitySub: 'فحص الصلاحيات والأسرار والحماية ضد الثغرات',
+      guidesTitle: 'دليل استخدام الوحدات',
+      guidesSub: 'شرح عملي لخطوات التشغيل لكل وحدة في النظام',
+      thId: 'المعرّف',
+      thSlice: 'الشريحة',
+      thStatus: 'الحالة',
+      thCheck: 'التحقق',
+      thCategory: 'التصنيف',
+      thRule: 'القاعدة',
+      thRef: 'المرجع',
+      thStandard: 'المعيار / التوثيق',
+      thSource: 'المصدر الرسمي',
+      thRuleExtracted: 'القاعدة المطبّقة',
+      thModules: 'الوحدات',
+      thTable: 'الجدول',
+      thPk: 'المفتاح',
+      thColumns: 'الأعمدة',
+      thConstraints: 'القيود',
+      thControl: 'ضابط الأمان',
+      thEvidence: 'الدليل البرمجي',
+      catArch: 'معماري',
+      catDesign: 'تصميم',
+      catSec: 'أمان',
+      catDomain: 'قواعد عمل',
+      catWorkflow: 'سير عمل',
+      sevAll: 'كل المستويات',
+      sevP0: 'P0 حرج',
+      sevP1: 'P1 مرتفع',
+      sevP2: 'P2 متوسط',
+      sevP3: 'P3 منخفض',
+      treeSearchPh: 'ابحث باسم الملف أو النوع...',
+      contractsSearchPh: 'ابحث في المسارات أو الجداول...',
+      ruleInputPh: 'اكتب قاعدة دائمة (تُحفظ بالإنجليزية)...',
+      rulesSearchPh: 'ابحث في القواعد...',
+      regressionSearchPh: 'ابحث بالملف أو الخطأ...',
+      sourcesSearchPh: 'ابحث في المعايير...',
+      liveSse: 'مباشر',
+      interactiveDemo: 'عرض تفاعلي',
+      portableHtml: 'نسخة محمولة',
+      reconnecting: 'جاري الاتصال...',
+      demoBanner: 'عرض تفاعلي — جرّب الخريطة والتصاميم والأسئلة والقواعد',
+      exportBanner: 'نسخة محمولة للعرض فقط',
+      allClear: 'لا توجد أسئلة معلّقة',
+      savedLocally: 'تم الحفظ',
+      pendingPrefix: 'بانتظار ردك',
+      recommended: 'مقترح',
+      approveGate: 'موافق',
+      requestChanges: 'تعديلات مطلوبة',
+      lockRuleLabel: 'حفظ الاختيارات أيضاً كقواعد دائمة',
+      submitDemoBtn: 'معاينة الحفظ (تجريبي)',
+      submitLiveBtn: 'حفظ الإجابات للوكيل',
+      answeredOf: 'مُجابة',
+      noPendingTitle: 'لا توجد أسئلة أو موافقات معلّقة حالياً.',
+      noPendingSub: 'عندما يحتاج الوكيل قرارك أو موافقتك على مرحلة، ستظهر البطاقات هنا مباشرة.',
+      noOutbox: 'لا توجد إجابات محفوظة بعد.',
+      rawJsonLabel: 'عرض بيانات JSON الخام',
+      floorplanReady: 'فتح خريطة Floorplan ↗',
+      floorplanNone: 'Floorplan: اختياري',
+      openArchify: 'فتح مخطط Archify ↗',
+      noMatchingRoutes: 'لا توجد مسارات مطابقة للبحث.',
+      noMatchingTables: 'لا توجد جداول مطابقة للبحث.',
+      tokenClean: 'الألوان: سليمة',
+      tokenViolations: 'مخالفات ألوان',
+      noForbidden: 'لا توجد ألوان محظورة مسجلة.',
+      copyRollback: 'نسخ أمر الاستعادة',
+      noCheckpoints: 'لم تُسجّل نقاط استعادة بعد.',
+      noRegressions: 'لا توجد أعطال مسجلة حتى الآن.',
+      noSkills: 'لا توجد مهارات متعلمة مسجلة بعد.',
+      noSources: 'لا توجد مصادر بحثية مسجلة بعد.',
+      noSecControls: 'تظهر ضوابط الأمان في المرحلة 6B.',
+      rootCause: 'السبب',
+      protectedInvariant: 'الشرط المحمي',
+      recurrence: 'التكرار',
+      verdictLabel: 'النتيجة',
+      activeRulesWord: 'قواعد نشطة',
+      regressionsWord: 'أخطاء محمية',
+      checkpointsWord: 'نقاط استعادة',
+      filesScannedWord: 'ملف مفحوص',
+      apiRoutesWord: 'مسارات API',
+      dbTablesWord: 'جداول بيانات',
+      dirtyWord: 'تعديل معلّق',
+      slicePrefix: 'الشريحة',
+      nextPrefix: 'الخطوة التالية',
+      updatedPrefix: 'آخر تحديث',
+      selectedFile: 'الملف المحدد',
+      layerAll: 'كل الطبقات',
+      brokenWiresWord: 'مسارات مقطوعة',
+      cyclesWord: 'حلقات دائرية',
+      layerViolationsWord: 'تجاوزات طبقات',
+      codemapHint: 'اسحب الخريطة للتحريك · اضغط على أي ملف لتتبع ارتباطاته',
+      clearFocusBtn: 'إلغاء التحديد',
+      cmNodesWord: 'عقدة',
+      cmEdgesWord: 'رابط',
+      cmHttpWiresWord: 'مسارات HTTP',
+      cmBrokenWord: 'مقطوع',
+      cmCyclesShortWord: 'حلقات',
+      cmInPrefix: 'وارد:',
+      cmOutPrefix: 'صادر:',
+      cmBlastRadius: 'نطاق التأثير',
+      cmIncomingWord: 'وارد',
+      cmOutgoingWord: 'صادر',
+      cmEmpty: 'تظهر خريطة الربط تلقائياً فور إنشاء ملفات الكود في المرحلة 5.',
+      cmEmptyHint: 'شغّل الأمر node scripts/code-map.mjs --project . لفحص ارتباطات الكود.',
+      stackPending: 'جاري تحديد التقنيات',
+      defaultStage: 'المرحلة 0',
+      defaultNextAction: 'ابدأ جمع المتطلبات (zerodrift-intake)',
+      noSlices: 'لم تُخطّط شرائح رأسية بعد.',
+      noContent: 'لا يوجد محتوى مسجّل بعد.',
+      pendingDecisions: 'قرارات بانتظار ردك',
+      noMatchingFiles: 'لا توجد ملفات مطابقة للبحث.',
+      noWorkspaceFiles: 'لم تُكتشف ملفات في المشروع بعد.',
+      reqLabel: 'الطلب',
+      resLabel: 'الاستجابة',
+      strictLabel: 'وضع الالتزام',
+      strictOn: 'صارم',
+      strictForbiddenOnly: 'المحظورات فقط',
+      copyPrefix: 'نسخ',
+      noTokens: 'لا توجد ألوان مسجلة في DESIGN-TOKENS.json.',
+      copyStyleLockTitle: 'قفل أسلوب النصوص واتجاه الواجهة',
+      voiceLabel: 'الأسلوب',
+      numeralsLabel: 'الأرقام',
+      tabularLabel: 'أرقام جدولية 0-9',
+      rtlParityLabel: 'دعم العربية RTL',
+      logicalCssLabel: 'تنسيق منطقي CSS',
+      onWord: 'مفعّل',
+      offWord: 'متوقف',
+      enabledWord: 'مفعّل',
+      enforcedWord: 'إلزامي',
+      standardWord: 'قياسي',
+      noMatchingRules: 'لا توجد قواعد مطابقة للبحث.',
+      guideSections: 'أقسام الدليل',
+      thFile: 'الملف',
+      thLine: 'السطر',
+      thColor: 'اللون',
+      thReason: 'السبب',
+      toastRefreshed: 'تم تحديث اللوحة',
+      toastResumeCopied: 'تم نسخ رسالة المتابعة — الصقها في شات الوكيل',
+      toastHandoffCopied: 'تم نسخ أمر بدء جلسة جديدة',
+      toastRollbackCopied: 'تم نسخ أمر الاستعادة الآمن',
+      toastCopiedHex: 'تم نسخ',
+      toastDemoSubmitted: 'تم الحفظ في الوضع التجريبي — راجع الملخص بالأسفل',
+      toastLiveSubmitted: 'تم الحفظ — ارجع لشات الوكيل واكتب «تم» عشان يكمل',
+      toastRuleLocked: 'تم حفظ القاعدة الدائمة',
+      toastDesignLocked: 'تم تثبيت التصميم والخط والألوان للبوابة 4',
+      toastReadOnly: 'النسخة المحمولة للعرض فقط.',
+      toastErrorPrefix: 'خطأ',
+      toastRefreshError: 'تعذّر التحديث',
+      modeMap: {
+        greenfield: 'مشروع جديد',
+        brownfield: 'مشروع قائم',
+      },
+      fileBadgeMap: {
+        contract: 'عقد',
+        frontend: 'واجهة',
+        backend: 'خادم',
+        db: 'قاعدة بيانات',
+        test: 'اختبار',
+        config: 'إعدادات',
+        docs: 'توثيق',
+      },
+      questionTypeMap: {
+        'single-choice': 'اختيار واحد',
+        'multi-select': 'اختيار متعدد',
+        text: 'نص حر',
+        palette: 'لوحة ألوان',
+      },
+      categoryMap: {
+        Language: 'لغة',
+        'Data Safety': 'سلامة البيانات',
+        Security: 'أمان',
+        'Design Lock': 'تصميم',
+        'Change Control': 'ضبط التعديلات',
+        Architecture: 'معماري',
+        Domain: 'قواعد عمل',
+        Workflow: 'سير عمل',
+        'Demo Decision': 'قرار تجريبي',
+      },
+      statusMap: {
+        COMPLETED: 'مكتمل',
+        APPROVED: 'معتمد',
+        APPROVE: 'موافق',
+        REQUEST_CHANGES: 'تعديلات مطلوبة',
+        IN_PROGRESS: 'شغّال الآن',
+        PENDING: 'معلّق',
+        SKIPPED: 'متجاوز',
+        BLOCKED: 'متوقف',
+        VERIFIED: 'تم التحقق',
+        QUEUED: 'بالانتظار',
+        ACTIVE: 'نشط',
+        PASS: 'ناجح',
+        FAIL: 'فشل',
+      },
+    },
+  };
+
+  const LAYER_META = {
+    ui: { label: { en: 'UI Pages', ar: 'الواجهات' }, color: '#1E4E79', bg: '#E2EFF9' },
+    'api-client': { label: { en: 'API Client', ar: 'عميل API' }, color: '#0F6E65', bg: '#DCEEEB' },
+    routes: { label: { en: 'Backend Routes', ar: 'المسارات' }, color: '#115E3B', bg: '#DCF2E7' },
+    services: { label: { en: 'Services', ar: 'الخدمات' }, color: '#8C410A', bg: '#FBF0DC' },
+    database: { label: { en: 'Database', ar: 'قاعدة البيانات' }, color: '#5B2C82', bg: '#EFE7F7' },
+    shared: { label: { en: 'Shared / Core', ar: 'مشترك' }, color: '#556058', bg: '#F3EFE6' },
+  };
+
+  const SVG = {
+    chevron: '<svg class="ico-sm tree-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>',
+    folder: '<svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>',
+    file: '<svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+    check: '<svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>',
+    clock: '<svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    spark: '<svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>',
+  };
+
+  const state = {
+    data: null,
+    tree: null,
+    lang: localStorage.getItem('zd-lang-manual') ? localStorage.getItem('zd-lang') || 'en' : null,
+    theme: localStorage.getItem('zd-theme') || 'warm-ivory',
+    tone: Number(localStorage.getItem('zd-tone') || 0),
+    isExportMode: Boolean(window.__ZERODRIFT_DATA__),
+    inboxDraft: {},
+    inboxGateDecision: 'APPROVE',
+    inboxLockAsRule: false,
+    justSubmitted: false,
+    selectedFile: null,
+    memoryView: 'all',
+    // CodeMap interactive state
+    cmLayer: 'all',
+    cmSelectedNode: null,
+    cmZoom: 1,
+    cmPanX: 0,
+    cmPanY: 0,
+    cmSearch: '',
+    // Design Showcase interactive state
+    scLayout: 'editorial-calm',
+    scFont: 'ibm-plex-jakarta',
+    scPalette: 'warm-ivory-olive',
+    scDark: false,
+    scDir: null,
+    loadedFontUrls: new Set(),
+    eventSource: null,
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const currentLang = () => state.lang || state.data?.defaultLocale || 'en';
+  const t = (key) => (I18N[currentLang()] && I18N[currentLang()][key]) || I18N.en[key] || key;
+  const loc = (val) => {
+    if (val && typeof val === 'object' && !Array.isArray(val)) {
+      return val[currentLang()] || val.en || val.ar || '';
+    }
+    return String(val ?? '');
+  };
+  const tStatus = (raw) => {
+    const key = String(raw || '').trim().toUpperCase();
+    return (I18N[currentLang()]?.statusMap?.[key]) || (I18N.en.statusMap[key]) || raw;
+  };
+  const tMode = (raw) => {
+    const key = String(raw || 'greenfield').trim().toLowerCase();
+    return (I18N[currentLang()]?.modeMap?.[key]) || (I18N.en.modeMap[key]) || raw || 'greenfield';
+  };
+  const tFileBadge = (raw) => {
+    const key = String(raw || '').trim().toLowerCase();
+    return (I18N[currentLang()]?.fileBadgeMap?.[key]) || (I18N.en.fileBadgeMap[key]) || raw;
+  };
+  const tQuestionType = (raw) => {
+    const key = String(raw || 'text').trim().toLowerCase();
+    return (I18N[currentLang()]?.questionTypeMap?.[key]) || (I18N.en.questionTypeMap[key]) || raw;
+  };
+  const tCategory = (raw) => {
+    const key = String(raw || '').trim();
+    return (I18N[currentLang()]?.categoryMap?.[key]) || (I18N.en.categoryMap[key]) || raw;
+  };
+
+  function esc(str) {
+    return String(str ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function showToast(msg) {
+    const el = $('toast');
+    if (!el) return;
+    el.innerHTML = `${SVG.check}<span>${esc(msg)}</span>`;
+    el.classList.add('visible');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.remove('visible'), 3200);
+  }
+
+  function loadGoogleFontGracefully(url) {
+    if (!url || state.loadedFontUrls.has(url) || typeof document === 'undefined') return;
+    state.loadedFontUrls.add(url);
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    link.onerror = () => {}; // Offline fallback is instant & silent
+    document.head.appendChild(link);
+  }
+
+  function applyPreferences() {
+    const lang = currentLang();
+    document.documentElement.setAttribute('data-theme', state.theme);
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+
+    const dimOp = state.tone < 0 ? Math.min(0.24, Math.abs(state.tone) * 0.011) : 0;
+    const warmOp = state.tone > 0 ? Math.min(0.18, state.tone * 0.008) : 0;
+    document.documentElement.style.setProperty('--zd-dim-opacity', dimOp.toFixed(3));
+    document.documentElement.style.setProperty('--zd-warm-opacity', warmOp.toFixed(3));
+
+    const slider = $('brightness-slider');
+    if (slider) slider.value = String(state.tone);
+    const readout = $('brightness-readout');
+    if (readout) readout.textContent = `${state.tone > 0 ? '+' : ''}${state.tone}%`;
+
+    document.querySelectorAll('[data-theme-opt]').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.themeOpt === state.theme);
+    });
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      const val = t(key);
+      if (val) el.textContent = val;
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      const val = t(key);
+      if (val) el.setAttribute('placeholder', val);
+    });
+
+    if (state.data) renderAll();
+  }
+
+  function formatInline(text) {
+    return esc(text)
+      .replace(/->/g, '→')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  }
+
+  function renderSimpleMarkdown(md, { collectToc = false } = {}) {
+    if (!md || !md.trim()) {
+      return { html: `<div class="empty-state">${esc(t('noContent'))}</div>`, toc: [] };
+    }
+    const lines = md.replace(/\r\n/g, '\n').split('\n');
+    let html = '';
+    let inCode = false;
+    let codeBuf = [];
+    let inList = false;
+    const toc = [];
+
+    const closeList = () => {
+      if (inList) {
+        html += '</ul>';
+        inList = false;
+      }
+    };
+
+    for (const line of lines) {
+      if (line.trim().startsWith('```')) {
+        closeList();
+        if (!inCode) {
+          inCode = true;
+          codeBuf = [];
+        } else {
+          html += `<pre><code>${esc(codeBuf.join('\n'))}</code></pre>`;
+          inCode = false;
+        }
+        continue;
+      }
+      if (inCode) {
+        codeBuf.push(line);
+        continue;
+      }
+      const trimmed = line.trim();
+      if (!trimmed) {
+        closeList();
+        continue;
+      }
+      if (trimmed.startsWith('### ')) {
+        closeList();
+        html += `<h4>${formatInline(trimmed.slice(4))}</h4>`;
+      } else if (trimmed.startsWith('## ')) {
+        closeList();
+        const headingText = trimmed.slice(3);
+        const slug = `guide-sec-${toc.length + 1}`;
+        if (collectToc) toc.push({ id: slug, label: headingText.replace(/`/g, '') });
+        html += `<h3 id="${slug}">${formatInline(headingText)}</h3>`;
+      } else if (trimmed.startsWith('# ')) {
+        closeList();
+        if (!collectToc) html += `<h3>${formatInline(trimmed.slice(2))}</h3>`;
+      } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+        if (!inList) {
+          html += '<ul style="margin:6px 0;padding-inline-start:20px;">';
+          inList = true;
+        }
+        html += `<li>${formatInline(trimmed.slice(2))}</li>`;
+      } else {
+        closeList();
+        html += `<p style="margin:6px 0;">${formatInline(trimmed)}</p>`;
+      }
+    }
+    closeList();
+    return { html, toc };
+  }
+
+  function fileBadgeClass(badge) {
+    const b = String(badge || '').toLowerCase();
+    if (b === 'backend' || b === 'contract') return 'ok';
+    if (b === 'frontend') return 'info';
+    if (b === 'db') return 'purple';
+    if (b === 'test') return 'warn';
+    return '';
+  }
+
+  function methodBadgeClass(method) {
+    const m = String(method || '').toUpperCase();
+    if (m === 'GET') return 'info';
+    if (m === 'POST') return 'ok';
+    if (m === 'PUT' || m === 'PATCH') return 'warn';
+    if (m === 'DELETE') return 'err';
+    return '';
+  }
+
+  function renderCommandCenter() {
+    const d = state.data;
+    if (!d) return;
+
+    $('project-title').textContent = loc(d.project.name) || 'ZeroDrift Studio';
+    $('project-meta').innerHTML = `${esc(tMode(d.project.mode))} · <bdi dir="ltr">${esc(d.project.stack || t('stackPending'))}</bdi> · ${esc(t('updatedPrefix'))} <bdi dir="ltr">${esc(d.generatedAt.slice(0, 16).replace('T', ' '))}</bdi>`;
+
+    const stages = d.pipeline.stages || [];
+    const doneCount = stages.filter((s) => ['COMPLETED', 'APPROVED', 'SKIPPED'].includes(s.status)).length;
+    const pct = stages.length ? Math.round((doneCount / stages.length) * 100) : 0;
+
+    $('metric-progress').textContent = `${pct}%`;
+    $('metric-progress-bar').style.width = `${pct}%`;
+
+    const clarityStr = d.pipeline.clarityScore || '—';
+    $('metric-clarity').textContent = clarityStr;
+    const clarityNum = parseInt(clarityStr, 10);
+    const ring = $('clarity-ring');
+    if (ring) {
+      const circ = 119.38;
+      const clamped = Number.isFinite(clarityNum) ? Math.max(0, Math.min(100, clarityNum)) : 0;
+      ring.style.strokeDashoffset = String(circ - (circ * clamped) / 100);
+    }
+
+    $('metric-stage').textContent = loc(d.pipeline.currentStage) || t('defaultStage');
+    $('metric-slice').innerHTML = `${esc(t('slicePrefix'))}: <span class="mono">${esc(d.pipeline.activeSlice || 'NONE')}</span>`;
+    $('next-action-text').textContent = `${t('nextPrefix')}: ${loc(d.pipeline.nextAction) || t('defaultNextAction')}`;
+
+    const rulesCount = (d.memory.lockedRules || []).filter((r) => r.status === 'ACTIVE').length;
+    const bugsCount = (d.memory.regressions || []).length;
+    const driftCount = (d.design.driftViolations || []).length;
+    $('metric-shield').innerHTML = `${rulesCount} <span style="font-size:14px;font-weight:650;color:var(--zd-ink-muted);">${esc(t('activeRulesWord'))}</span>`;
+    $('metric-shield-sub').textContent = `${bugsCount} ${t('regressionsWord')} · ${driftCount === 0 ? t('tokenClean') : `${driftCount} ${t('tokenViolations')}`}`;
+
+    if (state.isExportMode) {
+      $('export-mode-banner').innerHTML = d.demoMode
+        ? `<span class="pill ok">${esc(t('demoBanner'))}</span>`
+        : `<span class="pill warn">${esc(t('exportBanner'))}</span>`;
+    } else {
+      $('export-mode-banner').innerHTML = '';
+    }
+
+    $('pipeline-grid').innerHTML = stages
+      .map((s) => {
+        const icon =
+          s.status === 'COMPLETED' || s.status === 'APPROVED'
+            ? SVG.check
+            : s.status === 'IN_PROGRESS'
+              ? SVG.spark
+              : SVG.clock;
+        return `
+          <div class="stage-node status-${esc(s.status)}">
+            <div>
+              <div class="stage-top">
+                <span class="stage-code">${esc(s.code)}</span>
+                <span style="color:var(--zd-ink-muted);">${icon}</span>
+              </div>
+              <div class="stage-name">${esc(loc(s.label))}</div>
+            </div>
+            <div><span class="pill ${esc(s.status)}">${esc(tStatus(s.status))}</span></div>
+          </div>`;
+      })
+      .join('');
+
+    const checks = d.verification.scorecard || [];
+    const passChecks = checks.filter((c) => c.status === 'PASS').length;
+    $('scorecard-summary').textContent = `${passChecks}/${checks.length} ${tStatus('PASS')}`;
+    $('scorecard-grid').innerHTML = checks
+      .map(
+        (c) => `
+        <div class="score-tile">
+          <div class="score-tile-top">
+            <span class="score-tile-label">${esc(loc(c.label))}</span>
+            <span class="pill ${esc(c.status)}">${esc(tStatus(c.status))}</span>
+          </div>
+          <div class="score-tile-detail ltr-block">${esc(loc(c.detail || ''))}</div>
+        </div>`
+      )
+      .join('');
+
+    const slices = d.pipeline.slices || [];
+    $('slices-tbody').innerHTML = slices.length
+      ? slices
+          .map(
+            (sl) => `
+            <tr>
+              <td class="mono col-nowrap"><strong>${esc(sl.id)}</strong></td>
+              <td class="col-slice-name">${esc(loc(sl.name))}</td>
+              <td class="col-nowrap"><span class="pill ${esc(sl.status)}">${esc(tStatus(sl.status))}</span></td>
+              <td class="mono col-nowrap" style="font-size:11.5px;">${esc(sl.verification || '-')}</td>
+            </tr>`
+          )
+          .join('')
+      : `<tr><td colspan="4" style="color:var(--zd-ink-muted);">${esc(t('noSlices'))}</td></tr>`;
+  }
+
+  function findQuestionLabel(batchId, qKey, rawVal) {
+    const inbox = state.data?.inbox || {};
+    const batches = Array.isArray(inbox.batches) ? inbox.batches : inbox.batchId ? [inbox] : [];
+    const batch = batches.find((b) => b.batchId === batchId);
+    const q = batch?.questions?.find((item) => item.id === qKey);
+    const qLabel = q ? loc(q.prompt || q.question) : qKey;
+
+    const formatOption = (val) => {
+      if (!q || !Array.isArray(q.options)) return String(val ?? '');
+      const opt = q.options.find((o) => (typeof o === 'string' ? o : o.value || o.label) === val);
+      return opt ? (typeof opt === 'string' ? opt : loc(opt.label)) : String(val ?? '');
+    };
+
+    const answerDisplay = Array.isArray(rawVal)
+      ? rawVal.map(formatOption).join(' · ')
+      : formatOption(rawVal);
+
+    return { qLabel, answerDisplay };
+  }
+
+  function renderInbox() {
+    const d = state.data;
+    if (!d) return;
+
+    const inbox = d.inbox || {};
+    const outbox = d.outbox || { submissions: [] };
+    const batches = Array.isArray(inbox.batches) ? inbox.batches : inbox.batchId ? [inbox] : [];
+    const submittedIds = new Set((outbox.submissions || []).map((s) => s.batchId));
+    const pendingBatches = batches.filter((b) => b && b.status !== 'RESOLVED' && !submittedIds.has(b.batchId));
+
+    const badge = $('inbox-badge');
+    if (pendingBatches.length > 0) {
+      badge.textContent = String(pendingBatches.length);
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.style.display = 'none';
+    }
+
+    const activeBatch = pendingBatches[0];
+    const container = $('inbox-container');
+    const postBanner = state.justSubmitted || submittedIds.size > 0
+      ? `<div class="handoff-callout"><span>${SVG.check} ${esc(t('postSubmitBanner'))}</span><button type="button" class="btn btn-sm btn-primary" id="inline-copy-resume">${esc(t('copyResumeBtn'))}</button></div>`
+      : '';
+
+    if (!activeBatch) {
+      $('inbox-delivery-status').textContent = submittedIds.size > 0 ? t('savedLocally') : t('allClear');
+      $('inbox-delivery-status').className = 'pill ok';
+      container.innerHTML = `
+        ${postBanner}
+        <div class="empty-state">
+          <strong>${esc(t('noPendingTitle'))}</strong>
+          <p style="margin:6px 0 0;">${esc(t('noPendingSub'))}</p>
+        </div>`;
+    } else {
+      $('inbox-delivery-status').innerHTML = `${esc(t('pendingPrefix'))}: <bdi dir="ltr">${esc(activeBatch.batchId)}</bdi>`;
+      $('inbox-delivery-status').className = 'pill warn';
+
+      const questions = activeBatch.questions || [];
+      questions.forEach((q) => {
+        if (state.inboxDraft[q.id] === undefined && q.default !== undefined) {
+          state.inboxDraft[q.id] = Array.isArray(q.default) ? [...q.default] : q.default;
+        }
+      });
+
+      const answeredCount = questions.filter((q) => {
+        const v = state.inboxDraft[q.id];
+        if (Array.isArray(v)) return v.length > 0;
+        return typeof v === 'string' && v.trim().length > 0;
+      }).length;
+      const pct = questions.length ? Math.round((answeredCount / questions.length) * 100) : 100;
+
+      const qHtml = questions
+        .map((q, idx) => {
+          const val = state.inboxDraft[q.id];
+          let controlHtml = '';
+
+          if (q.type === 'single-choice' || q.type === 'palette') {
+            controlHtml = `<div class="choice-grid" role="radiogroup" aria-label="${esc(loc(q.prompt || q.id))}">${(q.options || [])
+              .map((opt) => {
+                const optVal = typeof opt === 'string' ? opt : opt.value || loc(opt.label);
+                const optLabel = typeof opt === 'string' ? opt : loc(opt.label);
+                const optDesc = typeof opt === 'object' ? loc(opt.description || '') : '';
+                const rec = typeof opt === 'object' && opt.recommended;
+                const swatches = typeof opt === 'object' && Array.isArray(opt.swatches) ? opt.swatches : [];
+                const isSelected = val === optVal;
+                return `
+                  <button type="button" role="radio" aria-checked="${isSelected ? 'true' : 'false'}" class="choice-option ${isSelected ? 'selected' : ''}" data-qid="${esc(q.id)}" data-val="${esc(optVal)}" data-kind="single">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%;">
+                      <span style="display:inline-flex;align-items:center;gap:8px;font-weight:700;">
+                        <span class="radio-dot" aria-hidden="true"></span>
+                        <span>${esc(optLabel)}</span>
+                      </span>
+                      ${rec ? `<span class="pill ok">${esc(t('recommended'))}</span>` : ''}
+                    </div>
+                    ${optDesc ? `<span style="font-size:12px;color:var(--zd-ink-muted);padding-inline-start:24px;">${esc(optDesc)}</span>` : ''}
+                    ${
+                      swatches.length
+                        ? `<div style="display:flex;gap:6px;margin-top:6px;padding-inline-start:24px;">${swatches
+                            .map(
+                              (hex) =>
+                                `<span title="${esc(hex)}" style="width:22px;height:22px;border-radius:6px;background:${esc(hex)};border:1px solid var(--zd-border-strong);"></span>`
+                            )
+                            .join('')}</div>`
+                        : ''
+                    }
+                  </button>`;
+              })
+              .join('')}</div>`;
+          } else if (q.type === 'multi-select') {
+            const selectedArr = Array.isArray(val) ? val : [];
+            controlHtml = `<div class="chip-row">${(q.options || [])
+              .map((opt) => {
+                const optVal = typeof opt === 'string' ? opt : opt.value || loc(opt.label);
+                const optLabel = typeof opt === 'string' ? opt : loc(opt.label);
+                const isSelected = selectedArr.includes(optVal);
+                return `<button type="button" aria-pressed="${isSelected ? 'true' : 'false'}" class="chip-toggle ${isSelected ? 'selected' : ''}" data-qid="${esc(q.id)}" data-val="${esc(optVal)}" data-kind="multi">${isSelected ? SVG.check : ''}<span>${esc(optLabel)}</span></button>`;
+              })
+              .join('')}</div>`;
+          } else {
+            const fieldId = `inbox-field-${q.id}`;
+            controlHtml = `<textarea id="${esc(fieldId)}" name="${esc(fieldId)}" dir="auto" class="textarea" data-qid="${esc(q.id)}" data-kind="text" placeholder="${esc(loc(q.placeholder || ''))}">${esc(val || '')}</textarea>`;
+          }
+
+          return `
+            <div class="question-card">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="pill">Q${idx + 1}</span>
+                <span class="mono" style="font-size:11px;color:var(--zd-ink-muted);">${esc(tQuestionType(q.type || 'text'))}</span>
+              </div>
+              <div style="font-weight:700;">${esc(loc(q.prompt || q.question))}</div>
+              ${q.context ? `<div style="font-size:12px;color:var(--zd-ink-muted);margin-top:3px;">${esc(loc(q.context))}</div>` : ''}
+              ${controlHtml}
+            </div>`;
+        })
+        .join('');
+
+      const gateBlock = activeBatch.gate
+        ? `
+          <div class="question-card" style="border-color:var(--zd-olive);">
+            <div style="font-weight:750;margin-bottom:10px;">${esc(loc(activeBatch.gate))}</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="button" class="btn ${state.inboxGateDecision === 'APPROVE' ? 'btn-accent' : ''}" id="gate-approve-btn">${SVG.check}<span>${esc(t('approveGate'))}</span></button>
+              <button type="button" class="btn ${state.inboxGateDecision === 'REQUEST_CHANGES' ? 'btn-danger' : ''}" id="gate-changes-btn">${esc(t('requestChanges'))}</button>
+            </div>
+          </div>`
+        : '';
+
+      container.innerHTML = `
+        <div class="inbox-progress-bar">
+          <div>
+            <strong>${esc(loc(activeBatch.title || t('pendingDecisions')))}</strong>
+            <div style="font-size:12px;color:var(--zd-ink-muted);">${esc(loc(activeBatch.summary || ''))}</div>
+          </div>
+          <div style="min-width:140px;text-align:end;">
+            <span class="pill ok">${answeredCount}/${questions.length} ${esc(t('answeredOf'))}</span>
+            <div class="progress-track" style="margin-top:6px;"><div class="progress-fill" style="width:${pct}%;"></div></div>
+          </div>
+        </div>
+        ${qHtml}
+        ${gateBlock}
+        <div class="sticky-submit-bar">
+          <label for="lock-as-rule-cb" style="display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;cursor:pointer;">
+            <input type="checkbox" id="lock-as-rule-cb" name="lockAsRules" ${state.inboxLockAsRule ? 'checked' : ''} />
+            <span>${esc(t('lockRuleLabel'))}</span>
+          </label>
+          <button type="button" id="submit-inbox-btn" class="btn btn-primary" ${state.isExportMode && !d.demoMode ? 'disabled' : ''}>
+            ${esc(d.demoMode ? t('submitDemoBtn') : t('submitLiveBtn'))}
+          </button>
+        </div>`;
+
+      container.querySelectorAll('[data-kind="single"]').forEach((el) => {
+        el.addEventListener('click', () => {
+          state.inboxDraft[el.dataset.qid] = el.dataset.val;
+          renderInbox();
+        });
+      });
+
+      container.querySelectorAll('[data-kind="multi"]').forEach((el) => {
+        el.addEventListener('click', () => {
+          const cur = Array.isArray(state.inboxDraft[el.dataset.qid]) ? [...state.inboxDraft[el.dataset.qid]] : [];
+          const i = cur.indexOf(el.dataset.val);
+          if (i >= 0) cur.splice(i, 1);
+          else cur.push(el.dataset.val);
+          state.inboxDraft[el.dataset.qid] = cur;
+          renderInbox();
+        });
+      });
+
+      container.querySelectorAll('[data-kind="text"]').forEach((el) => {
+        el.addEventListener('input', () => {
+          state.inboxDraft[el.dataset.qid] = el.value;
+        });
+      });
+
+      const approveBtn = $('gate-approve-btn');
+      const changesBtn = $('gate-changes-btn');
+      if (approveBtn) approveBtn.addEventListener('click', () => { state.inboxGateDecision = 'APPROVE'; renderInbox(); });
+      if (changesBtn) changesBtn.addEventListener('click', () => { state.inboxGateDecision = 'REQUEST_CHANGES'; renderInbox(); });
+
+      const lockCb = $('lock-as-rule-cb');
+      if (lockCb) lockCb.addEventListener('change', () => { state.inboxLockAsRule = lockCb.checked; });
+
+      const submitBtn = $('submit-inbox-btn');
+      if (submitBtn) submitBtn.addEventListener('click', () => submitInboxBatch(activeBatch));
+    }
+
+    const inlineCopy = $('inline-copy-resume');
+    if (inlineCopy) {
+      inlineCopy.addEventListener('click', () => {
+        const msg = currentLang() === 'ar'
+          ? 'تم — حفظت إجاباتي في ZeroDrift Studio (.zerodrift/studio-outbox.json)، تقدر تكمل الآن.'
+          : 'continue — I saved my ZeroDrift Studio decisions in .zerodrift/studio-outbox.json.';
+        if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
+        showToast(t('toastResumeCopied'));
+      });
+    }
+
+    // Human-Readable Decision History Cards + Optional Collapsed Raw JSON
+    const subs = outbox.submissions || [];
+    $('outbox-container').innerHTML = subs.length
+      ? subs
+          .slice()
+          .reverse()
+          .map((sub) => {
+            const entries = Object.entries(sub.answers || {});
+            const qaCards = entries
+              .map(([k, v]) => {
+                const { qLabel, answerDisplay } = findQuestionLabel(sub.batchId, k, v);
+                return `
+                  <div class="decision-qa-item">
+                    <div style="font-size:11px;color:var(--zd-ink-muted);margin-bottom:3px;">${esc(qLabel)}</div>
+                    <div style="font-weight:700;">${esc(answerDisplay || '—')}</div>
+                  </div>`;
+              })
+              .join('');
+
+            return `
+              <div style="padding:14px 16px;border-radius:12px;background:var(--zd-surface);border:1px solid var(--zd-border);margin-bottom:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <strong class="mono">${esc(sub.batchId)}</strong>
+                  <span class="pill ok">${esc(tStatus(sub.gateDecision || 'APPROVED'))} · <bdi dir="ltr">${esc((sub.submittedAt || '').slice(0, 16).replace('T', ' '))}</bdi></span>
+                </div>
+                <div class="decision-qa-grid">${qaCards}</div>
+                <details style="margin-top:10px;font-size:12px;">
+                  <summary style="cursor:pointer;color:var(--zd-ink-muted);font-weight:600;">${esc(t('rawJsonLabel'))}</summary>
+                  <pre style="margin:8px 0 0;font-size:11.5px;overflow:auto;direction:ltr;background:var(--zd-canvas);padding:10px;border-radius:8px;border:1px solid var(--zd-border);">${esc(JSON.stringify(sub.answers, null, 2))}</pre>
+                </details>
+              </div>`;
+          })
+          .join('')
+      : `<div style="font-size:13px;color:var(--zd-ink-muted);">${esc(t('noOutbox'))}</div>`;
+  }
+
+  async function submitInboxBatch(batch) {
+    const isDemo = Boolean(state.data && state.data.demoMode);
+    if (state.isExportMode && !isDemo) {
+      showToast(t('toastReadOnly'));
+      return;
+    }
+    const payload = {
+      batchId: batch.batchId,
+      gateDecision: batch.gate ? state.inboxGateDecision : undefined,
+      answers: { ...state.inboxDraft },
+      lockAsRules: state.inboxLockAsRule,
+    };
+
+    if (isDemo) {
+      const submittedAt = new Date().toISOString();
+      state.data.outbox = state.data.outbox || { submissions: [] };
+      state.data.outbox.submissions.push({ ...payload, submittedAt });
+      batch.status = 'RESOLVED';
+      if (payload.lockAsRules) {
+        for (const [k, v] of Object.entries(payload.answers)) {
+          const nextId = `RULE-${String((state.data.memory.lockedRules || []).length + 1).padStart(3, '0')}`;
+          state.data.memory.lockedRules.push({
+            id: nextId,
+            category: 'Demo Decision',
+            rule: `Honor Studio selection for "${k}": ${Array.isArray(v) ? v.join(', ') : v}`,
+            status: 'ACTIVE',
+          });
+        }
+      }
+      state.inboxDraft = {};
+      state.justSubmitted = true;
+      showToast(t('toastDemoSubmitted'));
+      renderAll();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/responses', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Submission failed');
+      state.inboxDraft = {};
+      state.justSubmitted = true;
+      showToast(t('toastLiveSubmitted'));
+      await fetchAllData();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (err) {
+      showToast(`${t('toastErrorPrefix')}: ${err.message}`);
+    }
+  }
+
+  /* ======================== v4.0 INTERACTIVE SVG CODEMAP ======================== */
+  function renderCodeMap() {
+    const d = state.data;
+    const cm = d?.wiring?.codemap;
+    const svg = $('codemap-svg');
+    const filtersEl = $('codemap-layer-filters');
+    const inspectorEl = $('codemap-inspector');
+    if (!svg || !filtersEl || !inspectorEl) return;
+
+    const nodes = (cm?.nodes || []).filter((n) => n.layer !== 'tests');
+    const edges = cm?.edges || [];
+    const sum = cm?.summary || { totalNodes: 0, totalEdges: 0, brokenWireCount: 0, circularCount: 0, layerViolationCount: 0 };
+
+    $('codemap-stats').innerHTML = `${sum.totalNodes} ${esc(t('cmNodesWord'))} · ${sum.totalEdges} ${esc(t('cmEdgesWord'))} · ${sum.matchedWireCount || 0} ${esc(t('cmHttpWiresWord'))} · ${sum.brokenWireCount || 0} ${esc(t('cmBrokenWord'))} · ${sum.circularCount || 0} ${esc(t('cmCyclesShortWord'))}`;
+
+    // Archify & Floorplan toolbar buttons
+    const archSlot = $('archify-links-slot');
+    const plates = d?.wiring?.archifyPlates || [];
+    if (archSlot) {
+      archSlot.innerHTML = plates
+        .map((pl) => `<a class="btn btn-sm" href="${esc(pl.href)}" target="_blank" rel="noopener">${esc(t('openArchify'))} (${esc(pl.name)})</a>`)
+        .join('');
+    }
+    const fpSlot = $('floorplan-link-slot');
+    if (fpSlot) {
+      fpSlot.innerHTML = d?.wiring?.hasFloorplan
+        ? `<a class="btn btn-sm btn-accent" href="/floorplan/index.html" target="_blank" rel="noopener">${esc(t('floorplanReady'))}</a>`
+        : `<span class="pill">${esc(t('floorplanNone'))}</span>`;
+    }
+
+    const activeLayers = ['ui', 'api-client', 'routes', 'services', 'database', 'shared'].filter((ly) =>
+      nodes.some((n) => n.layer === ly)
+    );
+    filtersEl.innerHTML = [
+      `<button type="button" class="sub-tab-btn ${state.cmLayer === 'all' ? 'active' : ''}" data-cm-layer="all">${esc(t('layerAll'))}</button>`,
+      ...activeLayers.map(
+        (ly) =>
+          `<button type="button" class="sub-tab-btn ${state.cmLayer === ly ? 'active' : ''}" data-cm-layer="${esc(ly)}">${esc(loc(LAYER_META[ly]?.label || ly))}</button>`
+      ),
+    ].join('');
+
+    filtersEl.querySelectorAll('[data-cm-layer]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.cmLayer = btn.dataset.cmLayer;
+        renderCodeMap();
+      });
+    });
+
+    if (nodes.length === 0) {
+      svg.setAttribute('viewBox', '0 0 960 360');
+      svg.innerHTML = `<text x="50%" y="50%" text-anchor="middle" fill="var(--zd-ink-muted)" font-size="14" font-family="var(--zd-font-sans)">${esc(t('cmEmpty'))}</text>`;
+      inspectorEl.innerHTML = `<span>${esc(t('cmEmptyHint'))}</span>`;
+      return;
+    }
+
+    const visibleNodes = state.cmLayer === 'all' ? nodes : nodes.filter((n) => n.layer === state.cmLayer);
+    const visibleSet = new Set(visibleNodes.map((n) => n.id));
+    const colOrder = ['ui', 'api-client', 'routes', 'services', 'database', 'shared'].filter((ly) =>
+      visibleNodes.some((n) => n.layer === ly)
+    );
+
+    const colW = 268;
+    const nodeW = 218;
+    const nodeH = 48;
+    const rowGap = 68;
+    const startX = 28;
+    const startY = 56;
+
+    let maxRows = 1;
+    const positions = new Map();
+    colOrder.forEach((ly, cIdx) => {
+      const colNodes = visibleNodes.filter((n) => n.layer === ly);
+      if (colNodes.length > maxRows) maxRows = colNodes.length;
+      colNodes.forEach((n, rIdx) => {
+        positions.set(n.id, {
+          x: startX + cIdx * colW,
+          y: startY + rIdx * rowGap,
+          node: n,
+        });
+      });
+    });
+
+    const vbW = Math.max(960, startX * 2 + Math.max(0, colOrder.length - 1) * colW + nodeW);
+    const vbH = Math.max(360, startY + maxRows * rowGap + 24);
+    svg.setAttribute('viewBox', `0 0 ${vbW} ${vbH}`);
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+    // Determine highlighted set when a node is selected or searched
+    const sel = state.cmSelectedNode;
+    const searchQ = state.cmSearch.trim().toLowerCase();
+    const connectedSet = new Set();
+    if (sel && positions.has(sel)) {
+      connectedSet.add(sel);
+      for (const e of edges) {
+        if (e.from === sel) connectedSet.add(e.to);
+        if (e.to === sel) connectedSet.add(e.from);
+      }
+    }
+
+    const isAr = currentLang() === 'ar';
+    const headersSvg = colOrder
+      .map((ly, cIdx) => {
+        const x = startX + cIdx * colW;
+        const meta = LAYER_META[ly] || { label: ly, color: '#556058' };
+        const hdrText = isAr ? loc(meta.label) : loc(meta.label).toUpperCase();
+        return `<text x="${x + 4}" y="28" fill="var(--zd-ink-muted)" font-size="11.5" font-weight="700" font-family="var(--zd-font-sans)" letter-spacing="${isAr ? '0' : '0.05em'}">${esc(hdrText)}</text>`;
+      })
+      .join('');
+
+    const edgesSvg = edges
+      .filter((e) => visibleSet.has(e.from) && visibleSet.has(e.to))
+      .map((e) => {
+        const p1 = positions.get(e.from);
+        const p2 = positions.get(e.to);
+        if (!p1 || !p2) return '';
+        const x1 = p1.x + nodeW;
+        const y1 = p1.y + nodeH / 2;
+        const x2 = p2.x;
+        const y2 = p2.y + nodeH / 2;
+        const dx = Math.max(40, Math.abs(x2 - x1) * 0.48);
+        const dPath = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+        const isHttp = e.kind === 'http';
+        const isBroken = e.status === 'broken';
+        const stroke = isBroken ? '#B91C1C' : isHttp ? '#10B981' : '#8A948C';
+        const dash = isBroken ? 'stroke-dasharray="5 4"' : '';
+        const isHi = sel && (e.from === sel || e.to === sel);
+        const cls = sel ? (isHi ? 'cm-edge highlighted' : 'cm-edge dimmed') : 'cm-edge';
+        return `<path d="${dPath}" stroke="${stroke}" ${dash} class="${cls}" />`;
+      })
+      .join('');
+
+    const degFont = isAr ? 'var(--zd-font-sans)' : 'var(--zd-font-mono)';
+    const nodesSvg = [...positions.values()]
+      .map(({ x, y, node }) => {
+        const meta = LAYER_META[node.layer] || { color: '#556058', bg: '#F3EFE6' };
+        const isSelected = sel === node.id;
+        const matchesSearch = searchQ && node.id.toLowerCase().includes(searchQ);
+        const isDimmed = (sel && !connectedSet.has(node.id)) || (searchQ && !matchesSearch);
+        const stroke = isSelected || matchesSearch ? 'var(--zd-olive)' : 'var(--zd-border-strong)';
+        const sw = isSelected || matchesSearch ? 2.4 : 1.2;
+        const shortLabel = node.label.length > 28 ? `${node.label.slice(0, 26)}…` : node.label;
+        const degText = `${t('cmInPrefix')} ${node.inboundCount ?? 0} · ${t('cmOutPrefix')} ${node.outboundCount ?? 0}`;
+        return `
+          <g class="cm-node ${isDimmed ? 'dimmed' : ''}" data-cm-node="${esc(node.id)}" transform="translate(${x}, ${y})">
+            <title>${esc(node.id)}</title>
+            <rect width="${nodeW}" height="${nodeH}" rx="10" fill="var(--zd-elevated)" stroke="${stroke}" stroke-width="${sw}" />
+            <rect x="0" y="0" width="6" height="${nodeH}" rx="3" fill="${meta.color}" />
+            <text x="14" y="20" fill="var(--zd-ink)" font-size="11.5" font-weight="700" font-family="var(--zd-font-mono)">${esc(shortLabel)}</text>
+            <text x="14" y="37" fill="var(--zd-ink-muted)" font-size="10.5" font-family="${degFont}">${esc(degText)}</text>
+          </g>`;
+      })
+      .join('');
+
+    svg.innerHTML = `
+      <g id="cm-transform-group" transform="translate(${state.cmPanX}, ${state.cmPanY}) scale(${state.cmZoom})">
+        ${headersSvg}
+        ${edgesSvg}
+        ${nodesSvg}
+      </g>`;
+
+    $('cm-zoom-reset').textContent = `${Math.round(state.cmZoom * 100)}%`;
+
+    svg.querySelectorAll('[data-cm-node]').forEach((g) => {
+      g.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const id = g.dataset.cmNode;
+        state.cmSelectedNode = state.cmSelectedNode === id ? null : id;
+        renderCodeMap();
+      });
+    });
+
+    // Inspector bar
+    const broken = cm?.diagnostics?.brokenWires || [];
+    if (sel && positions.has(sel)) {
+      const incoming = edges.filter((e) => e.to === sel).map((e) => e.from);
+      const outgoing = edges.filter((e) => e.from === sel).map((e) => e.to);
+      inspectorEl.innerHTML = `
+        <div>
+          <strong class="mono">${esc(sel)}</strong>
+          <span style="margin-inline-start:8px;color:var(--zd-ink-muted);">${esc(t('cmBlastRadius'))}: <strong>${incoming.length}</strong> ${esc(t('cmIncomingWord'))} · <strong>${outgoing.length}</strong> ${esc(t('cmOutgoingWord'))}</span>
+        </div>
+        <button type="button" class="btn btn-sm" id="cm-clear-sel">${esc(t('clearFocusBtn'))}</button>`;
+      const clr = $('cm-clear-sel');
+      if (clr) clr.addEventListener('click', () => { state.cmSelectedNode = null; renderCodeMap(); });
+    } else {
+      inspectorEl.innerHTML = `
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill ${broken.length === 0 ? 'ok' : 'err'}">${broken.length} ${esc(t('brokenWiresWord'))}</span>
+          <span class="pill ${(sum.circularCount || 0) === 0 ? 'ok' : 'err'}">${sum.circularCount || 0} ${esc(t('cyclesWord'))}</span>
+          <span class="pill ${(sum.layerViolationCount || 0) === 0 ? 'ok' : 'err'}">${sum.layerViolationCount || 0} ${esc(t('layerViolationsWord'))}</span>
+        </div>
+        <span style="color:var(--zd-ink-muted);">${esc(t('codemapHint'))}</span>`;
+    }
+  }
+
+  function renderTreeNode(node, query) {
+    const q = (query || '').trim().toLowerCase();
+    if (node.type === 'file') {
+      const badgeLoc = node.badge ? tFileBadge(node.badge) : '';
+      const match =
+        !q ||
+        node.path.toLowerCase().includes(q) ||
+        (node.badge || '').toLowerCase().includes(q) ||
+        badgeLoc.toLowerCase().includes(q);
+      if (!match) return { html: '', count: 0 };
+      const isSel = state.selectedFile && state.selectedFile.path === node.path;
+      const html = `
+        <li>
+          <button type="button" class="tree-file-btn ${isSel ? 'selected' : ''}" data-file-path="${esc(node.path)}" data-file-badge="${esc(node.badge || '')}">
+            <span style="display:inline-flex;align-items:center;gap:7px;min-width:0;">
+              ${SVG.file}
+              <bdi dir="ltr" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(node.name)}</bdi>
+            </span>
+            ${node.badge ? `<span class="pill ${fileBadgeClass(node.badge)}">${esc(badgeLoc)}</span>` : ''}
+          </button>
+        </li>`;
+      return { html, count: 1 };
+    }
+
+    const renderedChildren = (node.children || []).map((c) => renderTreeNode(c, q)).filter((r) => r.html);
+    const totalMatches = renderedChildren.reduce((acc, r) => acc + r.count, 0);
+    if (q && totalMatches === 0 && !node.name.toLowerCase().includes(q)) return { html: '', count: 0 };
+    const html = `
+      <li>
+        <details open>
+          <summary class="tree-summary">
+            <span style="display:inline-flex;align-items:center;gap:6px;">
+              ${SVG.chevron}
+              ${SVG.folder}
+              <bdi dir="ltr">${esc(node.name)}</bdi>
+            </span>
+            <span class="pill">${totalMatches}</span>
+          </summary>
+          <ul class="tree-list">${renderedChildren.map((r) => r.html).join('')}</ul>
+        </details>
+      </li>`;
+    return { html, count: totalMatches };
+  }
+
+  function renderWiring() {
+    const d = state.data;
+    if (!d) return;
+
+    renderCodeMap();
+
+    const insp = $('file-inspector-slot');
+    if (state.selectedFile) {
+      insp.innerHTML = `
+        <div class="file-inspector-bar">
+          <div><strong>${esc(t('selectedFile'))}:</strong> <span class="mono">${esc(state.selectedFile.path)}</span></div>
+          ${state.selectedFile.badge ? `<span class="pill ${fileBadgeClass(state.selectedFile.badge)}">${esc(tFileBadge(state.selectedFile.badge))}</span>` : ''}
+        </div>`;
+    } else {
+      insp.innerHTML = '';
+    }
+
+    const treeData = state.tree || d.wiring.tree;
+    const query = ($('tree-search') && $('tree-search').value) || '';
+    if (treeData && treeData.children) {
+      $('tree-stats').textContent = `${treeData.fileCount || 0} ${t('filesScannedWord')}`;
+      const rendered = treeData.children.map((c) => renderTreeNode(c, query)).filter((r) => r.html);
+      $('tree-container').innerHTML = rendered.length
+        ? `<ul class="tree-list tree-root">${rendered.map((r) => r.html).join('')}</ul>`
+        : `<div class="empty-state">${esc(t('noMatchingFiles'))}</div>`;
+
+      $('tree-container').querySelectorAll('[data-file-path]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.selectedFile = { path: btn.dataset.filePath, badge: btn.dataset.fileBadge };
+          renderWiring();
+        });
+      });
+    } else {
+      $('tree-container').innerHTML = `<div class="empty-state">${esc(t('noWorkspaceFiles'))}</div>`;
+    }
+
+    const cq = (($('contracts-search') && $('contracts-search').value) || '').trim().toLowerCase();
+    const allRoutes = d.wiring.routes || [];
+    const routes = allRoutes.filter(
+      (r) => !cq || `${r.id} ${r.method} ${r.path} ${r.auth} ${r.request}`.toLowerCase().includes(cq)
+    );
+
+    $('contracts-stats').textContent = `${allRoutes.length} ${t('apiRoutesWord')} · ${(d.wiring.tables || []).length} ${t('dbTablesWord')}`;
+    if (allRoutes.length === 0) {
+      $('contracts-routes-container').innerHTML = `<div class="empty-state">${esc(t('contractsEmptyStage3'))}</div>`;
+    } else {
+      $('contracts-routes-container').innerHTML = routes.length
+        ? routes
+            .map((r) => {
+              const isPub = String(r.auth || '').toUpperCase().startsWith('PUBLIC');
+              return `
+                <div style="padding:12px 14px;border-radius:12px;background:var(--zd-surface);border:1px solid var(--zd-border);margin-bottom:9px;">
+                  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;">
+                    <div style="display:inline-flex;align-items:center;gap:8px;min-width:0;">
+                      <span class="pill ${methodBadgeClass(r.method)}">${esc(r.method)}</span>
+                      <strong class="mono">${esc(r.path)}</strong>
+                    </div>
+                    <span class="pill ${isPub ? 'warn' : 'ok'}">${esc(r.auth)}</span>
+                  </div>
+                  <div class="ltr-block" style="font-size:12px;color:var(--zd-ink-muted);margin-top:7px;">
+                    <strong>${esc(t('reqLabel'))}:</strong> <span class="mono">${esc(r.request)}</span> · <strong>${esc(t('resLabel'))}:</strong> <span class="mono">${esc(r.response)}</span>
+                  </div>
+                </div>`;
+            })
+            .join('')
+        : `<div class="empty-state">${esc(t('noMatchingRoutes'))}</div>`;
+    }
+
+    const allTables = d.wiring.tables || [];
+    const tables = allTables.filter(
+      (tb) => !cq || `${tb.table} ${tb.columns} ${tb.constraints}`.toLowerCase().includes(cq)
+    );
+    $('contracts-tables-container').innerHTML = tables.length
+      ? `<div class="table-wrap"><table><thead><tr><th>${esc(t('thTable'))}</th><th>${esc(t('thPk'))}</th><th>${esc(t('thColumns'))}</th><th>${esc(t('thConstraints'))}</th></tr></thead><tbody>${tables
+          .map(
+            (tb) =>
+              `<tr><td class="mono col-nowrap"><strong>${esc(tb.table)}</strong></td><td class="mono col-nowrap">${esc(tb.pk)}</td><td class="ltr-block" style="font-size:12px;">${esc(tb.columns)}</td><td class="ltr-block" style="font-size:12px;">${esc(tb.constraints)}</td></tr>`
+          )
+          .join('')}</tbody></table></div>`
+      : `<div style="font-size:13px;color:var(--zd-ink-muted);">${esc(allTables.length > 0 && cq ? t('noMatchingTables') : t('contractsEmptyStage3'))}</div>`;
+  }
+
+  /* ======================== v4.0 UI/UX & TYPOGRAPHY SHOWCASE ======================== */
+  function renderShowcase() {
+    const d = state.data;
+    const sc = d?.design?.showcase;
+    const layoutsEl = $('showcase-layouts-grid');
+    const fontsEl = $('showcase-fonts-row');
+    const palettesEl = $('showcase-palette-pills');
+    const frameEl = $('showcase-preview-frame');
+    if (!sc || !layoutsEl || !fontsEl || !frameEl) return;
+
+    const layouts = sc.layouts || [];
+    const fonts = sc.fontPairings || [];
+    const palettes = sc.palettes || [];
+
+    const activeLayout = layouts.find((l) => l.id === state.scLayout) || layouts[0];
+    const activeFont = fonts.find((f) => f.id === state.scFont) || fonts[0];
+    const activePalette = palettes.find((p) => p.id === state.scPalette) || palettes[0];
+    if (activeFont?.googleFontsUrl) loadGoogleFontGracefully(activeFont.googleFontsUrl);
+
+    layoutsEl.innerHTML = layouts
+      .map(
+        (l) => `
+        <button type="button" class="showcase-choice ${l.id === activeLayout?.id ? 'active' : ''}" data-sc-layout="${esc(l.id)}">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;width:100%;">
+            <strong>${esc(loc(l.name))}</strong>
+            ${l.recommended ? `<span class="pill ok">${esc(t('recommended'))}</span>` : ''}
+          </div>
+          <span style="font-size:12px;color:var(--zd-ink-muted);">${esc(loc(l.tagline))}</span>
+        </button>`
+      )
+      .join('');
+
+    fontsEl.innerHTML = fonts
+      .map(
+        (f) => `
+        <button type="button" class="font-pill-btn ${f.id === activeFont?.id ? 'active' : ''}" data-sc-font="${esc(f.id)}">
+          <span class="ltr-inline" style="font-family:inherit;">${esc(f.label)}</span>
+          <span class="font-vibe">${esc(loc(f.vibe))}</span>
+        </button>`
+      )
+      .join('');
+
+    palettesEl.innerHTML = palettes
+      .map(
+        (p) => `
+        <button type="button" class="btn btn-sm ${p.id === activePalette?.id ? 'btn-primary' : ''}" data-sc-palette="${esc(p.id)}">
+          <span style="width:12px;height:12px;border-radius:4px;background:${esc(p.primary)};border:1px solid rgba(255,255,255,0.4);"></span>
+          <span>${esc(loc(p.name))}</span>
+        </button>`
+      )
+      .join('');
+
+    const dir = state.scDir || (currentLang() === 'ar' ? 'rtl' : 'ltr');
+    const isAr = dir === 'rtl';
+    const dark = state.scDark || activePalette?.id === 'obsidian-emerald';
+    const bgCanvas = dark ? '#0F1412' : activePalette?.canvas || '#FBF9F5';
+    const bgSurface = dark ? '#18211E' : activePalette?.surface || '#F3EFE6';
+    const primary = dark ? '#34D399' : activePalette?.primary || '#243324';
+    const onPrimary = dark ? '#08150F' : '#FBF9F5';
+    const ink = dark ? '#EEF3F0' : activePalette?.ink || '#1C241E';
+    const muted = dark ? '#9AA9A1' : '#556058';
+    const fontFamily = activeFont?.cssStack || 'var(--zd-font-sans)';
+    const layoutId = activeLayout?.id || 'editorial-calm';
+
+    const copy = isAr
+      ? {
+          brand: 'نظام العيادات',
+          nav: ['ملخص الأداء', 'المواعيد', 'الفواتير', 'سجل الحركات'],
+          cta: '+ حجز جديد',
+          kpis: [
+            ['إيراد اليوم', 'EGP 28,450'],
+            ['حجوزات اليوم', '42'],
+            ['فواتير معلّقة', '3'],
+          ],
+          cols: ['الرقم', 'المريض', 'القسم', 'المبلغ', 'الحالة', 'إجراء'],
+          rows: [
+            ['INV-401', 'أحمد منصور', 'الباطنة', 'EGP 650.00', 'مدفوعة'],
+            ['INV-402', 'سارة إبراهيم', 'الأسنان', 'EGP 1,400.00', 'قيد المراجعة'],
+          ],
+          action: 'التفاصيل',
+          quickPh: 'ابحث برقم الملف أو اسم المريض...',
+        }
+      : {
+          brand: 'NexusCare Desk',
+          nav: ['Overview', 'Schedule', 'Invoices', 'Activity Log'],
+          cta: '+ New Booking',
+          kpis: [
+            ['Today Revenue', 'EGP 28,450'],
+            ['Appointments', '42'],
+            ['Pending Claims', '3'],
+          ],
+          cols: ['Ref', 'Patient', 'Department', 'Amount', 'Status', 'Action'],
+          rows: [
+            ['INV-401', 'Ahmed Mansour', 'Internal Med', 'EGP 650.00', 'Paid'],
+            ['INV-402', 'Sara Ibrahim', 'Dental', 'EGP 1,400.00', 'Pending'],
+          ],
+          action: 'Details',
+          quickPh: 'Search patient name or file ID...',
+        };
+
+    const navHtml =
+      layoutId === 'executive-dense'
+        ? `<aside class="mini-app-sidebar" style="background:${bgSurface};">
+            <strong style="margin-bottom:6px;color:${primary};">${esc(copy.brand)}</strong>
+            ${copy.nav
+              .map(
+                (item, idx) =>
+                  `<span style="padding:7px 10px;border-radius:8px;font-size:12px;font-weight:650;${idx === 0 ? `background:${primary};color:${onPrimary};` : `color:${muted};`}">${esc(item)}</span>`
+              )
+              .join('')}
+          </aside>`
+        : `<div class="mini-app-topnav ${layoutId === 'modern-glass' ? 'glass-nav' : ''}" style="background:${bgSurface};">
+            <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+              <strong style="color:${primary};">${esc(copy.brand)}</strong>
+              <div style="display:flex;gap:10px;font-size:12px;font-weight:600;color:${muted};">
+                ${copy.nav.map((item, idx) => `<span style="${idx === 0 ? `color:${ink};font-weight:750;` : ''}">${esc(item)}</span>`).join('')}
+              </div>
+            </div>
+            <span style="padding:5px 11px;border-radius:9px;background:${primary};color:${onPrimary};font-size:11.5px;font-weight:700;">${esc(copy.cta)}</span>
+          </div>`;
+
+    const bodyHtml = `
+      <div class="mini-app-body">
+        <div class="mini-kpi-row">
+          ${copy.kpis
+            .map(
+              ([lbl, val]) => `
+              <div class="mini-kpi-box" style="background:${bgSurface};">
+                <div style="font-size:11px;color:${muted};font-weight:650;">${esc(lbl)}</div>
+                <div style="font-size:19px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;"><bdi dir="ltr">${esc(val)}</bdi></div>
+              </div>`
+            )
+            .join('')}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <input id="showcase-quick-input" name="showcaseQuickInput" aria-label="Preview search" readonly value="${esc(copy.quickPh)}" style="flex:1 1 120px;min-width:0;padding:7px 10px;border-radius:9px;border:1px solid rgba(128,128,128,0.28);background:${bgSurface};color:${muted};font-family:inherit;font-size:12px;" />
+          <span style="padding:7px 12px;border-radius:9px;background:${primary};color:${onPrimary};font-size:12px;font-weight:700;white-space:nowrap;">${esc(copy.cta)}</span>
+        </div>
+        <div class="mini-table-wrap" style="background:${bgSurface};">
+          <table>
+            <thead>
+              <tr>
+                ${copy.cols.map((c, idx) => `<th class="${idx === copy.cols.length - 1 ? 'sticky-action' : ''}" style="background:${bgSurface};color:${muted};">${esc(c)}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>
+              ${copy.rows
+                .map(
+                  (row) => `
+                  <tr>
+                    <td class="mono col-nowrap">${esc(row[0])}</td>
+                    <td><strong>${esc(row[1])}</strong></td>
+                    <td>${esc(row[2])}</td>
+                    <td class="mono col-nowrap" style="font-variant-numeric:tabular-nums;">${esc(row[3])}</td>
+                    <td><span class="pill ok">${esc(row[4])}</span></td>
+                    <td class="sticky-action" style="background:${bgSurface};"><span style="padding:4px 9px;border-radius:7px;background:${primary};color:${onPrimary};font-size:11px;font-weight:700;">${esc(copy.action)}</span></td>
+                  </tr>`
+                )
+                .join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+
+    frameEl.innerHTML = `
+      <div dir="${dir}" class="mini-app-shell layout-${esc(layoutId)}" style="background:${bgCanvas};color:${ink};font-family:${fontFamily};">
+        ${layoutId === 'executive-dense' ? `${navHtml}${bodyHtml}` : `<div style="display:flex;flex-direction:column;">${navHtml}${bodyHtml}</div>`}
+      </div>`;
+
+    layoutsEl.querySelectorAll('[data-sc-layout]').forEach((b) =>
+      b.addEventListener('click', () => { state.scLayout = b.dataset.scLayout; renderDesign(); })
+    );
+    fontsEl.querySelectorAll('[data-sc-font]').forEach((b) =>
+      b.addEventListener('click', () => { state.scFont = b.dataset.scFont; renderDesign(); })
+    );
+    palettesEl.querySelectorAll('[data-sc-palette]').forEach((b) =>
+      b.addEventListener('click', () => { state.scPalette = b.dataset.scPalette; state.scDark = b.dataset.scPalette === 'obsidian-emerald'; renderDesign(); })
+    );
+  }
+
+  function renderDesign() {
+    const d = state.data;
+    if (!d) return;
+
+    renderShowcase();
+
+    const tokens = d.design.tokens || {};
+    const palette = tokens.palette || {};
+    const violations = d.design.driftViolations || [];
+
+    $('tokens-meta').innerHTML = `<bdi dir="ltr">${esc(tokens.themeName || t('tokensTitle'))}</bdi> · ${esc(t('strictLabel'))}: ${esc(tokens.strictPaletteOnly ? t('strictOn') : t('strictForbiddenOnly'))}`;
+
+    const badge = $('token-drift-badge');
+    if (violations.length === 0) {
+      badge.textContent = `${t('tokenClean')} (0)`;
+      badge.className = 'pill ok';
+      $('token-drift-violations').innerHTML = '';
+    } else {
+      badge.textContent = `${violations.length} ${t('tokenViolations')}`;
+      badge.className = 'pill err';
+      $('token-drift-violations').innerHTML = `<div class="table-wrap"><table><thead><tr><th>${esc(t('thFile'))}</th><th>${esc(t('thLine'))}</th><th>${esc(t('thColor'))}</th><th>${esc(t('thReason'))}</th></tr></thead><tbody>${violations
+        .map(
+          (v) =>
+            `<tr><td class="mono col-nowrap">${esc(v.file)}</td><td class="mono col-nowrap">${esc(v.line)}</td><td class="mono col-nowrap"><strong>${esc(v.color)}</strong></td><td class="ltr-block">${esc(v.reason)}</td></tr>`
+        )
+        .join('')}</tbody></table></div>`;
+    }
+
+    const entries = Object.entries(palette);
+    $('swatch-grid').innerHTML = entries.length
+      ? entries
+          .map(
+            ([name, hex]) => `
+            <button type="button" class="swatch-card" data-copy-hex="${esc(hex)}" title="${esc(t('copyPrefix'))} ${esc(hex)}">
+              <div class="swatch-color" style="background:${esc(hex)};"></div>
+              <div class="swatch-meta">
+                <div style="font-weight:700;" class="ltr-block">${esc(name)}</div>
+                <div class="swatch-hex">${esc(hex)}</div>
+              </div>
+            </button>`
+          )
+          .join('')
+      : `<div class="empty-state">${esc(t('noTokens'))}</div>`;
+
+    $('swatch-grid').querySelectorAll('[data-copy-hex]').forEach((el) => {
+      el.addEventListener('click', () => {
+        const hex = el.dataset.copyHex;
+        if (navigator.clipboard) navigator.clipboard.writeText(hex).catch(() => {});
+        showToast(`${t('toastCopiedHex')} ${hex}`);
+      });
+    });
+
+    const forbidden = tokens.forbiddenColors || [];
+    $('forbidden-colors-container').innerHTML = forbidden.length
+      ? `<div style="display:flex;flex-wrap:wrap;gap:8px;">${forbidden
+          .map(
+            (hex) =>
+              `<span class="banned-chip"><span style="width:12px;height:12px;border-radius:3px;background:${esc(hex)};border:1px solid currentColor;"></span><bdi dir="ltr">${esc(hex)}</bdi></span>`
+          )
+          .join('')}</div>`
+      : `<div style="font-size:13px;color:var(--zd-ink-muted);">${esc(t('noForbidden'))}</div>`;
+
+    const typo = tokens.typography || {};
+    const dir = tokens.directionality || {};
+    const copy = d.design.copyStyle || {};
+    $('typography-preview').innerHTML = `
+      <div style="padding:14px;border-radius:12px;background:var(--zd-surface);border:1px solid var(--zd-border);">
+        <div style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;color:var(--zd-ink-muted);">${esc(t('copyStyleLockTitle'))}</div>
+        ${copy.tone ? `<div style="font-size:12.5px;margin:8px 0;">${esc(t('voiceLabel'))}: <bdi dir="ltr">${esc(copy.tone.voice || '')}</bdi> · ${esc(t('numeralsLabel'))}: <span class="mono">${esc(copy.locales?.numeralStyle || 'western-0-9')}</span></div>` : ''}
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+          <span class="pill ok">${esc(t('tabularLabel'))}: ${esc(typo.tabularNumerals ? t('onWord') : t('offWord'))}</span>
+          <span class="pill ok">${esc(t('rtlParityLabel'))}: ${esc(dir.supportsRtl ? t('enabledWord') : 'LTR')}</span>
+          <span class="pill ok">${esc(t('logicalCssLabel'))}: ${esc(dir.logicalCssOnly ? t('enforcedWord') : t('standardWord'))}</span>
+        </div>
+      </div>`;
+
+    const activeFont = (d.design.showcase?.fontPairings || []).find((f) => f.id === state.scFont);
+    const specFont = activeFont?.cssStack || 'var(--zd-font-sans)';
+    $('component-preview').innerHTML = `
+      <div style="padding:16px;border-radius:14px;background:var(--zd-surface);border:1px solid var(--zd-border);font-family:${specFont};display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+          <strong class="ltr-inline">${esc(activeFont?.label || 'IBM Plex Sans Arabic + Plus Jakarta Sans')}</strong>
+          <span class="pill ok">Tabular 0-9</span>
+        </div>
+        <div style="font-size:22px;font-weight:800;line-height:1.25;">لوحة التحكم المالية · Financial Clarity</div>
+        <div style="font-size:13.5px;color:var(--zd-ink-muted);">سجل الحركات وخطوات الموافقة بوضوح تام — Clean bilingual rhythm with zero clipped actions.</div>
+        <div style="font-size:18px;font-weight:750;font-variant-numeric:tabular-nums;" class="ltr-block">EGP 1,245,890.00 · 0123456789 · 2026-11-21</div>
+      </div>`;
+  }
+
+  function applyMemorySubView() {
+    document.querySelectorAll('[data-mem-view]').forEach((btn) => {
+      const active = btn.dataset.memView === state.memoryView;
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', String(active));
+    });
+    const topGrid = $('mem-top-grid');
+    if (topGrid) {
+      topGrid.style.gridTemplateColumns =
+        state.memoryView === 'rules' || state.memoryView === 'regressions' ? '1fr' : '';
+    }
+    document.querySelectorAll('[data-mem-section]').forEach((sec) => {
+      const show = state.memoryView === 'all' || sec.dataset.memSection === state.memoryView;
+      sec.style.display = show ? '' : 'none';
+    });
+  }
+
+  function renderMemory() {
+    const d = state.data;
+    if (!d) return;
+
+    const rq = (($('rules-search') && $('rules-search').value) || '').trim().toLowerCase();
+    const rules = (d.memory.lockedRules || []).filter(
+      (r) => !rq || `${r.id} ${r.category} ${r.rule}`.toLowerCase().includes(rq)
+    );
+    $('rules-tbody').innerHTML = rules.length
+      ? rules
+          .map(
+            (r) => `
+            <tr>
+              <td class="mono col-nowrap"><strong>${esc(r.id)}</strong></td>
+              <td class="col-nowrap"><span class="pill">${esc(tCategory(r.category))}</span></td>
+              <td class="ltr-block">${esc(r.rule)}</td>
+              <td class="col-nowrap"><span class="pill ${esc(r.status)}">${esc(tStatus(r.status))}</span></td>
+            </tr>`
+          )
+          .join('')
+      : `<tr><td colspan="4" style="color:var(--zd-ink-muted);">${esc(t('noMatchingRules'))}</td></tr>`;
+
+    const sev = ($('regression-severity-filter') && $('regression-severity-filter').value) || 'ALL';
+    const bq = (($('regression-search') && $('regression-search').value) || '').trim().toLowerCase();
+    const bugs = (d.memory.regressions || []).filter((b) => {
+      if (sev !== 'ALL' && b.severity !== sev) return false;
+      if (!bq) return true;
+      return JSON.stringify(b).toLowerCase().includes(bq);
+    });
+
+    $('regression-list').innerHTML = bugs.length
+      ? bugs
+          .map(
+            (b) => `
+            <div class="regression-card">
+              <div class="regression-head">
+                <div class="ltr-block"><strong class="mono">${esc(b.id)}</strong> · ${esc(b.symptom)}</div>
+                <div class="regression-badges">
+                  <span class="pill ${esc(b.severity)}">${esc(b.severity)}</span>
+                  <span class="pill">${esc(t('recurrence'))}: ${esc(b.recurrenceCount ?? 0)}</span>
+                </div>
+              </div>
+              <div style="font-size:12.5px;margin-top:8px;"><strong>${esc(t('rootCause'))}:</strong> <bdi dir="ltr">${esc(b.rootCause)}</bdi></div>
+              <div style="font-size:12.5px;margin-top:5px;color:var(--zd-ok-ink);"><strong>${esc(t('protectedInvariant'))}:</strong> <bdi dir="ltr">${esc(b.invariantToProtect)}</bdi></div>
+              <div style="font-size:11.5px;color:var(--zd-ink-muted);margin-top:7px;" class="ltr-block">
+                <span class="mono">${(b.filesTouched || []).map(esc).join(', ')}</span> · <span class="mono">${esc(b.regressionTestRef || '-')}</span>
+              </div>
+            </div>`
+          )
+          .join('')
+      : `<div class="empty-state">${esc(t('noRegressions'))}</div>`;
+
+    const checkpoints = d.memory.checkpoints || [];
+    const cpCountPill = $('checkpoints-count-pill');
+    if (cpCountPill) cpCountPill.textContent = `${checkpoints.length} ${t('checkpointsWord')}`;
+    const cpContainer = $('checkpoints-container');
+    if (cpContainer) {
+      cpContainer.innerHTML = checkpoints.length
+        ? `<div class="timeline-list">${checkpoints
+            .slice()
+            .reverse()
+            .map(
+              (cp) => `
+              <div class="timeline-item">
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                    <strong class="mono">${esc(cp.id)}</strong>
+                    <span class="ltr-inline" style="font-family:var(--zd-font-sans);font-weight:700;">${esc(cp.label)}</span>
+                    <span class="pill">${esc(cp.dirtyFilesCount ?? 0)} ${esc(t('dirtyWord'))}</span>
+                  </div>
+                  <div style="font-size:12px;color:var(--zd-ink-muted);margin-top:4px;" class="ltr-block">
+                    <span class="mono">${esc((cp.timestamp || '').slice(0, 16).replace('T', ' '))}</span> · <span class="mono">${esc(cp.gitTag || cp.gitHead || 'local')}</span>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-sm" data-copy-rollback="${esc(cp.rollbackCommand || '')}">${esc(t('copyRollback'))}</button>
+              </div>`
+            )
+            .join('')}</div>`
+        : `<div class="empty-state">${esc(t('noCheckpoints'))}</div>`;
+
+      cpContainer.querySelectorAll('[data-copy-rollback]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const cmd = btn.dataset.copyRollback;
+          if (navigator.clipboard && cmd) navigator.clipboard.writeText(cmd).catch(() => {});
+          showToast(t('toastRollbackCopied'));
+        });
+      });
+    }
+
+    const skills = d.memory.learnedSkills || [];
+    $('learned-skills-container').innerHTML = skills.length
+      ? `<div class="grid-2">${skills
+          .map(
+            (sk) => `
+            <div style="padding:15px;border-radius:12px;background:var(--zd-surface);border:1px solid var(--zd-border);">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;">
+                <h3 class="mono" style="margin:0;font-size:13.5px;font-weight:750;">${esc(sk.fileName)}</h3>
+                <span class="pill ok">${esc(sk.domain || 'project-skill')}</span>
+              </div>
+              <div class="md-body ltr-block">${renderSimpleMarkdown(sk.content).html}</div>
+            </div>`
+          )
+          .join('')}</div>`
+      : `<div class="empty-state">${esc(t('noSkills'))}</div>`;
+
+    applyMemorySubView();
+  }
+
+  function renderSourceCell(src) {
+    const raw = String(src || '').trim();
+    if (/^https?:\/\//i.test(raw)) {
+      return `<a class="link-ext ltr-inline" href="${esc(raw)}" target="_blank" rel="noopener noreferrer">${esc(raw)}</a>`;
+    }
+    return `<span class="ltr-block">${esc(raw)}</span>`;
+  }
+
+  function renderHub() {
+    const d = state.data;
+    if (!d) return;
+
+    const sq = (($('sources-search') && $('sources-search').value) || '').trim().toLowerCase();
+    const sources = (d.hub.sources || []).filter((s) => !sq || JSON.stringify(s).toLowerCase().includes(sq));
+    $('sources-tbody').innerHTML = sources.length
+      ? sources
+          .map(
+            (s) => `
+            <tr>
+              <td class="mono col-nowrap"><strong>${esc(s.ref)}</strong></td>
+              <td class="ltr-block"><strong>${esc(s.standard)}</strong></td>
+              <td style="font-size:12px;">${renderSourceCell(s.source)}</td>
+              <td class="ltr-block">${esc(s.rule)}</td>
+              <td class="mono col-nowrap">${esc(s.modules)}</td>
+              <td class="col-nowrap"><span class="pill ${esc(s.status)}">${esc(tStatus(s.status))}</span></td>
+            </tr>`
+          )
+          .join('')
+      : `<tr><td colspan="6" style="color:var(--zd-ink-muted);">${esc(t('noSources'))}</td></tr>`;
+
+    const sec = d.hub.security || { p0: 0, p1: 0, verdict: 'PENDING', controls: [] };
+    $('security-pills').innerHTML = `
+      <span class="pill ${sec.p0 === 0 ? 'ok' : 'err'}">P0: ${esc(sec.p0)}</span>
+      <span class="pill ${sec.p1 === 0 ? 'ok' : 'err'}">P1: ${esc(sec.p1)}</span>
+      <span class="pill ${sec.verdict === 'PASS' ? 'ok' : 'warn'}">${esc(t('verdictLabel'))}: ${esc(tStatus(sec.verdict))}</span>`;
+
+    $('security-controls-container').innerHTML = (sec.controls || []).length
+      ? `<div class="table-wrap"><table><thead><tr><th>#</th><th>${esc(t('thControl'))}</th><th>${esc(t('thStatus'))}</th><th>${esc(t('thEvidence'))}</th></tr></thead><tbody>${sec.controls
+          .map(
+            (c) =>
+              `<tr><td class="mono col-nowrap">${esc(c.num)}</td><td class="ltr-block">${esc(c.control)}</td><td class="col-nowrap"><span class="pill ${esc(c.status)}">${esc(tStatus(c.status))}</span></td><td class="mono" style="font-size:12px;">${esc(c.evidence)}</td></tr>`
+          )
+          .join('')}</tbody></table></div>`
+      : `<div style="font-size:13px;color:var(--zd-ink-muted);">${esc(t('noSecControls'))}</div>`;
+
+    const renderedGuide = renderSimpleMarkdown(d.hub.handoverMarkdown || '', { collectToc: true });
+    $('handover-container').innerHTML = `<div class="ltr-block">${renderedGuide.html}</div>`;
+    const tocEl = $('handover-toc');
+    if (tocEl) {
+      tocEl.innerHTML = renderedGuide.toc.length
+        ? renderedGuide.toc.map((item) => `<a href="#${esc(item.id)}" class="ltr-block">${esc(item.label)}</a>`).join('')
+        : `<span style="font-size:12px;color:var(--zd-ink-muted);">${esc(t('guideSections'))}</span>`;
+    }
+  }
+
+  function renderAll() {
+    renderCommandCenter();
+    renderInbox();
+    renderWiring();
+    renderDesign();
+    renderMemory();
+    renderHub();
+  }
+
+  async function fetchAllData() {
+    if (state.isExportMode) {
+      state.data = window.__ZERODRIFT_DATA__;
+      state.tree = state.data.wiring ? state.data.wiring.tree : null;
+      if (!state.lang && state.data.defaultLocale) state.lang = state.data.defaultLocale;
+      if (state.data.design?.showcase) {
+        state.scLayout = state.data.design.showcase.selectedLayout || state.scLayout;
+        state.scFont = state.data.design.showcase.selectedFontPairing || state.scFont;
+        state.scPalette = state.data.design.showcase.selectedPalette || state.scPalette;
+      }
+      $('live-indicator').classList.toggle('offline', !state.data.demoMode);
+      $('live-indicator-text').textContent = state.data.demoMode ? t('interactiveDemo') : t('portableHtml');
+      applyPreferences();
+      return;
+    }
+
+    try {
+      const [stateRes, treeRes] = await Promise.all([fetch('/api/state'), fetch('/api/tree')]);
+      state.data = await stateRes.json();
+      state.tree = await treeRes.json();
+      if (!state.lang && state.data.defaultLocale) state.lang = state.data.defaultLocale;
+      if (state.data.design?.showcase) {
+        state.scLayout = state.data.design.showcase.selectedLayout || state.scLayout;
+        state.scFont = state.data.design.showcase.selectedFontPairing || state.scFont;
+        state.scPalette = state.data.design.showcase.selectedPalette || state.scPalette;
+      }
+      applyPreferences();
+    } catch (err) {
+      showToast(`${t('toastRefreshError')}: ${err.message}`);
+    }
+  }
+
+  function connectSSE() {
+    if (state.isExportMode || typeof EventSource === 'undefined') return;
+    const ind = $('live-indicator');
+    const txt = $('live-indicator-text');
+    const es = new EventSource('/api/events');
+    state.eventSource = es;
+
+    es.onopen = () => {
+      ind.classList.remove('offline');
+      txt.textContent = t('liveSse');
+    };
+    es.addEventListener('update', () => fetchAllData());
+    es.onerror = () => {
+      ind.classList.add('offline');
+      txt.textContent = t('reconnecting');
+    };
+  }
+
+  function bindEvents() {
+    document.querySelectorAll('.nav-tab').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        document.querySelectorAll('.nav-tab').forEach((b) => {
+          b.classList.toggle('active', b === btn);
+          b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach((panel) => {
+          panel.classList.toggle('active', panel.id === `panel-${target}`);
+        });
+      });
+    });
+
+    const appBtn = $('appearance-btn');
+    const appPop = $('appearance-popover');
+    const closePop = () => {
+      appPop.classList.remove('open');
+      appBtn.setAttribute('aria-expanded', 'false');
+    };
+    appBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = !appPop.classList.contains('open');
+      appPop.classList.toggle('open', willOpen);
+      appBtn.setAttribute('aria-expanded', String(willOpen));
+    });
+    appPop.addEventListener('click', (e) => e.stopPropagation());
+    document.addEventListener('click', closePop);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePop();
+    });
+
+    document.querySelectorAll('[data-theme-opt]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.theme = btn.dataset.themeOpt;
+        localStorage.setItem('zd-theme', state.theme);
+        applyPreferences();
+      });
+    });
+
+    $('brightness-slider').addEventListener('input', (e) => {
+      state.tone = Number(e.target.value);
+      localStorage.setItem('zd-tone', String(state.tone));
+      applyPreferences();
+    });
+
+    $('lang-toggle').addEventListener('click', () => {
+      state.lang = currentLang() === 'en' ? 'ar' : 'en';
+      localStorage.setItem('zd-lang', state.lang);
+      localStorage.setItem('zd-lang-manual', '1');
+      applyPreferences();
+      if (state.isExportMode && state.data) {
+        $('live-indicator-text').textContent = state.data.demoMode ? t('interactiveDemo') : t('portableHtml');
+      }
+    });
+
+    $('refresh-btn').addEventListener('click', () => {
+      fetchAllData();
+      showToast(t('toastRefreshed'));
+    });
+
+    $('copy-resume-btn').addEventListener('click', () => {
+      const msg = currentLang() === 'ar'
+        ? 'تم — حفظت إجاباتي في ZeroDrift Studio (.zerodrift/studio-outbox.json)، تقدر تكمل الآن.'
+        : 'continue — I saved my ZeroDrift Studio decisions in .zerodrift/studio-outbox.json.';
+      if (navigator.clipboard) navigator.clipboard.writeText(msg).catch(() => {});
+      showToast(t('toastResumeCopied'));
+    });
+
+    $('copy-handoff-btn').addEventListener('click', async () => {
+      try {
+        let prompt = state.data?.handoff?.resumePrompt || '';
+        if (!state.isExportMode) {
+          const res = await fetch('/api/handoff');
+          const json = await res.json();
+          if (res.ok && json.resumePrompt) prompt = json.resumePrompt;
+        }
+        if (!prompt) {
+          prompt = 'Resume ZeroDrift project cleanly: read .zerodrift/HANDOFF.md, .zerodrift/STATE.md, .zerodrift/CONTRACTS.md, and .zerodrift/memory/LOCKED-RULES.md.';
+        }
+        if (navigator.clipboard) navigator.clipboard.writeText(prompt).catch(() => {});
+        showToast(t('toastHandoffCopied'));
+      } catch (err) {
+        showToast(`${t('toastErrorPrefix')}: ${err.message}`);
+      }
+    });
+
+    // CodeMap zoom, pan & search
+    $('cm-zoom-in').addEventListener('click', () => {
+      state.cmZoom = Math.min(1.6, Number((state.cmZoom + 0.15).toFixed(2)));
+      renderCodeMap();
+    });
+    $('cm-zoom-out').addEventListener('click', () => {
+      state.cmZoom = Math.max(0.55, Number((state.cmZoom - 0.15).toFixed(2)));
+      renderCodeMap();
+    });
+    $('cm-zoom-reset').addEventListener('click', () => {
+      state.cmZoom = 1;
+      state.cmPanX = 0;
+      state.cmPanY = 0;
+      state.cmSelectedNode = null;
+      renderCodeMap();
+    });
+    $('codemap-search').addEventListener('input', (e) => {
+      state.cmSearch = e.target.value;
+      renderCodeMap();
+    });
+
+    const vp = $('codemap-viewport');
+    let dragging = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    vp.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('[data-cm-node]')) return;
+      dragging = true;
+      dragStartX = e.clientX - state.cmPanX;
+      dragStartY = e.clientY - state.cmPanY;
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      state.cmPanX = e.clientX - dragStartX;
+      state.cmPanY = e.clientY - dragStartY;
+      const g = $('cm-transform-group');
+      if (g) g.setAttribute('transform', `translate(${state.cmPanX}, ${state.cmPanY}) scale(${state.cmZoom})`);
+    });
+    window.addEventListener('pointerup', () => { dragging = false; });
+
+    // Design Showcase toggles & 1-click Gate 4 lock
+    $('showcase-mode-toggle').addEventListener('click', () => {
+      state.scDark = !state.scDark;
+      renderShowcase();
+    });
+    $('showcase-dir-toggle').addEventListener('click', () => {
+      const cur = state.scDir || (currentLang() === 'ar' ? 'rtl' : 'ltr');
+      state.scDir = cur === 'rtl' ? 'ltr' : 'rtl';
+      renderShowcase();
+    });
+    $('lock-design-btn').addEventListener('click', async () => {
+      const sc = state.data?.design?.showcase || {};
+      const font = (sc.fontPairings || []).find((f) => f.id === state.scFont);
+      const pal = (sc.palettes || []).find((p) => p.id === state.scPalette);
+      const body = {
+        layoutId: state.scLayout,
+        fontPairingId: state.scFont,
+        paletteId: state.scPalette,
+        typography: font ? { arabicFont: font.arabicFont, latinFont: font.latinFont } : undefined,
+        palette: pal ? { canvas: pal.canvas, surface: pal.surface, brandPrimary: pal.primary, brandAccent: pal.accent, inkPrimary: pal.ink } : undefined,
+      };
+      if (state.isExportMode) {
+        if (state.data?.demoMode) {
+          state.data.outbox = state.data.outbox || { submissions: [] };
+          state.data.outbox.submissions.push({
+            batchId: 'GATE-4-DESIGN-LOCK',
+            gateDecision: 'APPROVE',
+            answers: { layoutConcept: state.scLayout, fontPairing: state.scFont, palette: state.scPalette },
+            submittedAt: new Date().toISOString(),
+          });
+          showToast(t('toastDesignLocked'));
+          renderInbox();
+        } else {
+          showToast(t('toastReadOnly'));
+        }
+        return;
+      }
+      try {
+        const res = await fetch('/api/design-lock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) throw new Error('Design lock failed');
+        showToast(t('toastDesignLocked'));
+        await fetchAllData();
+      } catch (err) {
+        showToast(`${t('toastErrorPrefix')}: ${err.message}`);
+      }
+    });
+
+    document.querySelectorAll('[data-mem-view]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.memoryView = btn.dataset.memView;
+        applyMemorySubView();
+      });
+    });
+
+    $('add-rule-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const category = $('rule-category').value;
+      const rule = $('rule-text').value.trim();
+      if (!rule) return;
+      if (state.isExportMode) {
+        if (state.data && state.data.demoMode) {
+          const nextId = `RULE-${String((state.data.memory.lockedRules || []).length + 1).padStart(3, '0')}`;
+          state.data.memory.lockedRules.push({ id: nextId, category, rule, status: 'ACTIVE' });
+          $('rule-text').value = '';
+          showToast(`${nextId} — ${t('toastRuleLocked')}`);
+          renderAll();
+        } else {
+          showToast(t('toastReadOnly'));
+        }
+        return;
+      }
+      try {
+        const res = await fetch('/api/rules', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category, rule }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error || 'Failed to add rule');
+        $('rule-text').value = '';
+        showToast(`${json.ruleId} — ${t('toastRuleLocked')}`);
+        await fetchAllData();
+      } catch (err) {
+        showToast(`${t('toastErrorPrefix')}: ${err.message}`);
+      }
+    });
+
+    ['tree-search', 'contracts-search'].forEach((id) => {
+      const el = $(id);
+      if (el) el.addEventListener('input', renderWiring);
+    });
+
+    ['rules-search', 'regression-search', 'regression-severity-filter'].forEach((id) => {
+      const el = $(id);
+      if (el) {
+        el.addEventListener('input', renderMemory);
+        el.addEventListener('change', renderMemory);
+      }
+    });
+
+    const srcSearch = $('sources-search');
+    if (srcSearch) srcSearch.addEventListener('input', renderHub);
+  }
+
+  applyPreferences();
+  bindEvents();
+  fetchAllData();
+  connectSSE();
+})();
+
+</script>
+</body>
+</html>

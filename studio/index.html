@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="warm-ivory">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ZeroDrift Studio — Interactive local mission control dashboard for deterministic AI software engineering, Living Memory, Time Machine checkpoints, and two-way human-agent decisions." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Crect width='36' height='36' rx='10' fill='%23243324'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='%23FBF9F5' font-family='system-ui,sans-serif' font-weight='800' font-size='15'%3EZD%3C/text%3E%3C/svg%3E" />
+  <title>ZeroDrift Studio — Interactive Mission Control</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ambiance-veil" aria-hidden="true"></div>
+
+  <div class="studio-shell">
+    <!-- Single-Row Floating Glassmorphic Header -->
+    <header class="floating-header">
+      <div class="brand-group">
+        <div class="brand-mark" aria-hidden="true">ZD</div>
+        <div class="brand-title">
+          <div class="brand-row">
+            <h1 id="project-title">ZeroDrift Studio</h1>
+            <span id="live-indicator" class="live-pill">
+              <span class="live-dot"></span>
+              <span id="live-indicator-text">Connecting SSE</span>
+            </span>
+          </div>
+          <div class="brand-sub" id="project-meta">Loading project state...</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button id="copy-handoff-btn" class="btn btn-sm btn-accent" type="button" title="Copy 1-Line Fresh Session Resume Prompt">
+          <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span data-i18n="copyHandoffBtn">Fresh Handoff</span>
+        </button>
+
+        <button id="refresh-btn" class="btn btn-sm btn-ghost btn-icon" type="button" aria-label="Refresh Studio" title="Refresh Studio">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        </button>
+
+        <div class="popover-anchor">
+          <button id="appearance-btn" class="btn btn-sm" type="button" aria-expanded="false" aria-controls="appearance-popover">
+            <svg class="ico-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <span data-i18n="appearanceBtn">Appearance</span>
+          </button>
+
+          <div id="appearance-popover" class="appearance-popover" role="dialog" aria-label="Studio Appearance">
+            <div>
+              <div class="pop-section-label">
+                <span data-i18n="themeLabel">Theme</span>
+              </div>
+              <div class="theme-pills" id="theme-pills">
+                <button type="button" class="theme-pill-btn active" data-theme-opt="warm-ivory" data-i18n="themeIvory">Warm Ivory</button>
+                <button type="button" class="theme-pill-btn" data-theme-opt="soft-sand" data-i18n="themeSand">Soft Sand</button>
+                <button type="button" class="theme-pill-btn" data-theme-opt="midnight-slate" data-i18n="themeMidnight">Midnight</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="pop-section-label">
+                <label for="brightness-slider" data-i18n="brightnessLabel">Ambiance Tone</label>
+                <span id="brightness-readout" class="mono">0%</span>
+              </div>
+              <input id="brightness-slider" name="brightness" class="range-slider" type="range" min="-20" max="20" step="2" value="0" />
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:8px;border-top:1px solid var(--zd-border);">
+              <span style="font-size:12.5px;font-weight:650;" data-i18n="languageLabel">Interface Language</span>
+              <button id="lang-toggle" class="btn btn-sm btn-primary" type="button">EN / عربي</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Floating Glassmorphic 6-Module Tab Dock -->
+    <nav class="nav-rail" role="tablist" aria-label="ZeroDrift Studio Modules">
+      <button class="nav-tab active" role="tab" data-tab="command" aria-selected="true">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span data-i18n="tabCommand">Command Center</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="inbox" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        <span data-i18n="tabInbox">Decision Inbox</span>
+        <span id="inbox-badge" class="badge-count" style="display:none;">0</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="wiring" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"/></svg>
+        <span data-i18n="tabWiring">Map, Tree &amp; Contracts</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="design" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+        <span data-i18n="tabDesign">Design &amp; Tokens</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="memory" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span data-i18n="tabMemory">Memory &amp; Immunity</span>
+      </button>
+      <button class="nav-tab" role="tab" data-tab="hub" aria-selected="false">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+        <span data-i18n="tabHub">Sources, Security &amp; Guides</span>
+      </button>
+    </nav>
+
+    <main>
+      <!-- TAB 1: Command Center -->
+      <section id="panel-command" class="tab-panel active" role="tabpanel">
+        <div class="grid-4">
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricProgress">Pipeline Completion</div>
+            <div id="metric-progress" class="metric-value">0%</div>
+            <div class="progress-track">
+              <div id="metric-progress-bar" class="progress-fill" style="width:0%;"></div>
+            </div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricClarity">Intake Clarity Score</div>
+            <div class="clarity-row">
+              <div>
+                <div id="metric-clarity" class="metric-value">—</div>
+                <div class="card-subtitle" data-i18n="clarityTarget">Target ≥ 90%</div>
+              </div>
+              <svg class="ring-gauge" viewBox="0 0 48 48" aria-hidden="true">
+                <circle class="ring-track" cx="24" cy="24" r="19" />
+                <circle id="clarity-ring" class="ring-fill" cx="24" cy="24" r="19" stroke-dasharray="119.38" stroke-dashoffset="119.38" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricActiveSlice">Active Stage &amp; Slice</div>
+            <div id="metric-stage" class="metric-stage-val">Stage 0</div>
+            <div id="metric-slice" class="card-subtitle">Slice: NONE</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="metric-label" data-i18n="metricShield">Memory &amp; Drift Shield</div>
+            <div id="metric-shield" class="metric-value">0</div>
+            <div id="metric-shield-sub" class="card-subtitle">0 Regressions · Clean</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="pipelineTitle">Deterministic Lifecycle Pipeline (10 Checkpoints)</h2>
+              <p class="card-subtitle" id="next-action-text">Waiting for state snapshot...</p>
+            </div>
+            <div id="export-mode-banner"></div>
+          </div>
+          <div id="pipeline-grid" class="pipeline-grid"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="scorecardTitle">Verification &amp; Scanner Scorecard</h2>
+                <p class="card-subtitle" data-i18n="scorecardSub">Compiler, dead-code, security &amp; deterministic code scanners</p>
+              </div>
+              <span class="pill ok" id="scorecard-summary">Live</span>
+            </div>
+            <div id="scorecard-grid" class="grid-3"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="slicesTitle">Vertical Slice Ledger</h2>
+                <p class="card-subtitle" data-i18n="slicesSub">Independently verified end-to-end capabilities</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="thId">ID</th>
+                    <th data-i18n="thSlice">Slice</th>
+                    <th data-i18n="thStatus">Status</th>
+                    <th data-i18n="thCheck">Verification</th>
+                  </tr>
+                </thead>
+                <tbody id="slices-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: Interactive Q&A & Decision Inbox -->
+      <section id="panel-inbox" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="inboxTitle">Interactive Q&amp;A &amp; Gate Decision Inbox</h2>
+              <p class="card-subtitle" data-i18n="inboxSub">Answer agent questions or approve gates cleanly in-browser. Saved directly to .zerodrift/studio-outbox.json.</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span id="inbox-delivery-status" class="pill">Idle</span>
+              <button id="copy-resume-btn" class="btn btn-sm" type="button" data-i18n="copyResumeBtn">Copy Resume Signal</button>
+            </div>
+          </div>
+          <div id="inbox-container"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title" data-i18n="outboxHistoryTitle">Submitted Decisions History</h2>
+          </div>
+          <div id="outbox-container"></div>
+        </div>
+      </section>
+
+      <!-- TAB 3: Interactive Native CodeMap, Project Tree & Contracts -->
+      <section id="panel-wiring" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="codemapTitle">Interactive Architecture CodeMap &amp; Wiring Canvas</h2>
+              <p class="card-subtitle" id="codemap-stats">Click any module node to trace incoming/outgoing wires &amp; blast radius</p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <div id="archify-links-slot" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+              <div id="floorplan-link-slot"></div>
+            </div>
+          </div>
+
+          <div class="codemap-toolbar">
+            <div class="codemap-filters" id="codemap-layer-filters"></div>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input id="codemap-search" name="codemapSearch" class="input" type="search" data-i18n-placeholder="codemapSearchPh" placeholder="Highlight node..." style="width:180px;padding:6px 10px;" />
+              <button type="button" id="cm-zoom-out" class="btn btn-sm" aria-label="Zoom out">-</button>
+              <button type="button" id="cm-zoom-reset" class="btn btn-sm mono">100%</button>
+              <button type="button" id="cm-zoom-in" class="btn btn-sm" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+
+          <div id="codemap-viewport" class="codemap-viewport">
+            <svg id="codemap-svg" class="codemap-svg" role="img" aria-label="Interactive Architecture CodeMap"></svg>
+          </div>
+          <div id="codemap-inspector" class="codemap-inspector"></div>
+        </div>
+
+        <div class="split-ide">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="treeTitle">Workspace File &amp; Module Tree</h2>
+                <p class="card-subtitle" id="tree-stats">Scanning workspace...</p>
+              </div>
+            </div>
+            <input id="tree-search" name="treeSearch" class="input" type="search" data-i18n-placeholder="treeSearchPh" placeholder="Filter files by name or badge..." style="margin-bottom:12px;" />
+            <div id="file-inspector-slot"></div>
+            <div id="tree-container"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="contractsTitle">Contracts Explorer (CONTRACTS.md)</h2>
+                <p class="card-subtitle" id="contracts-stats">Single source of truth for routes &amp; schema</p>
+              </div>
+            </div>
+            <input id="contracts-search" name="contractsSearch" class="input" type="search" data-i18n-placeholder="contractsSearchPh" placeholder="Search routes, methods, RBAC roles, or tables..." style="margin-bottom:14px;" />
+            <div id="contracts-routes-container"></div>
+            <h3 class="card-title" style="margin:20px 0 10px;" data-i18n="dbTablesTitle">Database Schema Tables</h3>
+            <div id="contracts-tables-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: Interactive UI/UX Showcase, Typography & Design Token Lock -->
+      <section id="panel-design" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="showcaseTitle">Interactive UI/UX Layout &amp; Typography Showcase (Gate 4)</h2>
+              <p class="card-subtitle" data-i18n="showcaseSub">Explore 3 full-page layout concepts &amp; 5 curated Arabic/English font pairings live before locking Stage 5 UI code</p>
+            </div>
+            <button type="button" id="lock-design-btn" class="btn btn-sm btn-primary" data-i18n="lockDesignBtn">Lock Chosen Design (Gate 4)</button>
+          </div>
+
+          <div id="showcase-layouts-grid" class="showcase-picker-grid"></div>
+          <div id="showcase-fonts-row" class="font-pills-row"></div>
+
+          <div class="preview-stage-bar">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;" id="showcase-palette-pills"></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+              <button type="button" id="showcase-mode-toggle" class="btn btn-sm" data-i18n="showcaseLightDark">Light / Dark</button>
+              <button type="button" id="showcase-dir-toggle" class="btn btn-sm" data-i18n="showcaseRtlLtr">RTL / LTR</button>
+            </div>
+          </div>
+          <div id="showcase-preview-frame" class="mini-app-frame"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="tokensTitle">Locked Design Palette &amp; Token Guard</h2>
+              <p class="card-subtitle" id="tokens-meta">Click any swatch to copy its hex value</p>
+            </div>
+            <span id="token-drift-badge" class="pill ok">Token Drift: Checking...</span>
+          </div>
+          <div id="token-drift-violations" style="margin-bottom:14px;"></div>
+          <div id="swatch-grid" class="swatch-grid"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="forbiddenTitle">Forbidden Colors, Copy Style &amp; RTL Lock</h2>
+            </div>
+            <div id="forbidden-colors-container"></div>
+            <div id="typography-preview" style="margin-top:16px;"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h2 class="card-title" data-i18n="componentsTitle">Live Typography Specimen</h2>
+            </div>
+            <div id="component-preview"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: Memory, Bug Immunity & Time Machine -->
+      <section id="panel-memory" class="tab-panel" role="tabpanel">
+        <div class="sub-tabs" role="tablist" aria-label="Memory Vault Sections">
+          <button type="button" role="tab" aria-selected="true" class="sub-tab-btn active" data-mem-view="all" data-i18n="memAll">All Vault Views</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="rules" data-i18n="memRules">Locked Rules</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="regressions" data-i18n="memRegressions">Regression Shield</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="checkpoints" data-i18n="memCheckpoints">Time Machine</button>
+          <button type="button" role="tab" aria-selected="false" class="sub-tab-btn" data-mem-view="skills" data-i18n="memSkills">Learned Skills</button>
+        </div>
+
+        <div class="grid-2" id="mem-top-grid">
+          <div class="card" data-mem-section="rules">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="rulesTitle">Locked Rules (Anti-Forgetting Guard)</h2>
+                <p class="card-subtitle" data-i18n="rulesSub">Permanent rules appended directly to LOCKED-RULES.md</p>
+              </div>
+            </div>
+
+            <form id="add-rule-form" class="add-rule-form">
+              <select id="rule-category" name="ruleCategory" class="select-field" aria-label="Rule Category">
+                <option value="Architecture" data-i18n="catArch">Architecture</option>
+                <option value="Design Lock" data-i18n="catDesign">Design Lock</option>
+                <option value="Security" data-i18n="catSec">Security</option>
+                <option value="Domain" data-i18n="catDomain">Domain</option>
+                <option value="Workflow" data-i18n="catWorkflow">Workflow</option>
+              </select>
+              <input id="rule-text" name="ruleText" class="input" type="text" required data-i18n-placeholder="ruleInputPh" placeholder="Add permanent English rule..." />
+              <button class="btn btn-primary" type="submit" data-i18n="addRuleBtn">+ Add Rule</button>
+            </form>
+
+            <input id="rules-search" name="rulesSearch" class="input" type="search" data-i18n-placeholder="rulesSearchPh" placeholder="Search locked rules..." style="margin-bottom:10px;" />
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-i18n="thId">ID</th>
+                    <th data-i18n="thCategory">Category</th>
+                    <th data-i18n="thRule">Imperative Rule</th>
+                    <th data-i18n="thStatus">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="rules-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card" data-mem-section="regressions">
+            <div class="card-header">
+              <div>
+                <h2 class="card-title" data-i18n="regressionTitle">Regression Immunity Ledger</h2>
+                <p class="card-subtitle" data-i18n="regressionSub">Protected invariants preventing "fix A breaks B"</p>
+              </div>
+              <select id="regression-severity-filter" name="regressionSeverity" class="select-field" style="width:auto;" aria-label="Filter Severity">
+                <option value="ALL" data-i18n="sevAll">All Severities</option>
+                <option value="P0" data-i18n="sevP0">P0 Critical</option>
+                <option value="P1" data-i18n="sevP1">P1 High</option>
+                <option value="P2" data-i18n="sevP2">P2 Medium</option>
+                <option value="P3" data-i18n="sevP3">P3 Low</option>
+              </select>
+            </div>
+            <input id="regression-search" name="regressionSearch" class="input" type="search" data-i18n-placeholder="regressionSearchPh" placeholder="Filter by file path, symptom, or invariant..." style="margin-bottom:12px;" />
+            <div id="regression-list"></div>
+          </div>
+        </div>
+
+        <div class="card" data-mem-section="checkpoints">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="checkpointsTitle">Time Machine Checkpoints Timeline</h2>
+              <p class="card-subtitle" data-i18n="checkpointsSub">Non-destructive Git checkpoints with safe 1-click rollback command copy</p>
+            </div>
+            <span id="checkpoints-count-pill" class="pill ok">0 Checkpoints</span>
+          </div>
+          <div id="checkpoints-container"></div>
+        </div>
+
+        <div class="card" data-mem-section="skills">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="learnedSkillsTitle">Auto-Evolving Learned Project Skills</h2>
+              <p class="card-subtitle" data-i18n="learnedSkillsSub">Verified English playbooks distilled during development</p>
+            </div>
+          </div>
+          <div id="learned-skills-container"></div>
+        </div>
+      </section>
+
+      <!-- TAB 6: Research Sources, Security & Module User Guides Hub -->
+      <section id="panel-hub" class="tab-panel" role="tabpanel">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="sourcesTitle">Standards, Compliance &amp; Sources Provenance</h2>
+              <p class="card-subtitle" data-i18n="sourcesSub">Authoritative rules verified live and mapped to modules</p>
+            </div>
+            <input id="sources-search" name="sourcesSearch" class="input" type="search" data-i18n-placeholder="sourcesSearchPh" placeholder="Search standards, rules, modules..." style="max-width:280px;" />
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="thRef">Ref</th>
+                  <th data-i18n="thStandard">Standard / Doc</th>
+                  <th data-i18n="thSource">Official Source</th>
+                  <th data-i18n="thRuleExtracted">Rule Extracted</th>
+                  <th data-i18n="thModules">Modules</th>
+                  <th data-i18n="thStatus">Status</th>
+                </tr>
+              </thead>
+              <tbody id="sources-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="securityTitle">Red-Team Security Audit Dashboard</h2>
+              <p class="card-subtitle" data-i18n="securitySub">OWASP Top 10 &amp; ZeroDrift Security Baseline evidence</p>
+            </div>
+            <div id="security-pills" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+          </div>
+          <div id="security-controls-container"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title" data-i18n="guidesTitle">Module User &amp; Developer Guide</h2>
+              <p class="card-subtitle" data-i18n="guidesSub">Rendered cleanly from 06-HANDOVER-REPORT.md</p>
+            </div>
+          </div>
+          <div class="hub-guide-grid">
+            <aside id="handover-toc" class="guide-toc" aria-label="Guide Sections"></aside>
+            <div id="handover-container" class="md-body"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

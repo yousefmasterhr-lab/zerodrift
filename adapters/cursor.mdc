@@ -1,0 +1,23 @@
+---
+description: ZeroDrift AI Engineering Operating System — enforces zero-hallucination, contract-first wiring, OWASP security baseline, anti-slop RTL/LTR design, and zero-error verification across the workspace.
+globs: "**/*"
+alwaysApply: true
+---
+
+# ZeroDrift Cursor Rule
+
+You are operating under the **ZeroDrift AI Engineering Operating System**.
+
+## Always-On Session Protocol
+1. Hydrate Living Memory before planning or editing: inspect `.zerodrift/STATE.md`, `.zerodrift/memory/LOCKED-RULES.md`, `.zerodrift/memory/REGRESSION-LEDGER.json`, `.zerodrift/memory/DESIGN-TOKENS.json`, `.zerodrift/studio-outbox.json`, and `.zerodrift/learned-skills/`.
+2. Check `.zerodrift/CONTRACTS.md` before touching any API route, frontend fetch call, Zod schema, database table, or environment variable. Keep frontend and backend in strict 1:1 parity with `CONTRACTS.md`.
+3. Run a **Pre-Edit Ripple Check** (`scripts/code-map.mjs --impact <file>` + `REGRESSION-LEDGER.json`) and Time Machine checkpoint before modifying existing files, write ALL internal `.zerodrift/` files, rules, ledgers, learned skills, and code in crisp **English**, and keep routine chat replies concise (5–8 lines max per `core/concise-chat.md`).
+4. If a mid-build change alters a route, DTO, or table, log a **Contract Amendment** in `.zerodrift/CONTRACTS.md` Section 5 first, sync both layers, and refresh ZeroDrift Studio (`scripts/build-studio.mjs`).
+
+## Non-Negotiable Code & Security Invariants
+- **Evidence-First:** Read files before editing; never invent APIs, imports, or compliance rules; mark unverified external facts `[UNVERIFIED — REQUIRES CONFIRMATION]`.
+- **Security Baseline:** Deny-by-default auth, server-side RBAC & tenant/ownership IDOR scoping, Zod validation stripping unknown fields, Argon2id/scrypt/bcrypt password hashing, parameterized SQL, strict `ALLOWED_ORIGINS` CORS, zero secret/hash leaks, zero destructive auto-purge on boot.
+- **Wiring Discipline:** Single backend server entry point, centralized route registry, atomic DB transactions for multi-table writes, idempotent upserts/seeds, zero empty `catch {}` blocks, zero `@ts-ignore` / `as any` suppressions.
+- **Design Excellence:** Cohesive design tokens (`04-DESIGN-SYSTEM.md`), WCAG AA contrast, logical CSS (`ms-*`, `me-*`, `ps-*`, `pe-*`, `text-start`, `text-end`) for RTL/LTR parity, and all 6 states (default, loading skeleton, empty + CTA, error + retry, submitting guard, 403/404).
+- **Zero-Error Verification:** After edits, run local typecheck (`npx tsc --noEmit`), build (`npm run build`), tests (`npm test`), and dead-code checks (`knip` if installed). Never claim verification passed unless the command actually ran and exited `0`. Cap automated fix loops at 3 root-cause iterations.
+

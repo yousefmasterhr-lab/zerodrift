@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "2.0.0",
+  "projectName": "{{PROJECT_NAME}}",
+  "updatedAt": "{{DATE}}",
+  "themeName": "Default Balanced Palette",
+  "strictPaletteOnly": false,
+  "palette": {
+    "canvas": "#FBF9F5",
+    "surface": "#F3EFE6",
+    "surfaceElevated": "#FAF8F3",
+    "borderSubtle": "#E3DDD1",
+    "inkPrimary": "#1F2937",
+    "inkMuted": "#5B6470",
+    "brandPrimary": "#243324",
+    "brandAccent": "#10B981",
+    "statusSuccess": "#15803D",
+    "statusWarning": "#B45309",
+    "statusDanger": "#B91C1C"
+  },
+  "approvedColors": [
+    "#FBF9F5",
+    "#F3EFE6",
+    "#FAF8F3",
+    "#E3DDD1",
+    "#1F2937",
+    "#5B6470",
+    "#243324",
+    "#10B981",
+    "#15803D",
+    "#B45309",
+    "#B91C1C"
+  ],
+  "forbiddenColors": [],
+  "typography": {
+    "latinFont": "Inter, system-ui, sans-serif",
+    "arabicFont": "IBM Plex Sans Arabic, Cairo, sans-serif",
+    "monoFont": "JetBrains Mono, ui-monospace, monospace",
+    "tabularNumerals": true
+  },
+  "radii": {
+    "sm": "6px",
+    "md": "10px",
+    "lg": "16px",
+    "pill": "9999px"
+  },
+  "spacingBasePx": 4,
+  "surfaces": {
+    "glassBackdropBlur": "14px",
+    "hairlineBorderWidth": "1px"
+  },
+  "directionality": {
+    "supportsRtl": true,
+    "logicalCssOnly": true
+  }
+}
+

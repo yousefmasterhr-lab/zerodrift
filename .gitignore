@@ -1,0 +1,37 @@
+# Dependencies & caches
+node_modules/
+.npm/
+.pnpm-store/
+
+# OS & Editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Environment & secrets
+.env
+.env.*
+!.env.example
+
+# Temporary & test artifacts
+tmp/
+temp/
+*.log
+coverage/
+.zerodrift-tmp/
+
+# Local AI agent session & scratch directories
+.gemini/
+.antigravity/
+.claude/
+.cursor/*.log
+
+# Local generated codebase maps (never commit unless explicitly intended)
+floorplan/
+.understand-anything/intermediate/
+.understand-anything/diff-overlay.json
+

@@ -1,0 +1,65 @@
+{
+  "name": "zerodrift",
+  "version": "4.0.0",
+  "description": "Sovereign AI Engineering Operating System — Native Interactive CodeMap, UI/UX & Typography Showcase, Living Memory, Time Machine, 12-Skill Fleet & Studio.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "ai-engineering",
+    "agent-skills",
+    "antigravity",
+    "claude-code",
+    "codex",
+    "cursor",
+    "codemap",
+    "zero-hallucination",
+    "anti-regression",
+    "living-memory",
+    "mission-control",
+    "change-control",
+    "security-audit",
+    "software-architecture",
+    "reverse-engineering"
+  ],
+  "bin": {
+    "zerodrift-init": "./scripts/init-project.mjs",
+    "zerodrift-doctor": "./scripts/doctor.mjs",
+    "zerodrift-validate": "./scripts/validate-project.mjs",
+    "zerodrift-studio": "./scripts/studio-server.mjs",
+    "zerodrift-build-studio": "./scripts/build-studio.mjs",
+    "zerodrift-wait-studio": "./scripts/wait-for-studio.mjs",
+    "zerodrift-checkpoint": "./scripts/checkpoint.mjs",
+    "zerodrift-handoff": "./scripts/handoff.mjs",
+    "zerodrift-codemap": "./scripts/code-map.mjs"
+  },
+  "scripts": {
+    "doctor": "node ./scripts/doctor.mjs",
+    "init": "node ./scripts/init-project.mjs",
+    "validate": "node ./scripts/validate-project.mjs",
+    "studio": "node ./scripts/studio-server.mjs",
+    "studio:build": "node ./scripts/build-studio.mjs",
+    "studio:export": "node ./scripts/build-studio.mjs --export",
+    "codemap": "node ./scripts/code-map.mjs",
+    "checkpoint": "node ./scripts/checkpoint.mjs",
+    "handoff": "node ./scripts/handoff.mjs",
+    "demo:build": "node ./scripts/build-demo.mjs",
+    "test": "node --test ./tests/suite.test.mjs"
+  },
+  "files": [
+    "AGENTS.md",
+    "BOOTSTRAP.md",
+    "llms.txt",
+    "README.md",
+    "LICENSE",
+    "core/",
+    "skills/",
+    "templates/",
+    "studio/",
+    "docs/",
+    "adapters/",
+    "scripts/"
+  ]
+}
